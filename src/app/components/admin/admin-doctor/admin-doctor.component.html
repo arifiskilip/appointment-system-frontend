@@ -1,0 +1,105 @@
+<app-blank pageName="Doktorlar">
+    <section class="content">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Doktorlar</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0" style="display: block">
+          <div class="row mb-3 mt-3">
+            <div class="col-md-4 col-sm-12 mb-2">
+              <select class="form-control">
+                <option value="">Bölüme Göre Filtrele</option>
+                <option value="kardiyoloji">Kardiyoloji</option>
+                <option value="ortopedi">Ortopedi</option>
+                <!-- Diğer bölümler -->
+              </select>
+            </div>
+            <div class="col-md-4 col-sm-12 mb-2">
+              <select class="form-control">
+                <option value="">Ünvana Göre Filtrele</option>
+                <option value="prof">Profesör</option>
+                <option value="doc">Doçent</option>
+                <!-- Diğer unvanlar -->
+              </select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <input type="text" class="form-control" placeholder="Doktor Ara">
+            </div>
+          </div>
+  
+          <table class="table table-striped projects">
+            <thead>
+              <tr>
+                <th style="width: 1%">#</th>
+                <th style="width: 20%">Doktor</th>
+                <th style="width: 15%">Resim</th>
+                <th>Popülerite</th>
+                <th style="width: 8%" class="text-center">Durum</th>
+                <th style="width: 30%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#</td>
+                <td>
+                  <a> Prof. Arif İskilip</a>
+                  <br />
+                  <small> Ortopedi </small>
+                </td>
+                <td>
+                  <ul class="list-inline">
+                    <li class="list-inline-item">
+                      <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
+                    </li>
+                  </ul>
+                </td>
+                <td class="project_progress">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: 57%"></div>
+                  </div>
+                  <small> 57% </small>
+                </td>
+                <td class="project-state">
+                  <span class="badge badge-success">Success</span>
+                </td>
+                <td class="project-actions text-right">
+                  <a class="btn btn-primary btn-sm" href="#">
+                    <i class="fas fa-folder"> </i>
+                    Randevular
+                  </a>
+                  <a class="btn btn-info btn-sm" href="#">
+                    <i class="fas fa-pencil-alt"> </i>
+                    Düzenle
+                  </a>
+                  <a class="btn btn-danger btn-sm" href="#">
+                    <i class="fas fa-trash"> </i>
+                    Sil
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </app-blank>
+  
