@@ -1,1 +1,45 @@
-<p>login works!</p>
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="card card-outline card-dark">
+      <div class="card-header text-center">
+        <a class="h1"><b>MHRS </b></a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">Giriş yapmak için bilgilerinizi doldurun</p>
+
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="Email" />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-dark btn-block">
+          <i class="fa-solid fa-lock me-1"></i>
+          Giriş Yap
+        </button>
+        <div class="social-auth-links text-center mb-3">
+          <p>- Yada -</p>
+        </div>
+        <p class="mb-1">
+          <a href="forgot-password.html">Şifremi Unuttum</a>
+        </p>
+        <p class="mb-0">
+          <a routerLink="/register" class="text-center"
+            >Kayıt ol</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</body>

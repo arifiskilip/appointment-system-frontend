@@ -1,105 +1,78 @@
 <app-blank pageName="Doktorlar">
-    <section class="content">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Doktorlar</h3>
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body p-0" style="display: block">
-          <div class="row mb-3 mt-3">
-            <div class="col-md-4 col-sm-12 mb-2">
-              <select class="form-control">
-                <option value="">Bölüme Göre Filtrele</option>
-                <option value="kardiyoloji">Kardiyoloji</option>
-                <option value="ortopedi">Ortopedi</option>
-                <!-- Diğer bölümler -->
-              </select>
-            </div>
-            <div class="col-md-4 col-sm-12 mb-2">
-              <select class="form-control">
-                <option value="">Ünvana Göre Filtrele</option>
-                <option value="prof">Profesör</option>
-                <option value="doc">Doçent</option>
-                <!-- Diğer unvanlar -->
-              </select>
-            </div>
-            <div class="col-md-4 col-sm-12">
-              <input type="text" class="form-control" placeholder="Doktor Ara">
-            </div>
-          </div>
-  
-          <table class="table table-striped projects">
-            <thead>
-              <tr>
-                <th style="width: 1%">#</th>
-                <th style="width: 20%">Doktor</th>
-                <th style="width: 15%">Resim</th>
-                <th>Popülerite</th>
-                <th style="width: 8%" class="text-center">Durum</th>
-                <th style="width: 30%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#</td>
-                <td>
-                  <a> Prof. Arif İskilip</a>
-                  <br />
-                  <small> Ortopedi </small>
-                </td>
-                <td>
-                  <ul class="list-inline">
-                    <li class="list-inline-item">
-                      <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
-                    </li>
-                  </ul>
-                </td>
-                <td class="project_progress">
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: 57%"></div>
+  <section class="content">
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="row">
+          <div
+            class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column"
+          >
+            <div class="card bg-light d-flex flex-fill">
+              <div class="card-header text-muted border-bottom-0">
+                Digital Strategist
+              </div>
+              <div class="card-body pt-0">
+                <div class="row">
+                  <div class="col-7">
+                    <h2 class="lead"><b>Nicole Pearson</b></h2>
+                    <p class="text-muted text-sm">
+                      <b>About: </b> Web Designer / UX / Graphic Artist / Coffee
+                      Lover
+                    </p>
+                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fas fa-lg fa-building"></i
+                        ></span>
+                        Address: Demo Street 123, Demo City 04312, NJ
+                      </li>
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fas fa-lg fa-phone"></i
+                        ></span>
+                        Phone #: + 800 - 12 12 23 52
+                      </li>
+                    </ul>
                   </div>
-                  <small> 57% </small>
-                </td>
-                <td class="project-state">
-                  <span class="badge badge-success">Success</span>
-                </td>
-                <td class="project-actions text-right">
-                  <a class="btn btn-primary btn-sm" href="#">
-                    <i class="fas fa-folder"> </i>
-                    Randevular
+                  <div class="col-5 text-center">
+                    <img
+                      src="https://avatars.githubusercontent.com/u/71379630?v=4"
+                      alt="user-avatar"
+                      class="img-circle img-fluid"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="text-right">
+                  <a href="#" class="btn btn-sm bg-teal">
+                    <i class="fas fa-comments"></i>
                   </a>
-                  <a class="btn btn-info btn-sm" href="#">
-                    <i class="fas fa-pencil-alt"> </i>
-                    Düzenle
+                  <a href="#" class="btn btn-sm btn-primary">
+                    <i class="fas fa-user"></i> View Profile
                   </a>
-                  <a class="btn btn-danger btn-sm" href="#">
-                    <i class="fas fa-trash"> </i>
-                    Sil
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="card-footer">
-          <nav aria-label="Contacts Page Navigation">
-            <ul class="pagination justify-content-center m-0">
-              <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-            </ul>
-          </nav>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-  </app-blank>
-  
+
+      <div class="card-footer">
+        <nav aria-label="Contacts Page Navigation">
+          <ul class="pagination justify-content-center m-0">
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+</app-blank>

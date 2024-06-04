@@ -22,9 +22,23 @@ export const AdminMenus: MenuModel[] = [
         subMenus: []
     },
     {
-        name: "Examples",
-        icon: "fa-solid fa-explosion",
-        url: "/admin/profile",
+        name: "Branşlar",
+        icon: "fa-solid fa-heart",
+        url: "/admin/branch",
+        isTitle: false,
+        subMenus: []
+    },
+    {
+        name: "Ünvanlar",
+        icon: "fa-solid fa-clinic-medical",
+        url: "/admin/title",
+        isTitle: false,
+        subMenus: []
+    },
+    {
+        name: "Hastalar",
+        icon: "fa-solid fa-bed",
+        url: "/admin/patient",
         isTitle: false,
         subMenus: []
     }
