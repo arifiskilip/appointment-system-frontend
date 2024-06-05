@@ -12,6 +12,10 @@ import { AdminPatientComponent } from './components/admin/admin-patient/admin-pa
 import { LoginComponent } from './components/home/login/login.component';
 import { RegisterComponent } from './components/home/register/register.component';
 import { HomePageComponent } from './components/home/home-page/home-page.component';
+import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard/doctor-dashboard.component';
+import { DoctorProfileComponent } from './components/doctor/doctor-profile/doctor-profile.component';
+import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doctor-schedule.component';
+import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
 
 export const routes: Routes = [
   {
@@ -60,7 +64,22 @@ export const routes: Routes = [
     path: 'doctor',
     component: DoctorLayoutComponent,
     children: [
-      // Admin routes go here
+      {
+        path:"",
+        component:DoctorDashboardComponent
+      },
+      {
+        path:"profile",
+        component:DoctorProfileComponent
+      },
+      {
+        path:"schedule",
+        component:DoctorScheduleComponent
+      },
+      {
+        path:"test",
+        component:DoctorTestComponent
+      }
     ],
   },
   {

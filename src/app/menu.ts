@@ -44,3 +44,21 @@ export const AdminMenus: MenuModel[] = [
     }
 
 ]
+
+export const DoctorMenus: MenuModel[] = [
+    {
+        name: "Ana Sayfa",
+        icon: "fa-solid fa-home",
+        url: "/doctor",
+        isTitle: false,
+        subMenus: []
+    },
+    {
+        name: "Takvim",
+        icon: "fa-solid fa-clinic-medical",
+        url: "/doctor/schedule",
+        isTitle: false,
+        subMenus: []
+    },
+
+]
