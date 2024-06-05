@@ -11,6 +11,7 @@ import { AdminTitleComponent } from './components/admin/admin-title/admin-title.
 import { AdminPatientComponent } from './components/admin/admin-patient/admin-patient.component';
 import { LoginComponent } from './components/home/login/login.component';
 import { RegisterComponent } from './components/home/register/register.component';
+import { HomePageComponent } from './components/home/home-page/home-page.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,10 @@ export const routes: Routes = [
   {
     path:'register',
     component:RegisterComponent
+  },
+  {
+    path: '',
+    component:HomePageComponent
   },
   {
     path: 'admin',
@@ -65,9 +70,9 @@ export const routes: Routes = [
       // Patient routes go here
     ],
   },
-  {
-    path: '',
-    redirectTo: '/admin',
-    pathMatch: 'full',
-  },
+  // {
+  //   path: '',
+  //   redirectTo: '/admin',
+  //   pathMatch: 'full',
+  // },
 ];
