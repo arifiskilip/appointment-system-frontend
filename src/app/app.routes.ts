@@ -16,6 +16,8 @@ import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard/d
 import { DoctorProfileComponent } from './components/doctor/doctor-profile/doctor-profile.component';
 import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doctor-schedule.component';
 import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
+import path from 'path';
+import { PatientAppointmentComponent } from './components/patient/patient-appointment/patient-appointment.component';
 
 export const routes: Routes = [
   {
@@ -86,7 +88,10 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientLayoutComponent,
     children: [
-      // Patient routes go here
+     {
+      path:'appointment',
+      component:PatientAppointmentComponent
+     }
     ],
   },
   // {

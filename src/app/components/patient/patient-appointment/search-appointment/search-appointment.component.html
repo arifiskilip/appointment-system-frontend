@@ -1,0 +1,63 @@
+<app-blank pageName="Doktorlar">
+  <section class="content">
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="container">
+          <div class="row">
+            <form>
+              <div class="form-group">
+                <button type="button" class="btn btn-outline-primary float-left">
+                  <i class="fas fa-arrow-left"></i> Geri
+                </button>
+                <h3 class="text-center" style="color: #28a745;">Randevu Ara</h3>
+              </div>
+              <div class="form-group">
+                <label for="klinik" style="font-size: 20px;">Klinik *</label>
+                <select class="form-control select2bs4 select2-hidden-accessible" style="width: 100%" data-select2-id="17" tabindex="-1" aria-hidden="true">
+                  <option selected="selected" data-select2-id="19">Alabama</option>
+                  <option data-select2-id="97">Alaska</option>
+                  <option data-select2-id="98">California</option>
+                  <option data-select2-id="99">Delaware</option>
+                  <option data-select2-id="100">Tennessee</option>
+                  <option data-select2-id="101">Texas</option>
+                  <option data-select2-id="102">Washington</option>
+                </select>
+                <div style="font-size: 16px; color: #dc3545;">* Zorunlu alan</div>
+              </div>
+              <div class="form-group">
+                <label for="hekim" style="font-size: 20px;">Hekim Seçiniz</label>
+                <select class="form-control" id="hekim">
+                  <option value="">Lütfen seçiniz</option>
+                  <option value="1">Hekim 1</option>
+                  <option value="2">Hekim 2</option>
+                  <option value="3">Hekim 3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col">
+                    <label for="baslangic" style="font-size: 20px;">Başlangıç Tarihi</label>
+                    <input type="date" class="form-control" id="baslangic" />
+                  </div>
+                  <div class="col">
+                    <label for="bitis" style="font-size: 20px;">Bitiş Tarihi</label>
+                    <input type="date" class="form-control" id="bitis" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-success mr-2">
+                  <i class="fas fa-search"></i> Randevu Ara
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  <i class="fas fa-times"></i> Temizle
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-blank>
+

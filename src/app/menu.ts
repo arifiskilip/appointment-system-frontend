@@ -62,3 +62,21 @@ export const DoctorMenus: MenuModel[] = [
     },
 
 ]
+
+export const PatientMenus: MenuModel[] = [
+    {
+        name: "Ana Sayfa",
+        icon: "fa-solid fa-home",
+        url: "/patient",
+        isTitle: false,
+        subMenus: []
+    },
+    {
+        name: "Takvim",
+        icon: "fa-solid fa-clinic-medical",
+        url: "/patient/appointment",
+        isTitle: false,
+        subMenus: []
+    },
+
+]

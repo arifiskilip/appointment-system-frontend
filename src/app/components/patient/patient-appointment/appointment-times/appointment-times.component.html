@@ -1,0 +1,25 @@
+<app-blank pageName="Doktorlar Listesi">
+    <section class="content">
+      <div class="card card-default" style="cursor: pointer;" [class.collapsed-card]="isCollapsed">
+        <div class="card-header" (click)="toggleAppointments()">
+          <h3 class="card-title">
+            <div class="text text-center">
+              <b>> 10:30</b>
+            </div>
+          </h3>
+
+        </div>
+        <div class="card-body" style="cursor: auto;" [style.display]="isCollapsed ? 'none' : 'block'">
+          <div class="row">
+            <div class="col-md-2">
+              <button class="btn btn-outline-success" (click)="submit()">10.00</button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-outline-success" (click)="submit()">10.15</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </app-blank>
+  
