@@ -18,19 +18,22 @@ import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doc
 import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
 import path from 'path';
 import { PatientAppointmentComponent } from './components/patient/patient-appointment/patient-appointment.component';
+import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
+
+
 
 export const routes: Routes = [
   {
-    path:'login',
-    component:LoginComponent
+    path: 'login',
+    component: LoginComponent
   },
   {
-    path:'register',
-    component:RegisterComponent
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '',
-    component:HomePageComponent
+    component: HomePageComponent
   },
   {
     path: 'admin',
@@ -67,20 +70,20 @@ export const routes: Routes = [
     component: DoctorLayoutComponent,
     children: [
       {
-        path:"",
-        component:DoctorDashboardComponent
+        path: "",
+        component: DoctorDashboardComponent
       },
       {
-        path:"profile",
-        component:DoctorProfileComponent
+        path: "profile",
+        component: DoctorProfileComponent
       },
       {
-        path:"schedule",
-        component:DoctorScheduleComponent
+        path: "schedule",
+        component: DoctorScheduleComponent
       },
       {
-        path:"test",
-        component:DoctorTestComponent
+        path: "test",
+        component: DoctorTestComponent
       }
     ],
   },
@@ -88,10 +91,15 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientLayoutComponent,
     children: [
-     {
-      path:'appointment',
-      component:PatientAppointmentComponent
-     }
+      {
+        path: 'appointment',
+        component: PatientAppointmentComponent
+      },
+      {
+        path: 'scheduled-appointment',
+        component: ScheduledAppointmentComponent
+      },
+
     ],
   },
   // {
