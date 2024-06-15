@@ -41,6 +41,13 @@ export const AdminMenus: MenuModel[] = [
         url: "/admin/patient",
         isTitle: false,
         subMenus: []
+    },
+    {
+        name:"Geri Bildirimler",
+        icon:"fa-regular fa-comment",
+        url:"/admin/feedback",
+        isTitle:false,
+        subMenus:[]
     }
 
 ]
