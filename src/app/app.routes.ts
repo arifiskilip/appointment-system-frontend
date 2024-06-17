@@ -18,8 +18,12 @@ import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doc
 import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
 import path from 'path';
 import { PatientAppointmentComponent } from './components/patient/patient-appointment/patient-appointment.component';
+import { VerificationCodeComponent } from './components/home/verification-code/verification-code.component';
+import { inject } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
+import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
 import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
-
 
 
 export const routes: Routes = [
@@ -31,6 +35,11 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent
   },
+  {
+    path:"verificationcode",
+    component:VerificationCodeComponent,
+    canActivate: [()=> inject(AuthService).isAuthenticated()]
+},
   {
     path: '',
     component: HomePageComponent
@@ -63,6 +72,10 @@ export const routes: Routes = [
         path: 'patient',
         component: AdminPatientComponent,
       },
+      {
+        path: 'feedback',
+        component: AdminFeedbackComponent,
+      },
     ],
   },
   {
@@ -91,15 +104,18 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientLayoutComponent,
     children: [
-      {
-        path: 'appointment',
-        component: PatientAppointmentComponent
-      },
+     {
+      path:'appointment',
+      component:PatientAppointmentComponent
+     },
+     {
+      path:'profile',
+      component:PatientProfileComponent
+     },
       {
         path: 'scheduled-appointment',
         component: ScheduledAppointmentComponent
       },
-
     ],
   },
   // {

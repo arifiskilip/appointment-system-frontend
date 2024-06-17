@@ -1,0 +1,25 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Doğrulama Kodu Girin
+          </div>
+          <div class="card-body">
+              <div class="mb-3">
+                <label for="email" class="form-label">E-posta Adresiniz</label>
+                <p>Email adresine gelen aktivasyon kodunu lütfen giriniz.</p>
+              </div>
+              <div class="mb-3">
+                <label for="verificationCode" class="form-label">Doğrulama Kodu</label>
+                <div class="input-group">
+                  <input type="text" [(ngModel)]="code" id="code" class="form-control" placeholder="Doğrulama kodunu girin" required>
+                  <button class="btn btn-outline-secondary" type="button" [disabled]="isSendingVerificationCode" id="sendCodeBtn" (click)="sendVerificationCode()"><i class="fas fa-paper-plane"></i> Doğrulama kodu gönder</button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" (click)="emailVerified()">Doğrula</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
