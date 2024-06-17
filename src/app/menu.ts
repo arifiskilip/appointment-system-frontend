@@ -1,9 +1,9 @@
-export class MenuModel{
-    name: string = "";
-    icon: string = "";
-    url: string = "";
-    isTitle: boolean = false;
-    subMenus: MenuModel[] = [];
+export class MenuModel {
+  name: string = "";
+  icon: string = "";
+  url: string = "";
+  isTitle: boolean = false;
+  subMenus: MenuModel[] = [];
 }
 
 export const AdminMenus: MenuModel[] = [
@@ -53,37 +53,38 @@ export const AdminMenus: MenuModel[] = [
 ]
 
 export const DoctorMenus: MenuModel[] = [
-    {
-        name: "Ana Sayfa",
-        icon: "fa-solid fa-home",
-        url: "/doctor",
-        isTitle: false,
-        subMenus: []
-    },
-    {
-        name: "Takvim",
-        icon: "fa-solid fa-clinic-medical",
-        url: "/doctor/schedule",
-        isTitle: false,
-        subMenus: []
-    },
+  {
+    name: "Ana Sayfa",
+    icon: "fa-solid fa-home",
+    url: "/doctor",
+    isTitle: false,
+    subMenus: []
+  },
+  {
+    name: "Takvim",
+    icon: "fa-solid fa-clinic-medical",
+    url: "/doctor/schedule",
+    isTitle: false,
+    subMenus: []
+  },
 
 ]
 
 export const PatientMenus: MenuModel[] = [
-    {
-        name: "Ana Sayfa",
-        icon: "fa-solid fa-home",
-        url: "/patient",
-        isTitle: false,
-        subMenus: []
-    },
-    {
-        name: "Takvim",
-        icon: "fa-solid fa-clinic-medical",
-        url: "/patient/appointment",
-        isTitle: false,
-        subMenus: []
-    },
+  {
+    name: "Randevu Ara",
+    icon: "fa-solid fa-clinic-medical",
+    url: "/patient/appointment",
+    isTitle: false,
+    subMenus: []
+  },
+  {
+    name: "Randevularım",
+    icon: "fa-solid fa-home",
+    url: "/patient/scheduled-appointment",
+    isTitle: false,
+    subMenus: []
+  },
+
 
 ]

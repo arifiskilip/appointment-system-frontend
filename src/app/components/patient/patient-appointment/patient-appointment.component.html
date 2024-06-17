@@ -2,13 +2,13 @@
     <app-search-appointment></app-search-appointment>
     <button (click)="navigate('list')">Sonraki</button>
   </div>
-  
+
   <div *ngIf="currentPage === 'list'">
     <app-appointment-list></app-appointment-list>
     <button (click)="navigate('search')">Önceki</button>
     <button (click)="navigate('times')">Sonraki</button>
   </div>
-  
+
   <div *ngIf="currentPage === 'times'">
     <app-appointment-times></app-appointment-times>
     <button (click)="navigate('list')">Önceki</button>
