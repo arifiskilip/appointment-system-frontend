@@ -1,1 +1,125 @@
-<p>doctor-dashboard works!</p>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>150</h3>
+            <p>Yeni Randevular</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <a href="#" class="small-box-footer">Daha Fazla Bilgi <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>53</h3>
+            <p>Toplam Hastalar</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-user-injured"></i>
+          </div>
+          <a href="#" class="small-box-footer">Daha Fazla Bilgi <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>44</h3>
+            <p>Aktif Doktorlar</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <a href="#" class="small-box-footer">Daha Fazla Bilgi <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>65</h3>
+            <p>Geri Bildirimler</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <a href="#" class="small-box-footer">Daha Fazla Bilgi <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
+    <!-- /.row -->
+  
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-calendar-alt mr-1"></i> Son Randevular</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Randevu ID</th>
+                  <th>Hasta Adı</th>
+                  <th>Doktor Adı</th>
+                  <th>Tarih</th>
+                  <th>Durum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Ahmet Yılmaz</td>
+                  <td>Dr. Ayşe Kaya</td>
+                  <td>01.06.2024</td>
+                  <td><span class="badge badge-success">Tamamlandı</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Mehmet Demir</td>
+                  <td>Dr. Ali Veli</td>
+                  <td>02.06.2024</td>
+                  <td><span class="badge badge-warning">Beklemede</span></td>
+                </tr>
+                <!-- Daha fazla veri -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="card bg-gradient-success">
+          <div class="card-header border-0">
+            <h3 class="card-title"><i class="far fa-calendar-alt"></i> Takvim</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <full-calendar [options]="calendarOptions"></full-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  

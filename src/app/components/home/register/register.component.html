@@ -6,9 +6,16 @@
       </div>
       <div class="card-body">
         <p class="login-box-msg">Kayıt olmak için bilgilerinizi doldurun</p>
-
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Full name" />
+          <input type="text" class="form-control" placeholder="Ad" />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Soyad" />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -24,7 +31,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" />
+          <input type="password" class="form-control" placeholder="Şifre" />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -32,21 +39,48 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Retype password"
-          />
+          <input type="password" class="form-control" placeholder="Şifreyi Yeniden Girin" />
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
+        <div class="input-group mb-3">
+          <select class="form-control">
+            <option value="">Kan Grubu</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-tint"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <select class="form-control">
+            <option value="">Cinsiyet</option>
+            <option value="male">Erkek</option>
+            <option value="female">Kadın</option>
+            <option value="other">Diğer</option>
+          </select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-venus-mars"></span>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block">
-              Register
+              Kayıt Ol
             </button>
           </div>
         </div>
