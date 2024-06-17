@@ -1,329 +1,383 @@
 <app-blank pageName="Profil">
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3">
-    
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="User profile picture">
-                </div>
-    
-                <h3 class="profile-username text-center">First Name - Last Name</h3>
-    
-                <p class="text-muted text-center">Identity Number</p>
-    
-                <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <b>Cinsiyet</b> <a class="float-right">Man</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Kan Grubu</b> <a class="float-right">A -</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Doğum Yılı</b> <a class="float-right">01.01.2000</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>Yaş</b> <a class="float-right">24</a>
-                  </li>
-                </ul>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img
+                  class="profile-user-img img-fluid img-circle"
+                  src="https://avatars.githubusercontent.com/u/71379630?v=4"
+                  alt="User profile picture"
+                />
               </div>
-              <!-- /.card-body -->
+
+              <h3 class="profile-username text-center">
+                First Name - Last Name
+              </h3>
+
+              <p class="text-muted text-center">Identity Number</p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Cinsiyet</b> <a class="float-right">Man</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Kan Grubu</b> <a class="float-right">A -</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Doğum Yılı</b> <a class="float-right">01.01.2000</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Yaş</b> <a class="float-right">24</a>
+                </li>
+              </ul>
             </div>
-            <!-- /.card -->
-    
-            <!-- About Me Box -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">İletişi Bilgilerim</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <strong><i class="fas fa-book mr-1"></i> E Posta</strong>
-    
-                <p class="text-muted">
-                  arifarif.com
-                </p>
-    
-                <hr>
-    
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Telefon</strong>
-    
-                <p class="text-muted">055555555</p>
-    
-                <hr>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+            <!-- /.card-body -->
           </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" [class.active]="activeTab === 'activity'" (click)="setActiveTab('activity')" href="javascript:void(0)">Activity</a></li>
-                  <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'timeline'" (click)="setActiveTab('timeline')" href="javascript:void(0)">Timeline</a></li>
-                  <li class="nav-item"><a class="nav-link" [class.active]="activeTab === 'settings'" (click)="setActiveTab('settings')" href="javascript:void(0)">Profil Düzenle</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" [class.active]="activeTab === 'activity'" id="activity">
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="user image">
-                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Shared publicly - 7:30 PM today</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore the hate as they create awesome
-                        tools to help create filler text for everyone from bacon lovers
-                        to Charlie Sheen fans.
-                      </p>
-    
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                        <span class="float-right">
-                          <a href="#" class="link-black text-sm">
-                            <i class="far fa-comments mr-1"></i> Comments (5)
-                          </a>
-                        </span>
-                      </p>
-    
-                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <!-- /.post -->
-    
-                    <!-- Post -->
-                    <div class="post clearfix">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="User Image">
-                        <span class="username">
-                          <a href="#">Sarah Ross</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Sent you a message - 3 days ago</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore the hate as they create awesome
-                        tools to help create filler text for everyone from bacon lovers
-                        to Charlie Sheen fans.
-                      </p>
-    
-                      <form class="form-horizontal">
-                        <div class="input-group input-group-sm mb-0">
-                          <input class="form-control form-control-sm" placeholder="Response">
-                          <div class="input-group-append">
-                            <button type="submit" class="btn btn-danger">Send</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <!-- /.post -->
-    
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="User Image">
-                        <span class="username">
-                          <a href="#">Adam Jones</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                        <span class="description">Posted 5 photos - 5 days ago</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <div class="row mb-3">
-                        <div class="col-sm-6">
-                          <img class="img-fluid" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="Photo">
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-6">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <img class="img-fluid mb-3" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="Photo">
-                              <img class="img-fluid" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="Photo">
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-6">
-                              <img class="img-fluid mb-3" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="Photo">
-                              <img class="img-fluid" src="https://avatars.githubusercontent.com/u/71379630?v=4" alt="Photo">
-                            </div>
-                            <!-- /.col -->
-                          </div>
-                          <!-- /.row -->
-                        </div>
-                        <!-- /.col -->
-                      </div>
-                      <!-- /.row -->
-    
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                        <span class="float-right">
-                          <a href="#" class="link-black text-sm">
-                            <i class="far fa-comments mr-1"></i> Comments (5)
-                          </a>
-                        </span>
-                      </p>
-    
-                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <!-- /.post -->
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" [class.active]="activeTab === 'timeline'" id="timeline">
-                    <!-- The timeline -->
-                    <div class="timeline timeline-inverse">
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                        <span class="bg-danger">
-                          10 Feb. 2014
-                        </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-envelope bg-primary"></i>
-    
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 12:05</span>
-    
-                          <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-    
-                          <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-user bg-info"></i>
-    
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-    
-                          <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-                          </h3>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-comments bg-warning"></i>
-    
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-    
-                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-    
-                          <div class="timeline-body">
-                            Take me to your leader!
-                            Switzerland is small and neutral!
-                            We are more like Germany, ambitious and misunderstood!
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                        <span class="bg-success">
-                          3 Jan. 2014
-                        </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-camera bg-purple"></i>
-    
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-    
-                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-    
-                          <div class="timeline-body">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                            <img src="https://placehold.it/150x100" alt="...">
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <div>
-                        <i class="far fa-clock bg-gray"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-    
-                  <div class="tab-pane" [class.active]="activeTab === 'settings'" id="settings">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="firstName" class="col-sm-2 col-form-label">Ad</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="firstName" placeholder="İsim">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="lastName" class="col-sm-2 col-form-label">Soyad</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="lastName" placeholder="Soyisim">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="email" class="col-sm-2 col-form-label">E posta</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="email" placeholder="E-Posta">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="phone" class="col-sm-2 col-form-label">Telefon Numarası</label>
-                        <div class="col-sm-10">
-                          <input type="tel" class="form-control" id="phone" placeholder="Telefon">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Güncelle</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">İletişi Bilgilerim</h3>
             </div>
-            <!-- /.card -->
+            <!-- /.card-header -->
+            <div class="card-body">
+              <strong><i class="fas fa-book mr-1"></i> E Posta</strong>
+
+              <p class="text-muted">arifarif.com</p>
+
+              <hr />
+
+              <strong
+                ><i class="fas fa-map-marker-alt mr-1"></i> Telefon</strong
+              >
+
+              <p class="text-muted">055555555</p>
+
+              <hr />
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.col -->
+          <!-- /.card -->
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-  </app-blank>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    [class.active]="activeTab === 'activity'"
+                    (click)="setActiveTab('activity')"
+                    href="javascript:void(0)"
+                    >Geri Bildirimlerim</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'timeline'"
+                    (click)="setActiveTab('timeline')"
+                    href="javascript:void(0)"
+                    >Randevu Geçmişim</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'settings'"
+                    (click)="setActiveTab('settings')"
+                    href="javascript:void(0)"
+                    >Profil Düzenle</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content">
+                <div
+                  class="active tab-pane"
+                  [class.active]="activeTab === 'activity'"
+                  id="activity"
+                >
+                  <!-- Post -->
+                  <div class="post">
+                    <div class="user-block">
+                      <img
+                        class="img-circle img-bordered-sm"
+                        src="https://avatars.githubusercontent.com/u/71379630?v=4"
+                        alt="user image"
+                      />
+                      <span class="username">
+                        <a href="#">Jonathan Burke Jr.</a>
+                      </span>
+                      <span class="description"
+                        >Shared publicly - 7:30 PM today</span
+                      >
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                      Lorem ipsum represents a long-held tradition for
+                      designers, typographers and the like. Some people hate it
+                      and argue for its demise, but others ignore the hate as
+                      they create awesome tools to help create filler text for
+                      everyone from bacon lovers to Charlie Sheen fans.
+                    </p>
+                  </div>
+                  <!-- /.post -->
+                </div>
+                <!-- /.tab-pane -->
+                <div
+                  class="tab-pane"
+                  [class.active]="activeTab === 'timeline'"
+                  id="timeline"
+                >
+                  <!-- The timeline -->
+                  <div class="timeline timeline-inverse">
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                      <span class="bg-danger"> 15 Haz. 2024 </span>
+                    </div>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <div>
+                      <i class="fas fa-calendar-alt bg-primary"></i>
+                      <div class="timeline-item">
+                        <span class="time"
+                          ><i class="far fa-clock"></i> 09:00</span
+                        >
+                        <h3 class="timeline-header">
+                          <a href="#">Dr. Ahmet Yılmaz</a> ile randevunuz
+                        </h3>
+                        <div class="timeline-body">Detaylar: Genel kontrol</div>
+                        <div class="timeline-footer">
+                          <a href="#" class="btn btn-primary btn-sm"
+                            >Daha fazla</a
+                          >
+                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <div>
+                      <i class="fas fa-calendar-alt bg-info"></i>
+                      <div class="timeline-item">
+                        <span class="time"
+                          ><i class="far fa-clock"></i> 10:30</span
+                        >
+                        <h3 class="timeline-header">
+                          <a href="#">Dr. Elif Kaya</a> ile randevunuz
+                        </h3>
+                        <div class="timeline-body">Detaylar: Diş muayenesi</div>
+                        <div class="timeline-footer">
+                          <a href="#" class="btn btn-primary btn-sm"
+                            >Daha fazla</a
+                          >
+                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                      <span class="bg-success"> 10 Haz. 2024 </span>
+                    </div>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <div>
+                      <i class="fas fa-calendar-alt bg-purple"></i>
+                      <div class="timeline-item">
+                        <span class="time"
+                          ><i class="far fa-clock"></i> 11:00</span
+                        >
+                        <h3 class="timeline-header">
+                          <a href="#">Dr. Mehmet Demir</a> ile randevunuz
+                        </h3>
+                        <div class="timeline-body">
+                          Detaylar: Kan testi sonuçları
+                        </div>
+                        <div class="timeline-footer">
+                          <a href="#" class="btn btn-primary btn-sm"
+                            >Daha fazla</a
+                          >
+                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <div>
+                      <i class="far fa-clock bg-gray"></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.tab-pane -->
+
+                <div
+                  class="tab-pane"
+                  [class.active]="activeTab === 'settings'"
+                  id="settings"
+                >
+                  <form class="form-horizontal">
+                    <div class="form-group row">
+                      <label for="firstName" class="col-sm-2 col-form-label"
+                        >Ad</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="firstName"
+                          placeholder="İsim"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="lastName" class="col-sm-2 col-form-label"
+                        >Soyad</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="lastName"
+                          placeholder="Soyisim"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="bloodType" class="col-sm-2 col-form-label"
+                        >Kan Grubu</label
+                      >
+                      <div class="col-sm-10">
+                        <select class="form-control">
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="phone" class="col-sm-2 col-form-label"
+                        >Telefon Numarası</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          id="phone"
+                          placeholder="Telefon"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="birthday" class="col-sm-2 col-form-label"
+                        >Doğum Tarihi</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="birthday"
+                          placeholder="Doğum Tarihi"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-sm-6 text-left">
+                        <button type="submit" class="btn btn-success">
+                          Güncelle
+                        </button>
+                      </div>
+                      <div class="col-sm-6 text-right">
+                        <button
+                          type="button"
+                          class="btn btn-warning"
+                          data-toggle="modal"
+                          data-target="#passwordResetModal"
+                        >
+                          Şifre Yenile
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    <!-- The Modal -->
+    <div class="modal fade" id="passwordResetModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Şifre Yenile</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <form>
+              <div class="form-group input-container">
+                <i class="fas fa-lock icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  placeholder="Eski Şifre"
+                  required
+                />
+              </div>
+              <div class="form-group input-container">
+                <i class="fas fa-key icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  placeholder="Yeni Şifre"
+                  required
+                />
+              </div>
+              <div class="form-group input-container">
+                <i class="fas fa-key icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmNewPassword"
+                  placeholder="Yeni Şifre Tekrar"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Şifreyi Yenile
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-blank>

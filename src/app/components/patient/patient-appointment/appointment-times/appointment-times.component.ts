@@ -17,14 +17,7 @@ export class AppointmentTimesComponent {
   constructor(private swal:SwalService) {
     
   }
-  isCollapsed = true;
 
-  toggleAppointments(event?: Event) {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.isCollapsed = !this.isCollapsed;
-  }
 
   submit(){
     this.swal.callSwal("Bilgi","ÖNEMLİ Randevunuzu kaydettiğinizde, onay işleminizi 07.06.2024 20:00 ile 09.06.2024 20:00 arasında www.mhrs.gov.tr, mobil uygulama veya ALO 182 Çağrı Merkezi üzerinden yapabilirsiniz. Onaylanmayan randevular otomatik olarak iptal edilmiş sayılır (RND6140).",()=>{
