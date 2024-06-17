@@ -74,12 +74,29 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="branchAddForm">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Branş Adı" />
+            <input type="text" class="form-control" placeholder="Branş Adı" 
+            [appValid]="branchAddForm.get('name')?.valid"
+            formControlName="name" />
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-briefcase-medical"></span>
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['required']">
+                {{ validationMessages.branch.name.required }}
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['minlength']">
+                {{ validationMessages.branch.name.minLength }}
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['maxlength']">
+                {{ validationMessages.branch.name.maxLength }}
               </div>
             </div>
           </div>
