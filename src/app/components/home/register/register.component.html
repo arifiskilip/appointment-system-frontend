@@ -1,95 +1,206 @@
-<body class="hold-transition login-page">
-  <div class="login-box">
+<body class="hold-transition register-page">
+  <div class="register-box">
     <div class="card card-outline card-dark">
       <div class="card-header text-center">
         <a class="h1"><b>MHRS </b></a>
       </div>
       <div class="card-body">
-        <p class="login-box-msg">Kayıt olmak için bilgilerinizi doldurun</p>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Ad" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+        <form [formGroup]="registerForm">
+          <p class="login-box-msg">Kayıt olmak için bilgilerinizi doldurun</p>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName"
+              placeholder="Ad"
+              [appValid]="firstName.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+              <div *ngIf="firstName.errors?.['required']">
+                {{ validationMessages.register.firstName.required }}
+              </div>
+              <div *ngIf="firstName.errors?.minlength">
+                {{ validationMessages.register.firstName.minlength }}
+              </div>
+              <div *ngIf="firstName.errors?.maxlength">
+                {{ validationMessages.register.firstName.maxlength }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Soyad" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName"
+              placeholder="Soyad"
+              [appValid]="lastName.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+              <div *ngIf="lastName.errors?.required">
+                {{ validationMessages.register.lastName.required }}
+              </div>
+              <div *ngIf="lastName.errors?.minlength">
+                {{ validationMessages.register.lastName.minlength }}
+              </div>
+              <div *ngIf="lastName.errors?.maxlength">
+                {{ validationMessages.register.lastName.maxlength }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+
+          <div class="input-group mb-3">
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="Email"
+              [appValid]="email.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+              <div *ngIf="email.errors?.required">
+                {{ validationMessages.register.email.required }}
+              </div>
+              <div *ngIf="email.errors?.email">
+                {{ validationMessages.register.email.email }}
+              </div>
+              <div *ngIf="email.errors?.minlength">
+                {{ validationMessages.register.email.minlength }}
+              </div>
+              <div *ngIf="email.errors?.maxlength">
+                {{ validationMessages.register.email.maxlength }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Şifre" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="Şifre"
+              [appValid]="password.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+              <div *ngIf="password.errors?.required">
+                {{ validationMessages.register.password.required }}
+              </div>
+              <div *ngIf="password.errors?.minlength">
+                {{ validationMessages.register.password.minlength }}
+              </div>
+              <div *ngIf="password.errors?.maxlength">
+                {{ validationMessages.register.password.maxlength }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Şifreyi Yeniden Girin" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="confirmPassword"
+              placeholder="Şifreyi Yeniden Girin"
+              [appValid]="confirmPassword.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="invalid-feedback">
+              <div *ngIf="confirmPassword.errors?.required">
+                {{ validationMessages.register.confirmPassword.required }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.minlength">
+                {{ validationMessages.register.confirmPassword.minlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.maxlength">
+                {{ validationMessages.register.confirmPassword.maxlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.match">
+                {{ validationMessages.register.confirmPassword.match }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <select class="form-control">
-            <option value="">Kan Grubu</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-          </select>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-tint"></span>
+
+          <div class="input-group mb-3">
+            <select class="form-control" formControlName="bloodType"    [appValid]="bloodType.valid">
+              <option value="">Kan Grubu</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-tint"></span>
+              </div>
+            </div>
+            <div *ngIf="bloodType.invalid && (bloodType.dirty || bloodType.touched)" class="invalid-feedback">
+              <div *ngIf="bloodType.errors?.required">
+                {{ validationMessages.register.bloodType.required }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <select class="form-control">
-            <option value="">Cinsiyet</option>
-            <option value="male">Erkek</option>
-            <option value="female">Kadın</option>
-            <option value="other">Diğer</option>
-          </select>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-venus-mars"></span>
+
+          <div class="input-group mb-3">
+            <select class="form-control" formControlName="gender"    [appValid]="gender.valid">
+              <option value="">Cinsiyet</option>
+              <option value="male">Erkek</option>
+              <option value="female">Kadın</option>
+              <option value="other">Diğer</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-venus-mars"></span>
+              </div>
+            </div>
+            <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="invalid-feedback">
+              <div *ngIf="gender.errors?.required">
+                {{ validationMessages.register.gender.required }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">
-              Kayıt Ol
-            </button>
+
+          <div class="row">
+            <div class="col-4">
+              <button type="submit" (click)="register()" class="btn btn-primary btn-block">
+                Kayıt Ol
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="social-auth-links text-center mb-3">
-          <p>- Yada -</p>
-        </div>
-        <p class="mb-1">
-          <a routerLink="/login">Zaten bir hesabım var.</a>
-        </p>
+          <div class="social-auth-links text-center mb-3">
+            <p>- Yada -</p>
+          </div>
+          <p class="mb-1">
+            <a routerLink="/login">Zaten bir hesabım var.</a>
+          </p>
+        </form>
       </div>
     </div>
   </div>

@@ -5,65 +5,147 @@
         <a class="h1"><b>MHRS </b></a>
       </div>
       <div class="card-body">
-        <p class="login-box-msg">Giriş yapmak için bilgilerinizi doldurun</p>
+        <form [formGroup]="loginForm">
+          <p class="login-box-msg">Giriş yapmak için bilgilerinizi doldurun</p>
 
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" />
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-
-        <button class="btn btn-dark btn-block">
-          <i class="fa-solid fa-lock me-1"></i>
-          Giriş Yap
-        </button>
-        <div class="social-auth-links text-center mb-3">
-          <p>- Yada -</p>
-        </div>
-        <p class="mb-1">
-          <a href="#" data-toggle="modal" data-target="#forgotPasswordModal">Şifremi Unuttum</a>
-        </p>
-        <p class="mb-0">
-          <a routerLink="/register" class="text-center">Kayıt ol</a>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Şifremi Unuttum Modal -->
-  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="forgotPasswordModalLabel"><i class="fas fa-key"></i> Şifremi Unuttum</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Lütfen email adresinizi girin. Şifrenizi sıfırlamak için bir bağlantı göndereceğiz.</p>
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email" />
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="Email"
+              [appValid]="email?.valid"
+            />
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
               </div>
             </div>
+            <div *ngIf="email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors?.['email']">
+                {{ validationMessages.login.email.email }}
+              </div>
+            </div>
+            <div *ngIf="email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors?.['required']">
+                {{ validationMessages.login.email.required }}
+              </div>
+            </div>
+            <div *ngIf="email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors?.['minlength']">
+                {{ validationMessages.login.email.minLength }}
+              </div>
+            </div>
+            <div *ngIf="email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors?.['maxlength']">
+                {{ validationMessages.login.email.maxLength }}
+              </div>
+            </div>
           </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              formControlName="password"
+              [appValid]="password?.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div *ngIf="password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors?.['required']">
+                {{ validationMessages.login.password.required }}
+              </div>
+            </div>
+            <div *ngIf="password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors?.['minlength']">
+                {{ validationMessages.login.password.minLength }}
+              </div>
+            </div>
+            <div *ngIf="password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors?.['maxlength']">
+                {{ validationMessages.login.password.maxLength }}
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-dark btn-block">
+            <i class="fa-solid fa-lock me-1"></i>
+            Giriş Yap
+          </button>
+          <div class="social-auth-links text-center mb-3">
+            <p>- Yada -</p>
+          </div>
+          <p class="mb-1">
+            <a href="#" data-toggle="modal" data-target="#forgotPasswordModal"
+              >Şifremi Unuttum</a
+            >
+          </p>
+          <p class="mb-0">
+            <a routerLink="/register" class="text-center">Kayıt ol</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Şifremi Unuttum Modal -->
+  <div
+    class="modal fade"
+    id="forgotPasswordModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="forgotPasswordModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgotPasswordModalLabel">
+            <i class="fas fa-key"></i> Şifremi Unuttum
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <form [formGroup]="forgotPassworForm">
+          <p>
+            Lütfen email adresinizi girin. Şifrenizi sıfırlamak için bir
+            bağlantı göndereceğiz.
+          </p>
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" formControlName="email" [appValid]="forgotPasswordEmail?.valid"/>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+            <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
+              <div *ngIf="forgotPasswordEmail.errors?.['email']">
+                {{ validationMessages.forgotPassword.email.email }}
+              </div>
+            </div>
+            <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
+              <div *ngIf="forgotPasswordEmail.errors?.['required']">
+                {{ validationMessages.forgotPassword.email.required }}
+              </div>
+            </div>
+          </div>
+        </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Kapat
+          </button>
           <button type="button" class="btn btn-primary">Gönder</button>
         </div>
       </div>
