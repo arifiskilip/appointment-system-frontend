@@ -19,8 +19,11 @@
               {{branch}}
             </td>
             <td>
-              <button type="button">
-                {{buttonLabel}}</button>
+              {{status}}
+            </td>
+            <td>
+              <button type="button" *ngIf="!isCancelled" (click)="cancelAppointment()">
+                {{buttonLabel || buttonCancel}}</button>
             </td>
 
           </tr>

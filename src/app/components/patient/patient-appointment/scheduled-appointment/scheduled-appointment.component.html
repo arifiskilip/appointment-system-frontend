@@ -15,7 +15,8 @@
           [doctor]="appointment.doctor"
           [date]="appointment.date | date:'dd/MM/yyyy - HH:mm'"
           [branch]="appointment.branch"
-          [buttonLabel]="buttonLabel"
+          [status]="appointment.status"
+          [buttonCancel]="buttonCancel"
           ></app-appointment-card>
         </tr>
       </table>
@@ -30,7 +31,8 @@
             [doctor]="appointment.doctor"
             [date]="appointment.date | date:'dd/MM/yyyy - HH:mm'"
             [branch]="appointment.branch"
-            [buttonLabel]=" buttonLabel"
+            [status]="appointment.status"
+            [buttonLabel]="buttonLabel"
             ></app-appointment-card>
         </tr>
       </table>
