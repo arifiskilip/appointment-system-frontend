@@ -10,6 +10,7 @@
       <table class="table table-striped projects">
         <tr *ngFor="let appointment of scheduledAppointments">
           <app-appointment-card
+          [id]="appointment.id"
           [imgUrl]="imgUrl"
           [title]="appointment.title"
           [doctor]="appointment.doctor"
@@ -26,6 +27,7 @@
         <tr *ngFor="let appointment of pastAppointments">
           <!-- {{ appointment.date | date:'medium' }}: {{ appointment.branch }}: {{ appointment.doctor }} -->
             <app-appointment-card
+            [id]="appointment.id"
             [imgUrl]="imgUrl"
             [title]="appointment.title"
             [doctor]="appointment.doctor"

@@ -24,6 +24,7 @@ import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
 import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
+import { AppointmentDetailsComponent } from './components/patient/patient-appointment/appointment-details/appointment-details.component';
 
 
 export const routes: Routes = [
@@ -115,6 +116,10 @@ export const routes: Routes = [
       {
         path: 'scheduled-appointment',
         component: ScheduledAppointmentComponent
+      },
+      {
+        path: 'appointment-details/:id',
+        component: AppointmentDetailsComponent
       },
     ],
   },

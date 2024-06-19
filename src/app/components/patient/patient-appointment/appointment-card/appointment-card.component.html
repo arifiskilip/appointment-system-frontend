@@ -22,7 +22,7 @@
               {{status}}
             </td>
             <td>
-              <button type="button" *ngIf="!isCancelled" (click)="cancelAppointment()">
+              <button type="button" *ngIf="!isCancelled" (click)="buttonCancel ? cancelAppointment() : onButtonClick()">
                 {{buttonLabel || buttonCancel}}</button>
             </td>
 

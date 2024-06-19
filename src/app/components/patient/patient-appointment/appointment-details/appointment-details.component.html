@@ -1,0 +1,47 @@
+
+<div *ngIf="appointment">
+  <div class="card">
+    <div class="card-header">
+      <h3>Randevu Detayları</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <img [src]="imgUrl" alt="Doctor Image" class="img-fluid">
+        </div>
+        <div class="col-md-9">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th>Ünvan:</th>
+                <td>{{appointment.title }}</td>
+              </tr>
+              <tr>
+                <th>Doktor:</th>
+                <td>{{appointment.doctor }}</td>
+              </tr>
+              <tr>
+                <th>Branş:</th>
+                <td>{{appointment.branch }}</td>
+              </tr>
+              <tr>
+                <th>Tarih:</th>
+                <td>{{appointment.date | date:'dd/MM/yyyy - HH:mm' }}</td>
+              </tr>
+              <tr>
+                <th>Durum:</th>
+                <td>{{ appointment.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-primary" (click)="goBack()">Geri Dön</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="!appointment">
+  <p>Loading...</p>
+</div>

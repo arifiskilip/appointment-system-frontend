@@ -33,6 +33,7 @@ export class ScheduledAppointmentComponent implements OnInit {
 
   scheduledAppointments: { id: number; date: Date; title: string, branch: string; doctor: string; status: string; }[] = [];
   pastAppointments: { id: number; date: Date; title: string, branch: string; doctor: string; status: string; }[] = [];
+  static appointments: any;
 
   constructor() {}
 
