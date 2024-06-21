@@ -23,6 +23,7 @@ import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
 import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
+import { DoctorAppointmentManagementComponent } from './components/doctor/doctor-appointment-management/doctor-appointment-management.component';
 
 
 export const routes: Routes = [
@@ -96,6 +97,10 @@ export const routes: Routes = [
       {
         path: "test",
         component: DoctorTestComponent
+      },
+      {
+        path: "appointment-management",
+        component: DoctorAppointmentManagementComponent
       }
     ],
   },
