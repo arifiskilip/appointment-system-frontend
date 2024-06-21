@@ -72,7 +72,7 @@
             </div>
           </div>
 
-          <button class="btn btn-dark btn-block">
+          <button class="btn btn-dark btn-block" (click)="signIn()">
             <i class="fa-solid fa-lock me-1"></i>
             Giriş Yap
           </button>
@@ -117,36 +117,64 @@
           </button>
         </div>
         <div class="modal-body">
-        <form [formGroup]="forgotPassworForm">
-          <p>
-            Lütfen email adresinizi girin. Şifrenizi sıfırlamak için bir
-            bağlantı göndereceğiz.
-          </p>
-          <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email" formControlName="email" [appValid]="forgotPasswordEmail?.valid"/>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
+        <ng-container *ngIf="!verificationCodePage">
+          <form [formGroup]="forgotPassworForm">
+            <p>
+              Lütfen email adresinizi girin. Şifrenizi sıfırlamak için bir
+              bağlantı göndereceğiz.
+            </p>
+            <div class="input-group mb-3">
+              <input type="email" class="form-control" placeholder="Email" formControlName="email" [appValid]="forgotPasswordEmail?.valid"/>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+              <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
+                <div *ngIf="forgotPasswordEmail.errors?.['email']">
+                  {{ validationMessages.forgotPassword.email.email }}
+                </div>
+              </div>
+              <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
+                <div *ngIf="forgotPasswordEmail.errors?.['required']">
+                  {{ validationMessages.forgotPassword.email.required }}
+                </div>
               </div>
             </div>
-            <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
-              <div *ngIf="forgotPasswordEmail.errors?.['email']">
-                {{ validationMessages.forgotPassword.email.email }}
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Kapat
+              </button>
+              <button type="button" class="btn btn-primary" (click)="sendVerificationCode()">Gönder</button>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="verificationCodePage">
+          <form [formGroup]="verificaionCodeForm">
+            <p>
+              Lütfen email adresinize gelen doğrulama kodunu giriniz.
+            </p>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Doğrulama kodu" formControlName="verificationCode" [appValid]="VerificationCode?.valid"/>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+              <div *ngIf="VerificationCode.invalid" class="invalid-feedback">
+                <div *ngIf="VerificationCode.errors?.['required']">
+                  Lütfen doğrulama kodunu giriniz.
+                </div>
               </div>
             </div>
-            <div *ngIf="forgotPasswordEmail.invalid" class="invalid-feedback">
-              <div *ngIf="forgotPasswordEmail.errors?.['required']">
-                {{ validationMessages.forgotPassword.email.required }}
-              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="change()" data-dismiss="modal">
+                İptal
+              </button>
+              <button type="button" class="btn btn-primary">Onayla</button>
             </div>
-          </div>
-        </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Kapat
-          </button>
-          <button type="button" class="btn btn-primary">Gönder</button>
+          </form>
+        </ng-container>
         </div>
       </div>
     </div>

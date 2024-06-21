@@ -21,10 +21,10 @@ export class DoctorTestComponent {
     today = new Date();
   
     appointments: Appointment[] = [
-      { id: 1, patientName: 'Ahmet Yılmaz', time: '10:00', date: new Date('2024-06-17T10:30:00'), status: 'accepted' },
-      { id: 2, patientName: 'Mehmet Demir', time: '10:30', date: new Date('2024-06-17T18:00:00'), status: 'pending' },
-      { id: 4, patientName: 'Arif Demir', time: '11:00', date: new Date('2024-06-17T10:30:00'), status: 'rejected' },
-      { id: 3, patientName: 'Ayşe Kaya', time: '11:00', date: new Date('2024-06-18T11:00:00'), status: 'pending' },
+      { id: 1, patientName: 'Ahmet Yılmaz', time: '10:00', date: new Date('2024-06-20T10:30:00'), status: 'accepted' },
+      { id: 2, patientName: 'Mehmet Demir', time: '10:30', date: new Date('2024-06-20T18:00:00'), status: 'pending' },
+      { id: 4, patientName: 'Arif Demir', time: '11:00', date: new Date('2024-06-20T10:30:00'), status: 'rejected' },
+      { id: 3, patientName: 'Ayşe Kaya', time: '11:00', date: new Date('2024-06-21T11:00:00'), status: 'pending' },
       // Daha fazla randevu
     ];
   

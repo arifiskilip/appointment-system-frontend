@@ -88,7 +88,49 @@
               </div>
             </div>
           </div>
-
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phoneNumber"
+              placeholder="Telefon Numarası"
+              [appValid]="phoneNumber.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-phone"></span>
+              </div>
+            </div>
+            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
+              <div *ngIf="phoneNumber.errors?.required">
+                {{ validationMessages.register.phoneNumber.required }}
+              </div>
+              <div *ngIf="phoneNumber.errors?.phoneNumber">
+                {{ validationMessages.register.phoneNumber.checkPhone }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="identityNumber"
+              placeholder="Kimlik Numarası"
+              [appValid]="identityNumber.valid"
+              maxlength="11"
+              minlength="11"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-address-card"></span>
+              </div>
+            </div>
+            <div *ngIf="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)" class="invalid-feedback">
+              <div *ngIf="identityNumber.errors.required">Kimlik numarası zorunlu.</div>
+              <div *ngIf="identityNumber.errors.minlength || identityNumber.errors.maxlength">Kimlik numarası 11 haneli olmalıdır.</div>
+              <div *ngIf="identityNumber.errors.identityNumber">{{ identityNumber.errors.identityNumber.message }}</div>
+            </div>
+          </div>
           <div class="input-group mb-3">
             <input
               type="password"
@@ -145,16 +187,16 @@
           </div>
 
           <div class="input-group mb-3">
-            <select class="form-control" formControlName="bloodType"    [appValid]="bloodType.valid">
+            <select class="form-control" formControlName="bloodTypeId"    [appValid]="bloodType.valid">
               <option value="">Kan Grubu</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
+              <option value="1">A+</option>
+              <option value="2">A-</option>
+              <option value="3">B+</option>
+              <option value="4">B-</option>
+              <option value="5">AB+</option>
+              <option value="6">AB-</option>
+              <option value="7">O+</option>
+              <option value="8">O-</option>
             </select>
             <div class="input-group-append">
               <div class="input-group-text">
@@ -169,11 +211,10 @@
           </div>
 
           <div class="input-group mb-3">
-            <select class="form-control" formControlName="gender"    [appValid]="gender.valid">
+            <select class="form-control" formControlName="genderId"    [appValid]="gender.valid">
               <option value="">Cinsiyet</option>
-              <option value="male">Erkek</option>
-              <option value="female">Kadın</option>
-              <option value="other">Diğer</option>
+              <option value="1">Kadın</option>
+              <option value="2">Erkek</option>
             </select>
             <div class="input-group-append">
               <div class="input-group-text">
@@ -186,10 +227,22 @@
               </div>
             </div>
           </div>
-
+          <div class="input-group mb-3">
+            <input class="form-control" type="date" formControlName="birthDate" placeholder="Doğum tarihi" [appValid]="birthDate.valid">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-calendar-days"></span>
+              </div>
+            </div>
+            <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="invalid-feedback">
+              <div *ngIf="birthDate.errors?.required">
+                {{ validationMessages.register.birthDate.required }}
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-4">
-              <button type="submit" (click)="register()" class="btn btn-primary btn-block">
+              <button type="submit" [disabled]="!registerForm.valid" (click)="register()" class="btn btn-primary btn-block">
                 Kayıt Ol
               </button>
             </div>

@@ -42,6 +42,10 @@ export class ValidationMessages {
       minlength: 'Email en az 3 karakter olmalıdır.',
       maxlength: 'Email en fazla 50 karakter olabilir.',
     },
+    phoneNumber: {
+      required: 'Telefon numarası zorunludur.',
+      checkPhone: 'Geçerli bir telefon numarası girin.',
+    },
     password: {
       required: 'Şifre alanı zorunludur.',
       minlength: 'Şifre en az 6 karakter olmalıdır.',
@@ -59,5 +63,8 @@ export class ValidationMessages {
     gender: {
       required: 'Cinsiyet alanı zorunludur.',
     },
+    birthDate:{
+      required:"Doğum yılı zorunludur."
+    }
   };
 }

@@ -14,6 +14,7 @@ export class ErrorService {
 
   errorHandler(err:HttpErrorResponse){
     let textMessage:string = "";
+    console.log(err)
     if(err.error.Errors){
       err.error.Errors.forEach((x:any) => {
           x.Errors.forEach((y:any) => {

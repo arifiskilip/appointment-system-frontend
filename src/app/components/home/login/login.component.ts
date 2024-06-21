@@ -17,17 +17,19 @@ import { ValidDirective } from '../../../common/directives/valid.directive';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+
   constructor(
     private http: HttpService,
     private router: Router,
     private swal: SwalService,
     private formBuilder: FormBuilder,
-    private localStorage: LocalStorageService
+    private readonly localStorage:LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.createLoginForm();
     this.createForgotPasswordForm();
+    this.createVerificationCodeForm();
   }
 
   loginForm: FormGroup;
@@ -76,7 +78,26 @@ export class LoginComponent implements OnInit {
       .subscribe((res) => {
         this.localStorage.setItem('token', res.accessToken.token);
         this.swal.callToast('Giriş işlemi başarılı.');
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/patient');
       });
+  }
+
+  verificaionCodeForm:FormGroup;
+  verificationCodePage:boolean=false;
+  get VerificationCode() {
+    return this.verificaionCodeForm.get("verificationCode");
+  }
+  createVerificationCodeForm(){
+    this.verificaionCodeForm = this.formBuilder.group({
+      verificationCode:["",Validators.required]
+    })
+  }
+
+  sendVerificationCode() {
+    this.verificationCodePage = true;
+  }
+
+  change(){
+    this.verificationCodePage = false;
   }
 }
