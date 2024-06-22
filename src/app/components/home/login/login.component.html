@@ -155,7 +155,7 @@
               Lütfen email adresinize gelen doğrulama kodunu giriniz.
             </p>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Doğrulama kodu" formControlName="verificationCode" [appValid]="VerificationCode?.valid"/>
+              <input type="text" class="form-control" placeholder="Doğrulama kodu" formControlName="code" [appValid]="VerificationCode?.valid"/>
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-envelope"></span>
@@ -171,7 +171,7 @@
               <button type="button" class="btn btn-secondary" (click)="change()" data-dismiss="modal">
                 İptal
               </button>
-              <button type="button" class="btn btn-primary">Onayla</button>
+              <button type="button" class="btn btn-primary" (click)="verifyCode()">Onayla</button>
             </div>
           </form>
         </ng-container>

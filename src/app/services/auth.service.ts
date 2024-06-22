@@ -4,47 +4,59 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpService } from './http.service';
 import { IsUserVerifiedModel } from '../models/isUserVerifiedModel';
 import { LocalStorageService } from './local-storage.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private router: Router,
-    private jwtHelper: JwtHelperService,
-    private http: HttpService
+  constructor(private router: Router, private jwtHelper: JwtHelperService,private http:HttpService,
+    private localStorage:LocalStorageService
   ) {}
 
   isAuthenticated(): Observable<boolean> {
-    const token: string | null = localStorage.getItem('token');
+    const token: string | null = this.localStorage.getItem('token');
 
     if (!token) {
       this.router.navigateByUrl('/login');
-      return new Observable((observer) => observer.next(false));
+      return of(false);
     }
 
     const expired: boolean = this.isTokenExpired(token);
 
     if (expired) {
       this.router.navigateByUrl('/login');
-      return new Observable((observer) => observer.next(false));
+      return of(false);
     }
 
-     this.isUserVerified();
-     return new Observable((observer)=> observer.next(true));
+    return new Observable((observer) => {
+      this.isUserVerified().subscribe((isVerified) => {
+        observer.next(isVerified);
+        observer.complete();
+      });
+    });
   }
 
   private isTokenExpired(token: string): boolean {
     return this.jwtHelper.isTokenExpired(token);
   }
 
-  private isUserVerified(){
-    const http = inject(HttpService);
-    http.get<IsUserVerifiedModel>("Auth/IsEmailVerified").subscribe(res=>{
-      if(!res.isEmailVerified){
-        this.router.navigateByUrl("/verificationcode")
-      }
+  private isUserVerified(): Observable<boolean> {
+    return new Observable((observer) => {
+      this.http.get<IsUserVerifiedModel>('Auth/IsEmailVerified').subscribe((res) => {
+        if (!res.isEmailVerified) {
+          this.router.navigateByUrl('/verificationcode');
+          observer.next(false);
+        } else {
+          this.localStorage.setItem('userId', res.userId.toString());
+          observer.next(true);
+        }
+        observer.complete();
+      });
     });
+  }
+
+  get isAuthenticatedByUserId(): number {
+    return parseInt(this.localStorage.getItem('userId') || '0');
   }
 }

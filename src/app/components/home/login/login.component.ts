@@ -85,19 +85,34 @@ export class LoginComponent implements OnInit {
   verificaionCodeForm:FormGroup;
   verificationCodePage:boolean=false;
   get VerificationCode() {
-    return this.verificaionCodeForm.get("verificationCode");
+    return this.verificaionCodeForm.get("code");
   }
   createVerificationCodeForm(){
     this.verificaionCodeForm = this.formBuilder.group({
-      verificationCode:["",Validators.required]
+      code:["",Validators.required],
+      email:[""]
     })
   }
 
   sendVerificationCode() {
-    this.verificationCodePage = true;
+    this.http.post("Auth/PasswordResetSendEmail",this.forgotPassworForm.value)
+    .subscribe(res=>{
+      this.verificationCodePage = true;
+      this.swal.callToast("Lütfen e-mail adresinize gelen doğrulama kodunu giriniz.");
+      this.verificaionCodeForm.get("email").setValue(this.forgotPasswordEmail.value);
+    })
   }
 
   change(){
     this.verificationCodePage = false;
+  }
+
+  verifyCode(){
+    this.http.post("Auth/PasswordResetCodeVerified",this.verificaionCodeForm.value)
+    .subscribe(res=>{
+      this.swal.callToast("Şifreniz başarıyla değiştirildi!","success");
+      this.router.navigateByUrl("/login");
+      this.verificationCodePage=false;
+    })
   }
 }

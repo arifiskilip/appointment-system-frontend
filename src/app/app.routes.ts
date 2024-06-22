@@ -102,6 +102,7 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientLayoutComponent,
+    canActivate:[()=>inject(AuthService).isAuthenticated()],
     canActivateChild:[()=>inject(AuthService).isAuthenticated()],
     children: [
      {

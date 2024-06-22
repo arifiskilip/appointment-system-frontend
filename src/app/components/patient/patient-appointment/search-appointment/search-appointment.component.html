@@ -22,18 +22,18 @@
                 <label for="hekim" style="font-size: 20px;">Hekim Seçiniz</label>
                 <select formControlName="doctor" class="form-control" id="hekim">
                   <option value="">Lütfen seçiniz</option>
-                  <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.name }}</option>
+                  <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.firstName+" "+doctor.lastName }}</option>
                 </select>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col">
                     <label for="baslangic" style="font-size: 20px;">Başlangıç Tarihi</label>
-                    <input formControlName="startDate" type="date" class="form-control" id="baslangic" />
+                    <input formControlName="startDate" type="date" class="form-control" id="baslangic" [min]="minDate"/>
                   </div>
                   <div class="col">
                     <label for="bitis" style="font-size: 20px;">Bitiş Tarihi</label>
-                    <input formControlName="endDate" type="date" class="form-control" id="bitis" />
+                    <input formControlName="endDate" type="date" class="form-control" id="bitis" [min]="minDate"/>
                   </div>
                 </div>
               </div>

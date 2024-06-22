@@ -23,7 +23,7 @@ export class SwalService {
   callSwal(title: string, text: string, callBack:()=> void ,confirmButtonText: string = "Sil", icon: SweetAlertIcon = "question"){
     Swal.fire({
       title: title,
-      text: text,
+      html: text,
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: confirmButtonText,
