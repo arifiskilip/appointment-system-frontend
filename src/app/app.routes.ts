@@ -23,6 +23,7 @@ import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
 import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
+import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 
 
 export const routes: Routes = [
@@ -105,6 +106,10 @@ export const routes: Routes = [
     canActivate:[()=>inject(AuthService).isAuthenticated()],
     canActivateChild:[()=>inject(AuthService).isAuthenticated()],
     children: [
+      {
+        path:"",
+        component:PatientDashboardComponent
+      },
      {
       path:'appointment',
       component:PatientAppointmentComponent

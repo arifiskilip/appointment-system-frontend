@@ -67,4 +67,38 @@ export class ValidationMessages {
       required:"Doğum yılı zorunludur."
     }
   };
+
+  patientEdit={
+    firstName: {
+      required: 'Ad alanı zorunludur.',
+      minlength: 'Ad en az 3 karakter olmalıdır.',
+      maxlength: 'Ad en fazla 50 karakter olabilir.',
+    },
+    lastName: {
+      required: 'Soyad alanı zorunludur.',
+      minlength: 'Soyad en az 3 karakter olmalıdır.',
+      maxlength: 'Soyad en fazla 50 karakter olabilir.',
+    },
+    phoneNumber: {
+      required: 'Telefon numarası zorunludur.',
+      checkPhone: 'Geçerli bir telefon numarası girin.',
+    },
+    password: {
+      required: 'Şifre alanı zorunludur.',
+      minlength: 'Şifre en az 6 karakter olmalıdır.',
+      maxlength: 'Şifre en fazla 50 karakter olabilir.',
+    },
+    confirmPassword: {
+      required: 'Şifreyi yeniden girin alanı zorunludur.',
+      minlength: 'Şifreyi yeniden girin en az 6 karakter olmalıdır.',
+      maxlength: 'Şifreyi yeniden girin en fazla 50 karakter olabilir.',
+      match: 'Şifreler eşleşmiyor.',
+    },
+    bloodType: {
+      required: 'Kan grubu alanı zorunludur.',
+    },
+    birthDate:{
+      required:"Doğum yılı zorunludur."
+    }
+  }
 }

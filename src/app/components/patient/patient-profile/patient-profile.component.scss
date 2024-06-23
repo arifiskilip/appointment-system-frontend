@@ -24,25 +24,10 @@
 .modal-footer {
     border-top: none;
 }
-.modal-lg {
-    max-width: 80%;
+
+.profile-user-img {
+    object-fit: cover; /* Resmi kapsayacak şekilde keser */
+    width: 100px; /* İstediğiniz genişlik */
+    height: 100px; /* İstediğiniz yükseklik */
+    border-radius: 100%; /* Yuvarlak yapmak için */
   }
-  
-  .current-image img,
-  .new-image img {
-    max-height: 300px;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  .modal-header,
-  .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modal-title {
-    font-size: 1.5rem;
-  }
-  

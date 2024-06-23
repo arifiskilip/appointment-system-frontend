@@ -1,6 +1,47 @@
 <app-blank pageName="Profil">
   <section class="content">
-    <!-- Add Image Modl -->    
+    <!-- Add Image Modal -->
+    <div class="modal fade" id="editImageModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addBranchModalLabel"><i class="fas fa-plus-circle"></i> Resim Güncelle</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group mt-2">
+              <label for="images">Ürün Resimleri</label>
+              <input
+                type="file"
+                name="images"
+                id="images"
+                class="form-control"
+                accept=".jpg,.png,.jpeg"
+                *ngIf="!isImageSelected"
+                (change)="getImages($event)">
+            </div>
+            <hr>
+            <div class="form-group mt-2">
+              <p>Seçilen Resim</p>
+              <div class="d-flex flex-wrap">
+                <div *ngFor="let image of imageUrls; let i = index" class="position-relative m-1">
+                  <img [src]="image.imageUrl" width="100" class="border rounded">
+                  <span (click)="removeImage(i)">
+                    <i class="fa fa-times-circle position-absolute text-danger" style="cursor: pointer; top: -10px; right: -10px;"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            <button type="button" class="btn btn-primary" (click)="saveImage()">Kaydet</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-3">
@@ -18,42 +59,60 @@
                 </button>
               </div>
               <div class="text-center">
-                <img
+                @if(patient &&patient.imageUrl){
+                  <img
                   class="profile-user-img img-fluid img-circle"
-                  src="https://avatars.githubusercontent.com/u/71379630?v=4"
+                  [src]="getApiUrl()+patient.imageUrl"
                   alt="User profile picture"
                 />
+                }
+                @else {
+                  @if(patient?.genderId==1){
+                    <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="constImageUrl.womenAvatar"
+                  alt="User profile picture"
+                />
+                  }
+                  @else{
+                    <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="constImageUrl.manAvatar"
+                  alt="User profile picture"
+                />
+                  }
+                }
               </div>
 
               <h3 class="profile-username text-center">
-                {{ patient.firstName + " " + patient.lastName }}
+                {{ patient?.firstName + " " + patient?.lastName }}
               </h3>
 
               <p class="text-muted text-center">
-                <b>TC NO:</b> {{ patient.identityNumber }}
+                <b>TC NO:</b> {{ patient?.identityNumber }}
               </p>
 
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
                   <b>Cinsiyet</b>
                   <a class="float-right">
-                    @if (patient.genderId===1) { Kadın } @else { Erkek }
+                    @if (patient?.genderId===1) { Kadın } @else { Erkek }
                   </a>
                 </li>
                 <li class="list-group-item">
                   <b>Kan Grubu</b>
-                  <a class="float-right">{{ patient.bloodTypeName }}</a>
+                  <a class="float-right">{{ patient?.bloodTypeName }}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Doğum Yılı</b>
                   <a class="float-right">{{
-                    patient.birthDate | date : "dd/MM/yyyy"
+                    patient?.birthDate | date : "dd/MM/yyyy"
                   }}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Yaş</b>
                   <a class="float-right">{{
-                    getCurrentAge(patient.birthDate)
+                    getCurrentAge(patient?.birthDate)
                   }}</a>
                 </li>
               </ul>
@@ -71,7 +130,7 @@
             <div class="card-body">
               <strong><i class="fas fa-book mr-1"></i> E Posta</strong>
 
-              <p class="text-muted">{{ patient.email }}</p>
+              <p class="text-muted">{{ patient?.email }}</p>
 
               <hr />
 
@@ -79,7 +138,7 @@
                 ><i class="fas fa-map-marker-alt mr-1"></i> Telefon</strong
               >
 
-              <p class="text-muted">{{ patient.phoneNumber }}</p>
+              <p class="text-muted">{{ patient?.phoneNumber }}</p>
 
               <hr />
             </div>
@@ -247,7 +306,7 @@
                   [class.active]="activeTab === 'settings'"
                   id="settings"
                 >
-                  <form class="form-horizontal">
+                  <form class="form-horizontal" [formGroup]="patientEditForm">
                     <div class="form-group row">
                       <label for="firstName" class="col-sm-2 col-form-label"
                         >Ad</label
@@ -258,7 +317,20 @@
                           class="form-control"
                           id="firstName"
                           placeholder="İsim"
+                          formControlName="firstName"
+                          [appValid]="firstName.valid"
                         />
+                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                          <div *ngIf="firstName.errors?.['required']">
+                            {{ validationMessages.patientEdit.firstName.required }}
+                          </div>
+                          <div *ngIf="firstName.errors?.minlength">
+                            {{ validationMessages.patientEdit.firstName.minlength }}
+                          </div>
+                          <div *ngIf="firstName.errors?.maxlength">
+                            {{ validationMessages.patientEdit.firstName.maxlength }}
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -271,24 +343,43 @@
                           class="form-control"
                           id="lastName"
                           placeholder="Soyisim"
+                          formControlName="lastName"
+                          [appValid]="lastName.valid"
                         />
+                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                          <div *ngIf="lastName.errors?.required">
+                            {{ validationMessages.patientEdit.lastName.required }}
+                          </div>
+                          <div *ngIf="lastName.errors?.minlength">
+                            {{ validationMessages.patientEdit.lastName.minlength }}
+                          </div>
+                          <div *ngIf="lastName.errors?.maxlength">
+                            {{ validationMessages.patientEdit.lastName.maxlength }}
+                          </div>
+                        </div>
                       </div>
+                   
                     </div>
                     <div class="form-group row">
                       <label for="bloodType" class="col-sm-2 col-form-label"
                         >Kan Grubu</label
                       >
                       <div class="col-sm-10">
-                        <select class="form-control">
-                          <option value="A+">A+</option>
-                          <option value="A-">A-</option>
-                          <option value="B+">B+</option>
-                          <option value="B-">B-</option>
-                          <option value="AB+">AB+</option>
-                          <option value="AB-">AB-</option>
-                          <option value="O+">O+</option>
-                          <option value="O-">O-</option>
+                        <select class="form-control" formControlName="bloodTypeId"  [appValid]="bloodType.valid">
+                          <option value="1">A+</option>
+                          <option value="2">A-</option>
+                          <option value="3">B+</option>
+                          <option value="4">B-</option>
+                          <option value="5">AB+</option>
+                          <option value="6-">AB-</option>
+                          <option value="7">O+</option>
+                          <option value="8">O-</option>
                         </select>
+                        <div *ngIf="bloodType.invalid && (bloodType.dirty || bloodType.touched)" class="invalid-feedback">
+                          <div *ngIf="bloodType.errors?.required">
+                            {{ validationMessages.register.bloodType.required }}
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -301,8 +392,19 @@
                           class="form-control"
                           id="phone"
                           placeholder="Telefon"
+                          formControlName="phoneNumber"
+                          [appValid]="phoneNumber.valid"
                         />
+                        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
+                          <div *ngIf="phoneNumber.errors?.required">
+                            {{ validationMessages.patientEdit.phoneNumber.required }}
+                          </div>
+                          <div *ngIf="phoneNumber.errors?.phoneNumber">
+                            {{ validationMessages.patientEdit.phoneNumber.checkPhone }}
+                          </div>
+                        </div>
                       </div>
+
                     </div>
                     <div class="form-group row">
                       <label for="birthday" class="col-sm-2 col-form-label"
@@ -314,12 +416,20 @@
                           class="form-control"
                           id="birthday"
                           placeholder="Doğum Tarihi"
+                          formControlName="birthDate"
+                          [appValid]="birthDate.valid"
                         />
+                        <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="invalid-feedback">
+                          <div *ngIf="birthDate.errors?.required">
+                            {{ validationMessages.register.birthDate.required }}
+                          </div>
+                        </div>
                       </div>
+                     
                     </div>
                     <div class="form-group row">
                       <div class="col-sm-6 text-left">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" (click)="update()" class="btn btn-success">
                           Güncelle
                         </button>
                       </div>
@@ -363,38 +473,77 @@
 
           <!-- Modal Body -->
           <div class="modal-body">
-            <form>
+            <form [formGroup]="patientPasswordUpdateForm">
               <div class="form-group input-container">
                 <i class="fas fa-lock icon"></i>
                 <input
                   type="password"
                   class="form-control"
-                  id="currentPassword"
                   placeholder="Eski Şifre"
+                  formControlName="oldPassword"
                   required
+                  [appValid]="oldPassword.valid"
                 />
+                <div *ngIf="oldPassword.invalid && (oldPassword.dirty || oldPassword.touched)" class="invalid-feedback">
+                  <div *ngIf="oldPassword.errors?.required">
+                    {{ validationMessages.register.password.required }}
+                  </div>
+                  <div *ngIf="oldPassword.errors?.minlength">
+                    {{ validationMessages.register.password.minlength }}
+                  </div>
+                  <div *ngIf="oldPassword.errors?.maxlength">
+                    {{ validationMessages.register.password.maxlength }}
+                  </div>
+                </div>
               </div>
               <div class="form-group input-container">
                 <i class="fas fa-key icon"></i>
                 <input
                   type="password"
                   class="form-control"
-                  id="newPassword"
                   placeholder="Yeni Şifre"
+                  [appValid]="password.valid"
+                  formControlName="password"
                   required
                 />
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+                  <div *ngIf="password.errors?.required">
+                    {{ validationMessages.register.password.required }}
+                  </div>
+                  <div *ngIf="password.errors?.minlength">
+                    {{ validationMessages.register.password.minlength }}
+                  </div>
+                  <div *ngIf="password.errors?.maxlength">
+                    {{ validationMessages.register.password.maxlength }}
+                  </div>
+                </div>
               </div>
               <div class="form-group input-container">
                 <i class="fas fa-key icon"></i>
                 <input
                   type="password"
                   class="form-control"
-                  id="confirmNewPassword"
+                  [appValid]="confirmPassword.valid"
+                  formControlName="confirmPassword"
                   placeholder="Yeni Şifre Tekrar"
                   required
                 />
+                  <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="invalid-feedback">
+              <div *ngIf="confirmPassword.errors?.required">
+                {{ validationMessages.register.confirmPassword.required }}
               </div>
-              <button type="submit" class="btn btn-primary btn-block">
+              <div *ngIf="confirmPassword.errors?.minlength">
+                {{ validationMessages.register.confirmPassword.minlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.maxlength">
+                {{ validationMessages.register.confirmPassword.maxlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.match">
+                {{ validationMessages.register.confirmPassword.match }}
+              </div>
+            </div>
+              </div>
+              <button (click)="updatePassword()" type="submit" class="btn btn-primary btn-block">
                 Şifreyi Yenile
               </button>
             </form>

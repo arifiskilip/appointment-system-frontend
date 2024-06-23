@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private swal: SwalService,
     private formBuilder: FormBuilder,
-    private readonly localStorage:LocalStorageService
+    private localStorage:LocalStorageService
   ) {}
 
   ngOnInit(): void {
