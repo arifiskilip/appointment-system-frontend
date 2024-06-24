@@ -1,7 +1,8 @@
-import { AppointmentCardComponent } from './../appointment-card/appointment-card.component';
+import { AppointmentCardComponent } from '../patient-appointment/appointment-card/appointment-card.component';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, Output, input } from '@angular/core';
-import { AppointmentListComponent } from '../appointment-list/appointment-list.component';
+import { AppointmentListComponent } from '../patient-appointment/appointment-list/appointment-list.component';
+import { BlankComponent } from '../../blank/blank.component';
 
 @Component({
     selector: 'app-scheduled-appointment',
@@ -13,6 +14,7 @@ import { AppointmentListComponent } from '../appointment-list/appointment-list.c
         CommonModule,
         AppointmentListComponent,
         AppointmentCardComponent,
+        BlankComponent
     ]
 })
 export class ScheduledAppointmentComponent implements OnInit {

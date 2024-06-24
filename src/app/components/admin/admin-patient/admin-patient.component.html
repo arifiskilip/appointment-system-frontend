@@ -34,7 +34,7 @@
               <input type="text" class="form-control" placeholder="Doktor Ara">
             </div>
           </div>
-  
+
           <table class="table table-striped projects">
             <thead>
               <tr>
@@ -72,21 +72,21 @@
                   <span class="badge badge-success">Success</span>
                 </td>
                 <td class="project-actions text-right">
-                  <a class="btn btn-primary btn-sm" href="#">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="onButtonClick()">
                     <i class="fas fa-circle-info"> </i>
                     Detay
-                  </a>
-                  <a class="btn btn-info btn-sm" href="#">
+                  </button>
+                  <button type="button" class="btn btn-info btn-sm" (click)="editSchedule(schedules)">
                     <i class="fas fa-pencil-alt"> </i>
                     Düzenle
-                  </a>
-                  <a class="btn btn-danger btn-sm" href="#">
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" href="#">
                     <i class="fas fa-trash"> </i>
                     Sil
-                  </a>
+                  </button>
                 </td>
               </tr>
-           
+
             </tbody>
             <button class="btn btn-outline-success m-3" data-toggle="modal" data-target="#addModal">Ekle</button>
           </table>
@@ -125,10 +125,43 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
             <button type="button" class="btn btn-primary" id="submitBtn">Ekle</button>
           </div>
-        </div>  
+        </div>
       </form>
+    </div>
+  </div>
+<!-- Patient Edit -->
+  <div class="modal fade" id="editScheduleModal" tabindex="-1" role="dialog" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editScheduleModalLabel">Programı Düzenle</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onEditSubmit()">
+            <div class="form-group">
+              <label for="editDay">Gün</label>
+              <input type="date" class="form-control" id="editDay" name="editDay">
+            </div>
+            <div class="form-group">
+              <label for="editStartTime">Başlangıç Saati</label>
+              <input type="time" class="form-control" id="editStartTime" name="editStartTime">
+            </div>
+            <div class="form-group">
+              <label for="editEndTime">Bitiş Saati</label>
+              <input type="time" class="form-control" id="editEndTime" name="editEndTime">
+            </div>
+            <div class="form-group">
+              <label for="editPatientInterval">Hasta Aralığı (Dakika)</label>
+              <input type="number" class="form-control" id="editPatientInterval" name="editPatientInterval">
+            </div>
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
     </section>
   </app-blank>
-  

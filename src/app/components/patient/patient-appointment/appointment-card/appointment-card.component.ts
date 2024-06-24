@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BlankComponent } from "../../../blank/blank.component";
-import { ScheduledAppointmentComponent } from '../scheduled-appointment/scheduled-appointment.component';
+import { ScheduledAppointmentComponent } from '../../scheduled-appointment/scheduled-appointment.component';
 import { Router } from '@angular/router';
 
 @Component({

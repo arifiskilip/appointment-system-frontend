@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ScheduledAppointmentComponent } from '../scheduled-appointment/scheduled-appointment.component';
+import { ScheduledAppointmentComponent } from '../../scheduled-appointment/scheduled-appointment.component';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http'; // Import the HttpClient module
+import { BlankComponent } from '../../../blank/blank.component';
 
 interface Appointment {
   id: number;
@@ -17,7 +18,10 @@ interface Appointment {
 @Component({
   selector: 'app-appointment-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    BlankComponent
+  ],
   templateUrl: './appointment-details.component.html',
   styleUrls: ['./appointment-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,8 +47,7 @@ export class AppointmentDetailsComponent implements OnInit {
   getDetails() {
     this.getById(this.id).subscribe((data) => {
       this.appointment = data;
-      console.log(this.appointment);
-    });
+    }).unsubscribe();
   }
 
   getById(id: number): Observable<Appointment> {
