@@ -17,6 +17,8 @@ import { ValidationMessages } from '../../../common/constants/validationMessages
 import { SwalService } from '../../../services/swal.service';
 import { ImageUrl } from '../../../common/constants/imageUrl';
 import { PatientService } from '../../../services/patient.service';
+import { Paginate } from '../../../models/paginateModel';
+import { PatientAppointmentsModel } from '../../../models/patientAppointmentsModel';
 
 @Component({
   selector: 'app-patient-profile',
@@ -27,6 +29,9 @@ import { PatientService } from '../../../services/patient.service';
 })
 export class PatientProfileComponent implements OnInit {
   patient: PatientModel;
+  patientAppointments: Paginate<PatientAppointmentsModel[]>;
+  pageIndex: number = 1;
+  pageSize: number = 10;
   patientEditForm: FormGroup;
   patientPasswordUpdateForm: FormGroup;
   validationMessages: ValidationMessages = new ValidationMessages();
@@ -48,6 +53,7 @@ export class PatientProfileComponent implements OnInit {
     this.getPatientDetail();
     this.createPatientEditForm();
     this.createPatientPasswordUpdateForm();
+    this.getPatientAppointments();
   }
 
   getApiUrl() {
@@ -57,7 +63,72 @@ export class PatientProfileComponent implements OnInit {
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
+  groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
+  getPatientAppointments() {
+    this.http
+      .get<any>(
+        `Appointment/GetPaginatedPatientAppointments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
+      )
+      .subscribe((res) => {
+        this.patientAppointments = res.patientAppointments;
+        this.patientAppointments.items.forEach((appointment) => {
+          const date = new Date(appointment.intervalDate).toLocaleDateString(
+            'tr-TR',
+            { year: 'numeric', month: 'short', day: 'numeric' }
+          );
+          if (!this.groupedAppointments[date]) {
+            this.groupedAppointments[date] = [];
+          }
+          this.groupedAppointments[date].push(appointment);
+        });
+      });
+  }
 
+  getDates(): string[] {
+    return Object.keys(this.groupedAppointments);
+  }
+
+  getStatusIcon(appointmentStatus: string): string {
+    switch (appointmentStatus) {
+      case 'Created':
+        return 'fas fa-calendar-alt bg-primary';
+      case 'Completed':
+        return 'fas fa-check-circle bg-success';
+      case 'Canceled':
+        return 'fas fa-times-circle bg-danger';
+      default:
+        return 'fas fa-info-circle bg-secondary';
+    }
+  }
+
+  getBadgeStatusIcon(appointmentStatus: string) {
+    switch (appointmentStatus) {
+      case 'Created':
+        return { css: 'badge badge-warning', value: 'Beklemede' };
+      case 'Completed':
+        return { css: 'badge badge-success', value: 'Tamamlandı' };
+      case 'Canceled':
+        return { css: 'badge badge-danger', value: 'İptal Edildi' };
+      default:
+        return { css: 'badge badge-secondary', value: 'Beklemede' };
+    }
+  }
+
+  nextPage() {
+    if(this.patientAppointments.pagination.hasNextPage){
+      this.pageIndex++;
+      this.groupedAppointments={};
+      this.getPatientAppointments();
+    }
+  }
+
+  previousPage() {
+    if(this.patientAppointments.pagination.hasPreviousPage){
+      this.pageIndex--;
+      this.groupedAppointments={};
+      this.getPatientAppointments();
+    }
+  }
   getPatientDetail(): void {
     const userId = this.authService.isAuthenticatedByUserId;
     this.http

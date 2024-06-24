@@ -1,12 +1,26 @@
 <app-blank pageName="Profil">
   <section class="content">
     <!-- Add Image Modal -->
-    <div class="modal fade" id="editImageModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="editImageModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addBranchModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addBranchModalLabel"><i class="fas fa-plus-circle"></i> Resim Güncelle</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="addBranchModalLabel">
+              <i class="fas fa-plus-circle"></i> Resim Güncelle
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -20,24 +34,43 @@
                 class="form-control"
                 accept=".jpg,.png,.jpeg"
                 *ngIf="!isImageSelected"
-                (change)="getImages($event)">
+                (change)="getImages($event)"
+              />
             </div>
-            <hr>
+            <hr />
             <div class="form-group mt-2">
               <p>Seçilen Resim</p>
               <div class="d-flex flex-wrap">
-                <div *ngFor="let image of imageUrls; let i = index" class="position-relative m-1">
-                  <img [src]="image.imageUrl" width="100" class="border rounded">
+                <div
+                  *ngFor="let image of imageUrls; let i = index"
+                  class="position-relative m-1"
+                >
+                  <img
+                    [src]="image.imageUrl"
+                    width="100"
+                    class="border rounded"
+                  />
                   <span (click)="removeImage(i)">
-                    <i class="fa fa-times-circle position-absolute text-danger" style="cursor: pointer; top: -10px; right: -10px;"></i>
+                    <i
+                      class="fa fa-times-circle position-absolute text-danger"
+                      style="cursor: pointer; top: -10px; right: -10px"
+                    ></i>
                   </span>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-            <button type="button" class="btn btn-primary" (click)="saveImage()">Kaydet</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+            <button type="button" class="btn btn-primary" (click)="saveImage()">
+              Kaydet
+            </button>
           </div>
         </div>
       </div>
@@ -60,28 +93,24 @@
               </div>
               <div class="text-center">
                 @if(patient &&patient.imageUrl){
-                  <img
+                <img
                   class="profile-user-img img-fluid img-circle"
-                  [src]="getApiUrl()+patient.imageUrl"
+                  [src]="getApiUrl() + patient.imageUrl"
                   alt="User profile picture"
                 />
-                }
-                @else {
-                  @if(patient?.genderId==1){
-                    <img
+                } @else { @if(patient?.genderId==1){
+                <img
                   class="profile-user-img img-fluid img-circle"
                   [src]="constImageUrl.womenAvatar"
                   alt="User profile picture"
                 />
-                  }
-                  @else{
-                    <img
+                } @else{
+                <img
                   class="profile-user-img img-fluid img-circle"
                   [src]="constImageUrl.manAvatar"
                   alt="User profile picture"
                 />
-                  }
-                }
+                } }
               </div>
 
               <h3 class="profile-username text-center">
@@ -221,82 +250,75 @@
                   id="timeline"
                 >
                   <!-- The timeline -->
-                  <div class="timeline timeline-inverse">
-                    <!-- timeline time label -->
-                    <div class="time-label">
-                      <span class="bg-danger"> 15 Haz. 2024 </span>
-                    </div>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <div>
-                      <i class="fas fa-calendar-alt bg-primary"></i>
-                      <div class="timeline-item">
-                        <span class="time"
-                          ><i class="far fa-clock"></i> 09:00</span
-                        >
-                        <h3 class="timeline-header">
-                          <a href="#">Dr. Ahmet Yılmaz</a> ile randevunuz
-                        </h3>
-                        <div class="timeline-body">Detaylar: Genel kontrol</div>
-                        <div class="timeline-footer">
-                          <a href="#" class="btn btn-primary btn-sm"
-                            >Daha fazla</a
-                          >
-                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
-                        </div>
+                  <div
+                    class="timeline timeline-inverse"
+                    *ngIf="getDates().length"
+                  >
+                    <ng-container *ngFor="let date of getDates()">
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-danger"> {{ date }} </span>
                       </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline item -->
-                    <div>
-                      <i class="fas fa-calendar-alt bg-info"></i>
-                      <div class="timeline-item">
-                        <span class="time"
-                          ><i class="far fa-clock"></i> 10:30</span
-                        >
-                        <h3 class="timeline-header">
-                          <a href="#">Dr. Elif Kaya</a> ile randevunuz
-                        </h3>
-                        <div class="timeline-body">Detaylar: Diş muayenesi</div>
-                        <div class="timeline-footer">
-                          <a href="#" class="btn btn-primary btn-sm"
-                            >Daha fazla</a
-                          >
-                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
+                      <!-- /.timeline-label -->
+
+                      <!-- timeline item -->
+                      <ng-container
+                        *ngFor="let appointment of groupedAppointments[date]"
+                      >
+                        <div>
+                          <i
+                            [class]="
+                              getStatusIcon(appointment.appointmentStatus)
+                            "
+                          ></i>
+                          <div class="timeline-item">
+                            <span class="time">
+                              <i class="far fa-clock"></i>
+                              {{ appointment.intervalDate | date : "HH:mm" }}
+                            </span>
+                            <h3 class="timeline-header">
+                              <a href="#">{{ appointment.doctorName }}</a> ile
+                              randevunuz
+                            </h3>
+                            <div class="timeline-body">
+                              <p>
+                                <b>Polikinlik:</b> {{ appointment.branchName }}
+                              </p>
+                            </div>
+                            <div class="timeline-footer">
+                              <span
+                                [class]="
+                                  getBadgeStatusIcon(
+                                    appointment.appointmentStatus
+                                  ).css
+                                "
+                                >{{
+                                  getBadgeStatusIcon(
+                                    appointment.appointmentStatus
+                                  ).value
+                                }}</span
+                              >
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <!-- timeline time label -->
-                    <div class="time-label">
-                      <span class="bg-success"> 10 Haz. 2024 </span>
-                    </div>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <div>
-                      <i class="fas fa-calendar-alt bg-purple"></i>
-                      <div class="timeline-item">
-                        <span class="time"
-                          ><i class="far fa-clock"></i> 11:00</span
-                        >
-                        <h3 class="timeline-header">
-                          <a href="#">Dr. Mehmet Demir</a> ile randevunuz
-                        </h3>
-                        <div class="timeline-body">
-                          Detaylar: Kan testi sonuçları
-                        </div>
-                        <div class="timeline-footer">
-                          <a href="#" class="btn btn-primary btn-sm"
-                            >Daha fazla</a
-                          >
-                          <a href="#" class="btn btn-danger btn-sm">Sil</a>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- END timeline item -->
-                    <div>
+                      </ng-container>
+                      <!-- END timeline item -->
+                    </ng-container>
+                    <div *ngIf="patientAppointments.pagination.hasNextPage">
                       <i class="far fa-clock bg-gray"></i>
                     </div>
+                  </div>
+                  <div *ngIf="!getDates().length">
+                    <p>No appointments available.</p>
+                  </div>
+                  <!-- Pagination buttons -->
+                  <div class="pagination-container">
+                    <button class="btn btn-primary" *ngIf="patientAppointments.pagination.hasPreviousPage" (click)="previousPage()">
+                      <i class="fas fa-arrow-left"></i> Geri
+                    </button>
+                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments.pagination.hasNextPage">
+                      İleri <i class="fas fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
                 <!-- /.tab-pane -->
@@ -320,15 +342,27 @@
                           formControlName="firstName"
                           [appValid]="firstName.valid"
                         />
-                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                        <div
+                          *ngIf="
+                            firstName.invalid &&
+                            (firstName.dirty || firstName.touched)
+                          "
+                          class="invalid-feedback"
+                        >
                           <div *ngIf="firstName.errors?.['required']">
-                            {{ validationMessages.patientEdit.firstName.required }}
+                            {{
+                              validationMessages.patientEdit.firstName.required
+                            }}
                           </div>
                           <div *ngIf="firstName.errors?.minlength">
-                            {{ validationMessages.patientEdit.firstName.minlength }}
+                            {{
+                              validationMessages.patientEdit.firstName.minlength
+                            }}
                           </div>
                           <div *ngIf="firstName.errors?.maxlength">
-                            {{ validationMessages.patientEdit.firstName.maxlength }}
+                            {{
+                              validationMessages.patientEdit.firstName.maxlength
+                            }}
                           </div>
                         </div>
                       </div>
@@ -346,26 +380,41 @@
                           formControlName="lastName"
                           [appValid]="lastName.valid"
                         />
-                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                        <div
+                          *ngIf="
+                            lastName.invalid &&
+                            (lastName.dirty || lastName.touched)
+                          "
+                          class="invalid-feedback"
+                        >
                           <div *ngIf="lastName.errors?.required">
-                            {{ validationMessages.patientEdit.lastName.required }}
+                            {{
+                              validationMessages.patientEdit.lastName.required
+                            }}
                           </div>
                           <div *ngIf="lastName.errors?.minlength">
-                            {{ validationMessages.patientEdit.lastName.minlength }}
+                            {{
+                              validationMessages.patientEdit.lastName.minlength
+                            }}
                           </div>
                           <div *ngIf="lastName.errors?.maxlength">
-                            {{ validationMessages.patientEdit.lastName.maxlength }}
+                            {{
+                              validationMessages.patientEdit.lastName.maxlength
+                            }}
                           </div>
                         </div>
                       </div>
-                   
                     </div>
                     <div class="form-group row">
                       <label for="bloodType" class="col-sm-2 col-form-label"
                         >Kan Grubu</label
                       >
                       <div class="col-sm-10">
-                        <select class="form-control" formControlName="bloodTypeId"  [appValid]="bloodType.valid">
+                        <select
+                          class="form-control"
+                          formControlName="bloodTypeId"
+                          [appValid]="bloodType.valid"
+                        >
                           <option value="1">A+</option>
                           <option value="2">A-</option>
                           <option value="3">B+</option>
@@ -375,7 +424,13 @@
                           <option value="7">O+</option>
                           <option value="8">O-</option>
                         </select>
-                        <div *ngIf="bloodType.invalid && (bloodType.dirty || bloodType.touched)" class="invalid-feedback">
+                        <div
+                          *ngIf="
+                            bloodType.invalid &&
+                            (bloodType.dirty || bloodType.touched)
+                          "
+                          class="invalid-feedback"
+                        >
                           <div *ngIf="bloodType.errors?.required">
                             {{ validationMessages.register.bloodType.required }}
                           </div>
@@ -395,16 +450,27 @@
                           formControlName="phoneNumber"
                           [appValid]="phoneNumber.valid"
                         />
-                        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
+                        <div
+                          *ngIf="
+                            phoneNumber.invalid &&
+                            (phoneNumber.dirty || phoneNumber.touched)
+                          "
+                          class="invalid-feedback"
+                        >
                           <div *ngIf="phoneNumber.errors?.required">
-                            {{ validationMessages.patientEdit.phoneNumber.required }}
+                            {{
+                              validationMessages.patientEdit.phoneNumber
+                                .required
+                            }}
                           </div>
                           <div *ngIf="phoneNumber.errors?.phoneNumber">
-                            {{ validationMessages.patientEdit.phoneNumber.checkPhone }}
+                            {{
+                              validationMessages.patientEdit.phoneNumber
+                                .checkPhone
+                            }}
                           </div>
                         </div>
                       </div>
-
                     </div>
                     <div class="form-group row">
                       <label for="birthday" class="col-sm-2 col-form-label"
@@ -419,17 +485,26 @@
                           formControlName="birthDate"
                           [appValid]="birthDate.valid"
                         />
-                        <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="invalid-feedback">
+                        <div
+                          *ngIf="
+                            birthDate.invalid &&
+                            (birthDate.dirty || birthDate.touched)
+                          "
+                          class="invalid-feedback"
+                        >
                           <div *ngIf="birthDate.errors?.required">
                             {{ validationMessages.register.birthDate.required }}
                           </div>
                         </div>
                       </div>
-                     
                     </div>
                     <div class="form-group row">
                       <div class="col-sm-6 text-left">
-                        <button type="submit" (click)="update()" class="btn btn-success">
+                        <button
+                          type="submit"
+                          (click)="update()"
+                          class="btn btn-success"
+                        >
                           Güncelle
                         </button>
                       </div>
@@ -484,7 +559,13 @@
                   required
                   [appValid]="oldPassword.valid"
                 />
-                <div *ngIf="oldPassword.invalid && (oldPassword.dirty || oldPassword.touched)" class="invalid-feedback">
+                <div
+                  *ngIf="
+                    oldPassword.invalid &&
+                    (oldPassword.dirty || oldPassword.touched)
+                  "
+                  class="invalid-feedback"
+                >
                   <div *ngIf="oldPassword.errors?.required">
                     {{ validationMessages.register.password.required }}
                   </div>
@@ -506,7 +587,12 @@
                   formControlName="password"
                   required
                 />
-                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+                <div
+                  *ngIf="
+                    password.invalid && (password.dirty || password.touched)
+                  "
+                  class="invalid-feedback"
+                >
                   <div *ngIf="password.errors?.required">
                     {{ validationMessages.register.password.required }}
                   </div>
@@ -528,22 +614,32 @@
                   placeholder="Yeni Şifre Tekrar"
                   required
                 />
-                  <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="invalid-feedback">
-              <div *ngIf="confirmPassword.errors?.required">
-                {{ validationMessages.register.confirmPassword.required }}
+                <div
+                  *ngIf="
+                    confirmPassword.invalid &&
+                    (confirmPassword.dirty || confirmPassword.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="confirmPassword.errors?.required">
+                    {{ validationMessages.register.confirmPassword.required }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.minlength">
+                    {{ validationMessages.register.confirmPassword.minlength }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.maxlength">
+                    {{ validationMessages.register.confirmPassword.maxlength }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.match">
+                    {{ validationMessages.register.confirmPassword.match }}
+                  </div>
+                </div>
               </div>
-              <div *ngIf="confirmPassword.errors?.minlength">
-                {{ validationMessages.register.confirmPassword.minlength }}
-              </div>
-              <div *ngIf="confirmPassword.errors?.maxlength">
-                {{ validationMessages.register.confirmPassword.maxlength }}
-              </div>
-              <div *ngIf="confirmPassword.errors?.match">
-                {{ validationMessages.register.confirmPassword.match }}
-              </div>
-            </div>
-              </div>
-              <button (click)="updatePassword()" type="submit" class="btn btn-primary btn-block">
+              <button
+                (click)="updatePassword()"
+                type="submit"
+                class="btn btn-primary btn-block"
+              >
                 Şifreyi Yenile
               </button>
             </form>

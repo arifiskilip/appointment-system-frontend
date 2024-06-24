@@ -1,3 +1,4 @@
+import { PatientAppointmentListComponent } from './components/patient/patient-appointment-list/patient-appointment-list.component';
 import { Routes } from '@angular/router';
 import { DoctorLayoutComponent } from './layouts/doctor-layout/doctor-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -22,7 +23,6 @@ import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
-import { ScheduledAppointmentComponent } from './components/patient/patient-appointment/scheduled-appointment/scheduled-appointment.component';
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 
 
@@ -118,10 +118,10 @@ export const routes: Routes = [
       path:'profile',
       component:PatientProfileComponent
      },
-      {
-        path: 'scheduled-appointment',
-        component: ScheduledAppointmentComponent
-      },
+     {
+      path:'appointment-list',
+      component:PatientAppointmentListComponent
+     }
     ],
   },
   // {

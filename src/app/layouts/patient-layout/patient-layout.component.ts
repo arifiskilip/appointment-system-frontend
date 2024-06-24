@@ -5,7 +5,6 @@ import { PatientFooterComponent } from "./patient-footer/patient-footer.componen
 import { PatientSidebarComponent } from "./patient-sidebar/patient-sidebar.component";
 import { PatientHeaderComponent } from "./patient-header/patient-header.component";
 import { AppointmentListComponent } from '../../components/patient/patient-appointment/appointment-list/appointment-list.component';
-import { AppointmentCardComponent } from '../../components/patient/patient-appointment/appointment-card/appointment-card.component';
 
 @Component({
     selector: 'app-patient-layout',
