@@ -56,7 +56,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/admin-lte/dist/css/adminlte.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css"
+              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css",
+              "node_modules/fullcalendar/main.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
