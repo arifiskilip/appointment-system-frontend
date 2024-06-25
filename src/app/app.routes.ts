@@ -1,3 +1,4 @@
+import { PatientAppointmentListComponent } from './components/patient/patient-appointment-list/patient-appointment-list.component';
 import { Routes } from '@angular/router';
 import { DoctorLayoutComponent } from './layouts/doctor-layout/doctor-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -16,7 +17,6 @@ import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard/d
 import { DoctorProfileComponent } from './components/doctor/doctor-profile/doctor-profile.component';
 import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doctor-schedule.component';
 import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
-import path from 'path';
 import { PatientAppointmentComponent } from './components/patient/patient-appointment/patient-appointment.component';
 import { VerificationCodeComponent } from './components/home/verification-code/verification-code.component';
 import { inject } from '@angular/core';
@@ -26,6 +26,7 @@ import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-
 import { ScheduledAppointmentComponent } from './components/patient/scheduled-appointment/scheduled-appointment.component';
 import { AppointmentDetailsComponent } from './components/patient/patient-appointment/appointment-details/appointment-details.component';
 import { AdminPatientDetailsComponent } from './components/admin/admin-patient-details/admin-patient-details.component';
+import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 
 
 export const routes: Routes = [
@@ -109,7 +110,13 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientLayoutComponent,
+    canActivate:[()=>inject(AuthService).isAuthenticated()],
+    canActivateChild:[()=>inject(AuthService).isAuthenticated()],
     children: [
+      {
+        path:"",
+        component:PatientDashboardComponent
+      },
      {
       path:'appointment',
       component:PatientAppointmentComponent
@@ -126,6 +133,10 @@ export const routes: Routes = [
         path: 'appointment-details/:id',
         component: AppointmentDetailsComponent
       },
+     {
+      path:'appointment-list',
+      component:PatientAppointmentListComponent
+     }
     ],
   },
   // {

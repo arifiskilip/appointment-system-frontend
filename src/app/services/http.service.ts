@@ -26,6 +26,24 @@ export class HttpService {
     );
   }
 
+  put<T>(url:string,model?:any):Observable<T>{
+    this.spinner.show();
+    return this.http.put<T>(`${api}/${url}`, model).pipe(
+      tap(_ => this.spinner.hide()),
+      catchError(
+        err => this.handleError(err))
+    );
+  }
+
+  delete<T>(url: string): Observable<T> {
+    this.spinner.show();
+    return this.http.delete<T>(`${api}/${url}`).pipe(
+      tap(_ => this.spinner.hide()),
+      catchError(
+        err => this.handleError(err))
+    );
+  }
+
    // Generic GET method
    get<T>(url: string): Observable<T> {
     this.spinner.show();

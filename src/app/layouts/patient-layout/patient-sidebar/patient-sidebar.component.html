@@ -1,16 +1,36 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <a routerLink="/" class="brand-link">
-    <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">Angular App</span>
+  <a routerLink="/patient" class="brand-link">
+    <h4 class="text-center">
+      <span class="brand-text font-weight-light">MHRS</span>
+    </h4>
   </a>
 
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
+      @if(patient){
+       @if(patient?.imageUrl){
+        <div class="image">
+        <img [src]="getApiUrl()+patient.imageUrl" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+      </div>
+       }
+       @else {
+        @if(patient?.genderId==1){
+          <div class="image">
+            <img [src]="constImageUrl.womenAvatar" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+          </div>
+        }
+        @else {<div class="image">
+          <img [src]="constImageUrl.manAvatar" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+        </div>}
+       }
+      }
+      @else {
+        <div class="image">
         <img src="https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
       </div>
+      }
       <div class="info">
-        <a routerLink="/patient/profile" class="d-block">FirstName</a>
+        <a routerLink="/patient/profile" class="d-block">{{patient?.firstName+" "+patient?.lastName}}</a>
       </div>
     </div>
 

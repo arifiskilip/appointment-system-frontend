@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../common/shared/shared.module';
+import { BlankComponent } from "../../blank/blank.component";
 declare var $: any;
 
 @Component({
-  selector: 'app-doctor-schedule',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './doctor-schedule.component.html',
-  styleUrl: './doctor-schedule.component.scss'
+    selector: 'app-doctor-schedule',
+    standalone: true,
+    templateUrl: './doctor-schedule.component.html',
+    styleUrl: './doctor-schedule.component.scss',
+    imports: [SharedModule, BlankComponent]
 })
 export class DoctorScheduleComponent {
   doctorSchedule = {

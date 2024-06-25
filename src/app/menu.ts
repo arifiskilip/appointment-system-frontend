@@ -72,6 +72,13 @@ export const DoctorMenus: MenuModel[] = [
 
 export const PatientMenus: MenuModel[] = [
   {
+    name: "Ana Sayfa",
+    icon: "fa-solid fa-home",
+    url: "/patient",
+    isTitle: false,
+    subMenus: []
+  },
+  {
     name: "Randevu Ara",
     icon: "fa-solid fa-clinic-medical",
     url: "/patient/appointment",
@@ -81,7 +88,7 @@ export const PatientMenus: MenuModel[] = [
   {
     name: "Randevularım",
     icon: "fa-solid fa-home",
-    url: "/patient/scheduled-appointment",
+    url: "/patient/appointment-list",
     isTitle: false,
     subMenus: []
   },

@@ -1,25 +1,44 @@
 <app-blank pageName="Doktorlar Listesi">
     <section class="content">
-      <div class="card card-default" style="cursor: pointer;" [class.collapsed-card]="isCollapsed">
-        <div class="card-header" (click)="toggleAppointments()">
-          <h3 class="card-title">
-            <div class="text text-center">
-              <b>> 10:30</b>
-            </div>
-          </h3>
-
+     <div class="col-12" id="accordion">
+      <div class="callout callout-info d-flex justify-content-between align-items-center">
+        <div class="col-8">
+          <h5><i class="fas fa-calendar-days"></i> Gün:</h5>
+          {{ currentDay }}
         </div>
-        <div class="card-body" style="cursor: auto;" [style.display]="isCollapsed ? 'none' : 'block'">
-          <div class="row">
-            <div class="col-md-2">
-              <button class="btn btn-outline-success" (click)="submit()">10.00</button>
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-outline-success" (click)="submit()">10.15</button>
-            </div>
-          </div>
+        <div class="col-4 text-right">
+          <button class="btn btn-secondary" (click)="hasPreviousPage()" *ngIf="groupedIntervals.pagination.hasPreviousPage">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="btn btn-secondary" (click)="hasNextPage()" *ngIf="groupedIntervals.pagination.hasNextPage">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
+      <div class="card card-primary card-outline" *ngFor="let group of groupedIntervalss | keyvalue">
+        <a class="d-block w-100 collapsed" data-toggle="collapse" href="#{{group.key}}" aria-expanded="false">
+        <div class="card-header">
+        <h4 class="card-title w-100">
+          {{ group.key }}
+        </h4>
+        </div>
+        </a>
+        <div id="{{group.key}}" class="collapse" data-parent="#accordion" style="">
+        <div class="card-body">
+          <button class="btn btn-primary m-2" (click)="submit(interval.appointmentIntervalId,interval.intervalDate)"  *ngFor="let interval of group.value" ><i class="fas fa-clock"></i> {{ interval.intervalDate | date:'HH:mm'}}</button>
+        </div>
+        </div>
+        </div>
+     </div>
     </section>
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-12">
+          <button class="btn btn-secondary" (click)="onPrevious()">
+            <i class="fas fa-arrow-left"></i> Geri Dön
+          </button>
+        </div>
+      </div>
+    </div>
   </app-blank>
   

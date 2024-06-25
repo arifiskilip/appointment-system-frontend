@@ -4,6 +4,8 @@ import { AppointmentListComponent } from "./appointment-list/appointment-list.co
 import { AppointmentTimesComponent } from "./appointment-times/appointment-times.component";
 import { SharedModule } from '../../../common/shared/shared.module';
 import { BlankComponent } from "../../blank/blank.component";
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-patient-appointment',
@@ -15,7 +17,20 @@ import { BlankComponent } from "../../blank/blank.component";
 export class PatientAppointmentComponent {
   currentPage: string = 'search'; // Başlangıç sayfası
 
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = params['page'] || 'search';
+    });
+  }
+
   navigate(page: string) {
-    this.currentPage = page;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page },
+      queryParamsHandling: 'merge'  // Mevcut query parametreleri koru
+    });
+    this.currentPage = page; // Geçiş yapılan sayfayı güncelle
   }
 }

@@ -1,0 +1,120 @@
+<app-blank pageName="Dashboard">
+     <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Top Statistics Cards -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3>150</h3>
+              <p>Upcoming Appointments</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <p>Positive Feedback</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>44</h3>
+              <p>Total Appointments</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>65</h3>
+              <p>Pending Reviews</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointment History Chart -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Appointment History</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="appointmentHistoryChart" style="height: 250px; width: 100%;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Appointments -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Upcoming Appointments</h3>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item">Appointment 1</li>
+                <li class="list-group-item">Appointment 2</li>
+                <li class="list-group-item">Appointment 3</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feedback and Ratings -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Feedback and Ratings</h3>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item">Feedback 1</li>
+                <li class="list-group-item">Feedback 2</li>
+                <li class="list-group-item">Feedback 3</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Summary -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Profile Summary</h3>
+            </div>
+            <div class="card-body">
+              <p>Name: John Doe</p>
+              <p>Email: john.doeexample.com</p>
+              <p>Phone: 123-456-7890</p>
+              <p>Address: 123 Main St, Anytown, USA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</app-blank>

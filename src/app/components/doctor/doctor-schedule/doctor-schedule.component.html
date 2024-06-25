@@ -1,113 +1,113 @@
-<div class="content-wrapper">
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Çalışma Programı</h1>
-          </div>
-        </div>
-      </div>
-    </section>
-  
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Programınızı Ayarlayın</h3>
-          </div>
-          <div class="card-body">
-            <form (ngSubmit)="onSubmit()">
-              <div class="form-group">
-                <label for="day">Gün</label>
-                <input type="date" class="form-control" id="day" name="day">
-              </div>
-              <div class="form-group">
-                <label for="startTime">Başlangıç Saati</label>
-                <input type="time" class="form-control" id="startTime" name="startTime">
-              </div>
-              <div class="form-group">
-                <label for="endTime">Bitiş Saati</label>
-                <input type="time" class="form-control" id="endTime" name="endTime">
-              </div>
-              <div class="form-group">
-                <label for="patientInterval">Hasta Aralığı (Dakika)</label>
-                <input type="number" class="form-control" id="patientInterval" name="patientInterval">
-              </div>
-              <button type="submit" class="btn btn-primary">Kaydet</button>
-            </form>
-          </div>
-        </div>
-  
-        <div class="card mt-4">
-          <div class="card-header">
-            <h3 class="card-title">Mevcut Programlar</h3>
-          </div>
-          <div class="card-body">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Gün</th>
-                  <th>Başlangıç Saati</th>
-                  <th>Bitiş Saati</th>
-                  <th>Hasta Aralığı</th>
-                  <th>İşlemler</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let schedule of schedules">
-                  <td>{{ schedule.day }}</td>
-                  <td>{{ schedule.startTime }}</td>
-                  <td>{{ schedule.endTime }}</td>
-                  <td>{{ schedule.patientInterval }} dakika</td>
-                  <td>
-                    <button class="btn btn-info btn-sm" (click)="editSchedule(schedule)">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" (click)="deleteSchedule()">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="editScheduleModal" tabindex="-1" role="dialog" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editScheduleModalLabel">Programı Düzenle</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="onEditSubmit()">
-            <div class="form-group">
-              <label for="editDay">Gün</label>
-              <input type="date" class="form-control" id="editDay" name="editDay">
-            </div>
-            <div class="form-group">
-              <label for="editStartTime">Başlangıç Saati</label>
-              <input type="time" class="form-control" id="editStartTime" name="editStartTime">
-            </div>
-            <div class="form-group">
-              <label for="editEndTime">Bitiş Saati</label>
-              <input type="time" class="form-control" id="editEndTime" name="editEndTime">
-            </div>
-            <div class="form-group">
-              <label for="editPatientInterval">Hasta Aralığı (Dakika)</label>
-              <input type="number" class="form-control" id="editPatientInterval" name="editPatientInterval">
-            </div>
-            <button type="submit" class="btn btn-primary">Güncelle</button>
-          </form>
+<app-blank pageName="Takvim">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Çalışma Programı</h1>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Programınızı Ayarlayın</h3>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="day">Gün</label>
+              <input type="date" class="form-control" id="day" name="day">
+            </div>
+            <div class="form-group">
+              <label for="startTime">Başlangıç Saati</label>
+              <input type="time" class="form-control" id="startTime" name="startTime">
+            </div>
+            <div class="form-group">
+              <label for="endTime">Bitiş Saati</label>
+              <input type="time" class="form-control" id="endTime" name="endTime">
+            </div>
+            <div class="form-group">
+              <label for="patientInterval">Hasta Aralığı (Dakika)</label>
+              <input type="number" class="form-control" id="patientInterval" name="patientInterval">
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header">
+          <h3 class="card-title">Mevcut Programlar</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Gün</th>
+                <th>Başlangıç Saati</th>
+                <th>Bitiş Saati</th>
+                <th>Hasta Aralığı</th>
+                <th>İşlemler</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let schedule of schedules">
+                <td>{{ schedule.day }}</td>
+                <td>{{ schedule.startTime }}</td>
+                <td>{{ schedule.endTime }}</td>
+                <td>{{ schedule.patientInterval }} dakika</td>
+                <td>
+                  <button class="btn btn-info btn-sm" (click)="editSchedule(schedule)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteSchedule()">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+    <!-- Modal -->
+    <div class="modal fade" id="editScheduleModal" tabindex="-1" role="dialog" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editScheduleModalLabel">Programı Düzenle</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="onEditSubmit()">
+              <div class="form-group">
+                <label for="editDay">Gün</label>
+                <input type="date" class="form-control" id="editDay" name="editDay">
+              </div>
+              <div class="form-group">
+                <label for="editStartTime">Başlangıç Saati</label>
+                <input type="time" class="form-control" id="editStartTime" name="editStartTime">
+              </div>
+              <div class="form-group">
+                <label for="editEndTime">Bitiş Saati</label>
+                <input type="time" class="form-control" id="editEndTime" name="editEndTime">
+              </div>
+              <div class="form-group">
+                <label for="editPatientInterval">Hasta Aralığı (Dakika)</label>
+                <input type="number" class="form-control" id="editPatientInterval" name="editPatientInterval">
+              </div>
+              <button type="submit" class="btn btn-primary">Güncelle</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</app-blank>
+  
   

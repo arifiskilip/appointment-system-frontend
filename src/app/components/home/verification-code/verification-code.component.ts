@@ -1,7 +1,9 @@
+import { SweetAlertIcon } from './../../../services/swal.service';
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../common/shared/shared.module';
 import { HttpService } from '../../../services/http.service';
 import { Router } from '@angular/router';
+import { SwalService } from '../../../services/swal.service';
 
 @Component({
   selector: 'app-verification-code',
@@ -11,11 +13,12 @@ import { Router } from '@angular/router';
   styleUrl: './verification-code.component.scss'
 })
 export class VerificationCodeComponent {
+isSend: boolean = false;
 
   /**
    *
    */
-  constructor(private http:HttpService, private router:Router) {
+  constructor(private http:HttpService, private router:Router, private swal:SwalService) {
 
     
   }
@@ -24,7 +27,8 @@ export class VerificationCodeComponent {
   code:string="";
   sendVerificationCode() {
 
-    this.http.post("Auth/VerificationCodeSend",{}).subscribe(res=>{
+    this.http.get("Auth/VerificationCode").subscribe(res=>{
+      this.isSend=true;
       this.isSendingVerificationCode = true;
     let count = 60;
     const sendCodeBtn = document.getElementById('sendCodeBtn');
@@ -40,6 +44,8 @@ export class VerificationCodeComponent {
         sendCodeBtn.innerHTML = count + " saniye içinde yeniden gönder";
       }, 1000);
     }
+    this.swal.callToast("Doğrulama kodu gönderildi","success")
+    this.isSend=false;
     }) 
   }
 

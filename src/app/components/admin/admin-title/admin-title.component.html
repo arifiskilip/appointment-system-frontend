@@ -1,65 +1,95 @@
 <app-blank pageName="Ünvanlar">
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Ünvan Tablosu</h3>
-              </div>
-  
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Ünvan Adı</th>
-                      <th>Oluşturulma Tarihi</th>
-                      <th>Güncelleme Tarihi Tarihi</th>
-                      <th>Durum</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1.</td>
-                      <td>Update software</td>
-                      <td>01.01.2022</td>
-                      <td>-</td>
-                      <td><span class="badge badge-success">Success</span></td>
-                      <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
-                            <i class="fas fa-circle-info"> </i>
-                            Detay
-                          </a>
-                          <a class="btn btn-info btn-sm" href="#">
-                            <i class="fas fa-pencil-alt"> </i>
-                            Düzenle
-                          </a>
-                          <a class="btn btn-danger btn-sm" href="#">
-                            <i class="fas fa-trash"> </i>
-                            Sil
-                          </a>
-                        </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button class="btn btn-outline-success mt-3">Ekle</button>
-              </div>
-  
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">«</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-              </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Ünvan Tablosu</h3>
+            </div>
+
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Ünvan Adı</th>
+                    <th>Oluşturulma Tarihi</th>
+                    <th>Güncelleme Tarihi Tarihi</th>
+                    <th>Durum</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1.</td>
+                    <td>Update software</td>
+                    <td>01.01.2022</td>
+                    <td>-</td>
+                    <td><span class="badge badge-success">Success</span></td>
+                    <td class="project-actions text-right">
+                      <a class="btn btn-primary btn-sm" href="#">
+                        <i class="fas fa-circle-info"> </i>
+                        Detay
+                      </a>
+                      <a class="btn btn-info btn-sm" href="#">
+                        <i class="fas fa-pencil-alt"> </i>
+                        Düzenle
+                      </a>
+                      <a class="btn btn-danger btn-sm" href="#">
+                        <i class="fas fa-trash"> </i>
+                        Sil
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-outline-success mt-3" data-toggle="modal" data-target="#addTitleModal">Ekle</button>
+            </div>
+
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">»</a></li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  </app-blank>
-  
+    </div>
+  </section>
+</app-blank>
+
+<!-- Ünvan Ekleme Modal -->
+<div class="modal fade" id="addTitleModal" tabindex="-1" role="dialog" aria-labelledby="addTitleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTitleModalLabel"><i class="fas fa-plus-circle"></i> Yeni Ünvan Ekle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Ünvan Adı" />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-briefcase-medical"></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+        <button type="button" class="btn btn-primary">Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
