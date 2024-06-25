@@ -27,6 +27,7 @@ import { ScheduledAppointmentComponent } from './components/patient/scheduled-ap
 import { AppointmentDetailsComponent } from './components/patient/patient-appointment/appointment-details/appointment-details.component';
 import { AdminPatientDetailsComponent } from './components/admin/admin-patient-details/admin-patient-details.component';
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
+import { PatientReportsComponent } from './components/patient/patient-reports/patient-reports.component';
 
 
 export const routes: Routes = [
@@ -110,8 +111,8 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientLayoutComponent,
-    canActivate:[()=>inject(AuthService).isAuthenticated()],
-    canActivateChild:[()=>inject(AuthService).isAuthenticated()],
+    canActivate:[()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
+    canActivateChild:[()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
     children: [
       {
         path:"",
@@ -136,6 +137,10 @@ export const routes: Routes = [
      {
       path:'appointment-list',
       component:PatientAppointmentListComponent
+     },
+     {
+      path:'reports',
+      component:PatientReportsComponent
      }
     ],
   },

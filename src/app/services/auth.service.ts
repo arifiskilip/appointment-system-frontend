@@ -24,43 +24,35 @@ export class AuthService {
 
     if (!token) {
       this.router.navigateByUrl('/login');
-      return of(false);
+      return new Observable((observer) => observer.next(false));
     }
 
     const expired: boolean = this.isTokenExpired(token);
 
     if (expired) {
       this.router.navigateByUrl('/login');
-      return of(false);
+      return new Observable((observer) => observer.next(false));
     }
-
-    return new Observable((observer) => {
-      this.isUserVerified().subscribe((isVerified) => {
-        observer.next(isVerified);
-        observer.complete();
-      });
-    });
+    
+      return new Observable((observer) => observer.next(true));
   }
 
   private isTokenExpired(token: string): boolean {
     return this.jwtHelper.isTokenExpired(token);
   }
 
-  private isUserVerified(): Observable<boolean> {
-    return new Observable((observer) => {
-      this.http
-        .get<IsUserVerifiedModel>('Auth/IsEmailVerified')
-        .subscribe((res) => {
-          if (!res.isEmailVerified) {
-            this.router.navigateByUrl('/verificationcode');
-            observer.next(false);
-          } else {
-            this.localStorage.setItem('userId', res.userId.toString());
-            observer.next(true);
-          }
-          observer.complete();
-        });
-    });
+  isUserVerified():Observable<boolean> {
+    return this.http.get<IsUserVerifiedModel>('Auth/IsEmailVerified').pipe(
+      map(res => {
+        if (res.isEmailVerified) {
+          this.localStorage.setItem('userId', res.userId.toString());
+          return true;
+        } else {
+          this.router.navigateByUrl('/verificationcode');
+          return false;
+        }
+      })
+    );
   }
 
   logout() {
