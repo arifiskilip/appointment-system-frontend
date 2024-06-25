@@ -304,7 +304,7 @@
                       </ng-container>
                       <!-- END timeline item -->
                     </ng-container>
-                    <div *ngIf="patientAppointments.pagination.hasNextPage">
+                    <div *ngIf="patientAppointments?.pagination.hasNextPage">
                       <i class="far fa-clock bg-gray"></i>
                     </div>
                   </div>
@@ -313,10 +313,10 @@
                   </div>
                   <!-- Pagination buttons -->
                   <div class="pagination-container">
-                    <button class="btn btn-primary" *ngIf="patientAppointments.pagination.hasPreviousPage" (click)="previousPage()">
+                    <button class="btn btn-primary" *ngIf="patientAppointments?.pagination.hasPreviousPage" (click)="previousPage()">
                       <i class="fas fa-arrow-left"></i> Geri
                     </button>
-                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments.pagination.hasNextPage">
+                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments?.pagination.hasNextPage">
                       İleri <i class="fas fa-arrow-right"></i>
                     </button>
                   </div>

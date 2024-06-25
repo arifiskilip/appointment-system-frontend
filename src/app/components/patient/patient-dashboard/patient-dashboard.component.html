@@ -7,8 +7,8 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>150</h3>
-              <p>Upcoming Appointments</p>
+              <h3>{{patientDashboardModel?.totalAppointment}}</h3>
+              <p>Toplam Randevum</p>
             </div>
             <div class="icon">
               <i class="fas fa-calendar-alt"></i>
@@ -18,8 +18,8 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-              <p>Positive Feedback</p>
+              <h3> <h3>{{patientDashboardModel?.completedAppointment}}</h3></h3>
+              <p>Tamamlanan Randevularım</p>
             </div>
             <div class="icon">
               <i class="fas fa-thumbs-up"></i>
@@ -29,8 +29,8 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>44</h3>
-              <p>Total Appointments</p>
+              <h3> <h3>{{patientDashboardModel?.waitinAppointment}}</h3></h3>
+              <p>Bekleyen Randevularım</p>
             </div>
             <div class="icon">
               <i class="fas fa-users"></i>
@@ -40,8 +40,8 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>65</h3>
-              <p>Pending Reviews</p>
+              <h3> <h3>{{patientDashboardModel?.canceledAppointment}}</h3></h3>
+              <p>İptal Edilen Randevularım</p>
             </div>
             <div class="icon">
               <i class="fas fa-file-alt"></i>
@@ -55,7 +55,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Appointment History</h3>
+              <h3 class="card-title">Randevu Geçmişim</h3>
             </div>
             <div class="card-body">
               <canvas id="appointmentHistoryChart" style="height: 250px; width: 100%;"></canvas>
@@ -63,54 +63,29 @@
           </div>
         </div>
       </div>
-
-      <!-- Upcoming Appointments -->
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Upcoming Appointments</h3>
-            </div>
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item">Appointment 1</li>
-                <li class="list-group-item">Appointment 2</li>
-                <li class="list-group-item">Appointment 3</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Feedback and Ratings -->
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Feedback and Ratings</h3>
-            </div>
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item">Feedback 1</li>
-                <li class="list-group-item">Feedback 2</li>
-                <li class="list-group-item">Feedback 3</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Profile Summary -->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Profile Summary</h3>
+              <h3 class="card-title">Yaklaşan Randevum</h3>
             </div>
-            <div class="card-body">
-              <p>Name: John Doe</p>
-              <p>Email: john.doeexample.com</p>
-              <p>Phone: 123-456-7890</p>
-              <p>Address: 123 Main St, Anytown, USA</p>
-            </div>
+            @if (patientAppointment) {
+              <div class="card-body">
+                <p>Doktor: {{patientAppointment?.doctorName}}</p>
+                <p>Bölüm: {{patientAppointment?.branchName}}</p>
+                <p>Tarih: {{patientAppointment?.intervalDate | date : "dd/MM/yyyy HH:mm"}}</p>
+                <button class="btn btn-danger">
+                  <i class="fa fa-times"></i>
+                  İptal Et
+                </button>
+              </div>
+            }
+            @else {
+              <div class="card-body">
+                <div class="alert alert-info">Randevunuz bulunmamaktadır.</div>
+              </div>
+            }
           </div>
         </div>
       </div>

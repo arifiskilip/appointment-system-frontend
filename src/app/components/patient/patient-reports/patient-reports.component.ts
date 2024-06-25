@@ -1,66 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { BlankComponent } from '../../blank/blank.component';
+import { BlankComponent } from "../../blank/blank.component";
 import { SharedModule } from '../../../common/shared/shared.module';
 import { HttpService } from '../../../services/http.service';
-import { PatientAppointmentsModel } from '../../../models/patientAppointmentsModel';
-import { Paginate } from '../../../models/paginateModel';
 import { SwalService } from '../../../services/swal.service';
+import { Paginate } from '../../../models/paginateModel';
+import { PatientReportsModel } from '../../../models/patientReportsModel';
 
 @Component({
-  selector: 'app-patient-appointment-list',
-  standalone: true,
-  templateUrl: './patient-appointment-list.component.html',
-  styleUrl: './patient-appointment-list.component.scss',
-  imports: [BlankComponent, SharedModule],
+    selector: 'app-patient-reports',
+    standalone: true,
+    templateUrl: './patient-reports.component.html',
+    styleUrl: './patient-reports.component.scss',
+    imports: [BlankComponent, SharedModule]
 })
-export class PatientAppointmentListComponent implements OnInit {
+export class PatientReportsComponent implements OnInit{
   ngOnInit(): void {
-    this.getPatientAppointments();
-  }
-  /**
-   *
-   */
-  constructor(private http:HttpService , private swalService:SwalService) {}
-  tab: 'past' | 'today' = 'today';
-
-  setTab(tab: 'past' | 'today') {
-    this.tab = tab;
-    this.getPatientAppointments();
+   
   }
 
-  appointments: Paginate<PatientAppointmentsModel[]>;
-  getPatientAppointments() {
-    if(this.tab == "today"){
-      this.http
-      .get<any>(
-        `Appointment/GetPaginatedPatientNewAppoinments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
-      )
-      .subscribe((res) => {
-        this.appointments = res.patientAppointments;
-        this.totalPages = this.appointments.pagination.totalPages;
-      });
-    }
-    else if(this.tab =="past"){
-      this.http
-      .get<any>(
-        `Appointment/GetPaginatedPatientOldAppoinments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
-      )
-      .subscribe((res) => {
-        this.appointments = res.patientAppointments;
-        this.totalPages = this.appointments.pagination.totalPages;
-      });
-    }
+  constructor(private http:HttpService, private swal:SwalService) {
+    
   }
 
-  canceledAppointment(appointmendId:number){
-   this.swalService.callSwal("Randevu İptali","Randevunuzu iptal etmek istediğinizden emin misiniz?",()=>{
-    this.http.post(`Appointment/CancelAppointmentByPatient?AppointmentId=${appointmendId}`)
-    .subscribe(()=>{
-      this.getPatientAppointments();
-      this.swalService.callToast("Randenuz iptal edilmiştir.");
+  reports:Paginate<PatientReportsModel[]>;
+  getPatientReports(){
+    this.http.get<Paginate<PatientReportsModel[]>>(`Report/GetAllReportsPatient?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+    .subscribe(res=>{
+      this.reports = res;
+      this.totalPages = res.pagination.totalPages;
     })
-   },"Evet")
   }
+
   currentDate:Date= new Date();
   getBadgeStatusIcon(appointmentStatus: string) {
     switch (appointmentStatus) {
@@ -87,7 +57,7 @@ export class PatientAppointmentListComponent implements OnInit {
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.pageIndex = page;
-      this.getPatientAppointments();
+      this.getPatientReports();
     }
   }
 
@@ -95,7 +65,7 @@ export class PatientAppointmentListComponent implements OnInit {
   prevPage() {
     if (this.pageIndex > 1) {
       this.pageIndex--;
-      this.getPatientAppointments();
+      this.getPatientReports();
     }
   }
 
@@ -103,15 +73,15 @@ export class PatientAppointmentListComponent implements OnInit {
   nextPage() {
     if (this.pageIndex < this.totalPages) {
       this.pageIndex++;
-      this.getPatientAppointments();
+      this.getPatientReports();
     }
   }
 
   // İlk sayfaya git
   goToFirstPage() {
-    if (this.appointments.pagination.pageIndex > 1) {
+    if (this.reports.pagination.pageIndex > 1) {
       this.pageIndex = 1;
-      this.getPatientAppointments();
+      this.getPatientReports();
     }
   }
 
@@ -119,7 +89,7 @@ export class PatientAppointmentListComponent implements OnInit {
   goToLastPage() {
     if (this.totalPages > this.pageIndex) {
       this.pageIndex = this.totalPages;
-      this.getPatientAppointments();
+      this.getPatientReports();
     }
   }
 
@@ -141,7 +111,7 @@ export class PatientAppointmentListComponent implements OnInit {
 
   // Kaç adet listeleneceğini beliritir
   goToChangeSelectedCount() {
-    this.getPatientAppointments();
+    this.getPatientReports();
   }
 
   // Başlangıç indisini hesaplar

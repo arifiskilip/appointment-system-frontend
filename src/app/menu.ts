@@ -92,6 +92,13 @@ export const PatientMenus: MenuModel[] = [
     isTitle: false,
     subMenus: []
   },
+  {
+    name: "Raporlarım",
+    icon: "fa-solid fa-file-pdf",
+    url: "/patient/reports",
+    isTitle: false,
+    subMenus: []
+  },
 
 
 ]
