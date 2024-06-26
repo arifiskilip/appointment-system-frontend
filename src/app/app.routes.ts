@@ -96,7 +96,7 @@ export const routes: Routes = [
     path: 'doctor',
     component: DoctorLayoutComponent,
     canActivate: [()=> inject(AuthService).isAuthenticated(),RoleGuard],
-    data: { roles: ['Doctor'] },
+    data: { roles: ['Doctor','Admin'] },
     children: [
       {
         path: '',
@@ -124,7 +124,7 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientLayoutComponent,
     canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified(),RoleGuard],
-    data: { roles: ['Patient'] },
+    data: { roles: ['Patient', 'Admin'] },
     children: [
       {
         path: '',
