@@ -27,6 +27,8 @@ import { PatientDashboardComponent } from './components/patient/patient-dashboar
 import { PatientReportsComponent } from './components/patient/patient-reports/patient-reports.component';
 import { UnauthorizedComponent } from './components/home/unauthorized/unauthorized.component';
 import { map } from 'rxjs';
+import { RoleGuard } from './guards/role.guard';
+import { DoctorAppointmentsComponent } from './components/doctor/doctor-appointments/doctor-appointments.component';
 
 
 export const routes: Routes = [
@@ -42,7 +44,7 @@ export const routes: Routes = [
     path: 'verificationcode',
     component: VerificationCodeComponent,
     canActivate: [()=> inject(AuthService).isUserVerified()],
-    data: { expectedRole: 'Patient' }
+    data: { roles: 'Patient' }
   },
   {
     path: '',
@@ -51,8 +53,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    canActivate: [()=> inject(AuthService).isAuthenticated()],
-    data: { expectedRole: 'Admin' },
+    canActivate: [()=> inject(AuthService).isAuthenticated(),RoleGuard],
+    data: { roles: ['Admin'] },
     children: [
       {
         path: '',
@@ -87,8 +89,8 @@ export const routes: Routes = [
   {
     path: 'doctor',
     component: DoctorLayoutComponent,
-    canActivate: [()=> inject(AuthService).isAuthenticated()],
-    data: { expectedRole: 'Doctor' },
+    canActivate: [()=> inject(AuthService).isAuthenticated(),RoleGuard],
+    data: { roles: ['Doctor'] },
     children: [
       {
         path: '',
@@ -105,14 +107,18 @@ export const routes: Routes = [
       {
         path: 'test',
         component: DoctorTestComponent
+      },
+      {
+        path:"appointments",
+        component:DoctorAppointmentsComponent
       }
     ],
   },
   {
     path: 'patient',
     component: PatientLayoutComponent,
-    canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
-    data: { expectedRole: 'Patient' },
+    canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified(),RoleGuard],
+    data: { roles: ['Patient'] },
     children: [
       {
         path: '',
