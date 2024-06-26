@@ -44,7 +44,9 @@ export class AuthService {
     const token:string = this.localStorage.getItem('token');
     if (token) {
       const decodedToken: any = this.jwtHelper.decodeToken(token);
-      return decodedToken.role['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];  // JWT içindeki role claim'i kontrol edin
+      console.log(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
+      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];  // JWT içindeki role claim'i kontrol edin
+     
     }
     return null;
   }
