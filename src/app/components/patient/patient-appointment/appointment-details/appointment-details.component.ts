@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ScheduledAppointmentComponent } from '../../scheduled-appointment/scheduled-appointment.component';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http'; // Import the HttpClient module
 import { BlankComponent } from '../../../blank/blank.component';

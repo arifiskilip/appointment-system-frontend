@@ -23,7 +23,6 @@ import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
-import { ScheduledAppointmentComponent } from './components/patient/scheduled-appointment/scheduled-appointment.component';
 import { AppointmentDetailsComponent } from './components/patient/patient-appointment/appointment-details/appointment-details.component';
 import { AdminPatientDetailsComponent } from './components/admin/admin-patient-details/admin-patient-details.component';
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
@@ -126,10 +125,6 @@ export const routes: Routes = [
       path:'profile',
       component:PatientProfileComponent
      },
-      {
-        path: 'scheduled-appointment',
-        component: ScheduledAppointmentComponent
-      },
       {
         path: 'appointment-details/:id',
         component: AppointmentDetailsComponent
