@@ -132,10 +132,6 @@ export const routes: Routes = [
       path:'profile',
       component:PatientProfileComponent
      },
-      {
-        path: 'appointment-details/:id',
-        component: AppointmentDetailsComponent
-      },
      {
       path:'appointment-list',
       component:PatientAppointmentListComponent
