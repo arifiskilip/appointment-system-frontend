@@ -33,12 +33,32 @@ export class AuthService {
       this.router.navigateByUrl('/login');
       return new Observable((observer) => observer.next(false));
     }
-    
       return new Observable((observer) => observer.next(true));
   }
 
   private isTokenExpired(token: string): boolean {
     return this.jwtHelper.isTokenExpired(token);
+  }
+
+  getUserRole(): string | null {
+    const token:string = this.localStorage.getItem('token');
+    if (token) {
+      const decodedToken: any = this.jwtHelper.decodeToken(token);
+      return decodedToken.role['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];  // JWT içindeki role claim'i kontrol edin
+    }
+    return null;
+  }
+
+  isAdmin(): boolean {
+    return this.getUserRole() === 'Admin';
+  }
+
+  isPatient(): boolean {
+    return this.getUserRole() === 'Patient';
+  }
+
+  isDoctor(): boolean {
+    return this.getUserRole() === 'Doctor';
   }
 
   isUserVerified():Observable<boolean> {

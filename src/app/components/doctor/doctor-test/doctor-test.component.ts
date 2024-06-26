@@ -43,7 +43,8 @@ export class DoctorTestComponent {
         return false;
       });
     }
-  
+    selectedEvent: any;
+
     acceptAppointment(id: number) {
       this.appointments = this.appointments.map(appointment =>
         appointment.id === id ? { ...appointment, status: 'accepted' } : appointment
@@ -65,12 +66,18 @@ export class DoctorTestComponent {
       initialView: 'dayGridMonth',
       locale: trLocale,
       events: this.appointments.map(appointment => ({
+        id:appointment.id.toString(),
         title: appointment.patientName,
         start: appointment.date,
         color: appointment.status === 'accepted' ? 'green' : appointment.status === 'rejected' ? 'red' : 'orange'
-      }))
+      })),
+      eventClick: this.handleEventClick.bind(this) // add eventClick callback
     };
-    
+  
+    handleEventClick(arg:any) {
+      this.selectedEvent = arg.event;
+      $('#eventModal').modal('show');
+    }
 }
 interface Appointment {
     id: number;

@@ -27,6 +27,8 @@ import { AppointmentDetailsComponent } from './components/patient/patient-appoin
 import { AdminPatientDetailsComponent } from './components/admin/admin-patient-details/admin-patient-details.component';
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 import { PatientReportsComponent } from './components/patient/patient-reports/patient-reports.component';
+import { UnauthorizedComponent } from './components/home/unauthorized/unauthorized.component';
+import { map } from 'rxjs';
 
 
 export const routes: Routes = [
@@ -39,10 +41,11 @@ export const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path:"verificationcode",
-    component:VerificationCodeComponent,
-    canActivate: [()=> inject(AuthService).isAuthenticated()]
-},
+    path: 'verificationcode',
+    component: VerificationCodeComponent,
+    canActivate: [()=> inject(AuthService).isUserVerified()],
+    data: { expectedRole: 'Patient' }
+  },
   {
     path: '',
     component: HomePageComponent
@@ -50,6 +53,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [()=> inject(AuthService).isAuthenticated()],
+    data: { expectedRole: 'Admin' },
     children: [
       {
         path: '',
@@ -88,21 +93,23 @@ export const routes: Routes = [
   {
     path: 'doctor',
     component: DoctorLayoutComponent,
+    canActivate: [()=> inject(AuthService).isAuthenticated()],
+    data: { expectedRole: 'Doctor' },
     children: [
       {
-        path: "",
+        path: '',
         component: DoctorDashboardComponent
       },
       {
-        path: "profile",
+        path: 'profile',
         component: DoctorProfileComponent
       },
       {
-        path: "schedule",
+        path: 'schedule',
         component: DoctorScheduleComponent
       },
       {
-        path: "test",
+        path: 'test',
         component: DoctorTestComponent
       }
     ],
@@ -110,12 +117,12 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientLayoutComponent,
-    canActivate:[()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
-    canActivateChild:[()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
+    canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified()],
+    data: { expectedRole: 'Patient' },
     children: [
       {
-        path:"",
-        component:PatientDashboardComponent
+        path: '',
+        component: PatientDashboardComponent
       },
      {
       path:'appointment',
@@ -139,9 +146,10 @@ export const routes: Routes = [
      }
     ],
   },
-  // {
-  //   path: '',
-  //   redirectTo: '/admin',
-  //   pathMatch: 'full',
-  // },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent
+  },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' }
 ];
