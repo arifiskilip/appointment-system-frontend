@@ -35,22 +35,27 @@
                   <div>
                     @if(appointment.appointmentStatusName === 'Created'){
                       <div #containerWaitingDiv>
-                        <button class="btn btn-success" (click)="acceptAppointment(appointment.id,appointment.patientId)">Kabul Et</button>
-                    <button class="btn btn-danger" (click)="rejectAppointment(appointment.id)">Reddet</button>
-                      </div>
-                    }
-                    @else if(appointment.appointmentStatusName === 'Completed')
-                    {
-                      <div #containerAcceptedDiv>
-                        <button class="btn btn-primary" (click)="waitedAppointment(appointment.id)">Beklemeye Al</button>
-                    <button class="btn btn-danger" (click)="rejectAppointment(appointment.id)">Reddet</button>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <button class="btn btn-success" (click)="acceptAppointment(appointment.id, appointment.patientId)">
+                            <i class="fas fa-check"></i> Kabul Et
+                          </button>
+                          <button class="btn btn-danger" (click)="rejectAppointment(appointment.id)">
+                            <i class="fas fa-times"></i> Reddet
+                          </button>
+                        </div>
                       </div>
                     }
                     @else if(appointment.appointmentStatusName === 'Canceled')
                     {
                       <div #containerRejectedDiv>
-                        <button class="btn btn-success" (click)="acceptAppointment(appointment.id,appointment.patientId)">Kabul Et</button>
-                    <button class="btn btn-primary" (click)="waitedAppointment(appointment.id)">Beklemeye Al</button>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                          <button class="btn btn-success" (click)="acceptAppointment(appointment.id, appointment.patientId)">
+                            <i class="fas fa-check"></i> Kabul Et
+                          </button>
+                          <button class="btn btn-primary" (click)="waitedAppointment(appointment.id)">
+                            <i class="fas fa-clock"></i> Beklemeye Al
+                          </button>
+                        </div>
                       </div>
                     }
                   </div>
@@ -113,7 +118,17 @@
               <div class="row">
                 <div class="col-md-6 patient-info">
                   <div class="patient-info-item">
-                    <img [src]="patientInfo.image" alt="Patient Image" class="patient-image">
+                    @if(currentPatient?.imageUrl){
+                      <img [src]="getApiUrl()+currentPatient.imageUrl" alt="Patient Image" class="patient-image">
+                    }
+                    @else {
+                      @if(currentPatient?.genderId===1){
+                        <img [src]="imageUrl.womenAvatar" alt="Patient Image" class="patient-image">
+                      }
+                      @else {
+                        <img [src]="imageUrl.manAvatar" alt="Patient Image" class="patient-image">
+                      }
+                    }
                   </div>
                   <div class="patient-info-item">
                     <strong>Ad:</strong> {{ currentPatient?.firstName }}
@@ -143,8 +158,7 @@
                 <div class="col-md-6">
                   <form [formGroup]="reportForm">
                     <div class="form-group">
-                      <input type="text" formControlName="appointmentId" [value]="currentPatient?.id">
-                      <label for="description">Description</label>
+                      <label for="description">Açıklama</label>
                       <textarea id="description" formControlName="description" class="form-control"></textarea>
                       <div *ngIf="f.description.invalid && (f.description.dirty || f.description.touched)" class="text-danger">
                         Açıklama zorunludur ve en az 10 karakter olmalıdır.
@@ -153,8 +167,11 @@
                     <div class="form-group">
                       <label for="file">Rapor Ekle</label>
                       <input type="file" id="file" formControlName="file" (change)="onFileChange($event)" class="form-control" />
+                      <div *ngIf="f.file.invalid && (f.file.dirty || f.file.touched)" class="text-danger">
+                        Dosya zorunludur.
+                      </div>
                     </div>
-                    <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="reportForm.invalid">
+                    <button type="submit" class="btn btn-success" (click)="addReport()" [disabled]="reportForm.invalid">
                       <i class="fas fa-upload"></i> Yükle
                     </button>
                   </form>
