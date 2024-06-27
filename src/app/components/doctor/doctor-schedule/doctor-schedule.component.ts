@@ -70,8 +70,8 @@ export class DoctorScheduleComponent implements OnInit{
   }
   handleEventClick(arg:any) {
     this.selectedEvent = arg.event;
-    if(this.selectedEvent.start>Date.now()){
-      this.appointmentUpdateForm.patchValue({id:arg.event.id,intervalDate:this.formatDate(arg.event.start)})
+    if(this.selectedEvent.start>Date.now() && this.selectedEvent.title==='Boş'){
+      this.appointmentUpdateForm.patchValue({appointmentIntervalId:arg.event.id,intervalDate:this.formatDate(arg.event.start)})
       $('#eventModal').modal('show');
     }
   }
@@ -96,7 +96,7 @@ export class DoctorScheduleComponent implements OnInit{
 
   createAppointmentUpdateForm(){
     this.appointmentUpdateForm = this.fb.group({
-      id:[0],
+      appointmentIntervalId:[0],
       intervalDate: ['', [Validators.required, this.dateTimeValidator]],
     })
   }
@@ -163,14 +163,29 @@ export class DoctorScheduleComponent implements OnInit{
 
   updateAppointmetnInterval(){
     if(this.appointmentUpdateForm.valid){
-      
+      this.swal.callSwal("Mevcut randevu güncellenecektir","Randevuyu güncellemek istediğinizden emin misiniz?",
+        ()=>{
+          this.http.post('AppointmentInterval/UpdateDate',this.appointmentUpdateForm.value)
+          .pipe(take(1))
+          .subscribe(res=>{
+            this.swal.callToast("Güncelleme işlemi başarılı.");
+            this.getAppointmentIntervals();
+          })
+          $('#eventModal').modal('hide');
+        },"Güncelle"
+      )
     }
   }
 
   deleteAppointmentInterval(intervalId:number){
     this.swal.callSwal("Mevcut randevu silinecektir","Randevuyu silmek istediğinizden emin misiniz?",
       ()=>{
-        alert(intervalId)
+        this.http.delete('AppointmentInterval/DeleteInterval?AppointmentIntervalId='+intervalId)
+        .pipe(take(1))
+        .subscribe(res=>{
+          this.swal.callToast("Silme işlemi başarılı.");
+          this.getAppointmentIntervals();
+        })
         $('#eventModal').modal('hide');
       },"Sil"
     )

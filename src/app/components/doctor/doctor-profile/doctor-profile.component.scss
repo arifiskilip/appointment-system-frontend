@@ -1,0 +1,43 @@
+.input-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-container .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.input-container input {
+    padding-left: 40px;
+}
+
+.modal-header {
+    background-color: #007BFF;
+    color: white;
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.profile-user-img {
+    object-fit: cover; /* Resmi kapsayacak şekilde keser */
+    width: 100px; /* İstediğiniz genişlik */
+    height: 100px; /* İstediğiniz yükseklik */
+    border-radius: 100%; /* Yuvarlak yapmak için */
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-container .btn {
+    margin: 0 5px;
+  }

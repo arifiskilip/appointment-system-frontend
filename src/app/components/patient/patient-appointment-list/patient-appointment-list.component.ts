@@ -54,7 +54,7 @@ export class PatientAppointmentListComponent implements OnInit {
 
   canceledAppointment(appointmendId:number){
    this.swalService.callSwal("Randevu İptali","Randevunuzu iptal etmek istediğinizden emin misiniz?",()=>{
-    this.http.post(`Appointment/CancelAppointmentByPatient?AppointmentId=${appointmendId}`)
+    this.http.post(`Appointment/CancelAppointmentByPatient`,{appointmentId:appointmendId})
     .subscribe(()=>{
       this.getPatientAppointments();
       this.swalService.callToast("Randenuz iptal edilmiştir.");

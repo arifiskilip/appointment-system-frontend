@@ -1,4 +1,4 @@
-export interface PatientAppointmentsModel {
+export interface DoctorAppointmentsModel{
     appointmentId:     number;
     doctorId:          number;
     doctorName:        string;
