@@ -25,6 +25,13 @@ export class ValidationMessages {
       email: "Lütfen geçerli bir 'email' adresi giriniz.",
     },
   };
+  title = {
+    unvan: {
+      required: "'Title' boş olmamalı.",
+      minLength: "'Title', 3 karakterden büyük veya eşit olmalıdır.",
+      maxLength: "'Title', 20 karakterden küçük veya eşit olmalıdır.",
+    },
+  };
   register = {
     firstName: {
       required: 'Ad alanı zorunludur.',
