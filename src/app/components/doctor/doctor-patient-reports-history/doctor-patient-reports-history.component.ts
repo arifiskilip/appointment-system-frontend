@@ -1,36 +1,64 @@
-import { PatientReportsModel } from './../../../models/patientReportsModel';
 import { Component, OnInit } from '@angular/core';
-import { BlankComponent } from "../../blank/blank.component";
 import { SharedModule } from '../../../common/shared/shared.module';
-import { HttpService } from '../../../services/http.service';
-import { SwalService } from '../../../services/swal.service';
+import { BlankComponent } from "../../blank/blank.component";
 import { Paginate } from '../../../models/paginateModel';
-import { HttpClient } from '@angular/common/http';
+import { PatientReportsModel } from '../../../models/patientReportsModel';
+import { HttpService } from '../../../services/http.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-patient-reports',
+    selector: 'app-doctor-patient-reports-history',
     standalone: true,
-    templateUrl: './patient-reports.component.html',
-    styleUrl: './patient-reports.component.scss',
-    imports: [BlankComponent, SharedModule]
+    templateUrl: './doctor-patient-reports-history.component.html',
+    styleUrl: './doctor-patient-reports-history.component.scss',
+    imports: [SharedModule, BlankComponent]
 })
-export class PatientReportsComponent implements OnInit{
+export class DoctorPatientReportsHistoryComponent implements OnInit{
+  
+  patientId:number;
   ngOnInit(): void {
-   this.getPatientReports();
+    this.route.paramMap.subscribe(p=>{
+      this.patientId = Number.parseInt(p.get('patientId'));
+    })
+    this.loadAppointments();
   }
-
-  constructor(private http:HttpService, private swal:SwalService) {
+ 
+  constructor(private http:HttpService, private route:ActivatedRoute, private router:Router) {
     
   }
 
   reports:Paginate<PatientReportsModel[]>;
   reportDetail:PatientReportsModel;
-  getPatientReports(){
-    this.http.get<any>(`Report/GetAllReportsPatient?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+  selectedFilter: string = 'all';
+  getPatientReports(patientId:number){
+    this.http.get<any>(`Report/GetPaginatedReportsByPatientId?PatientId=${patientId}&PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
     .subscribe(res=>{
-      this.reports = res.patientReports;
+      this.reports = res;
       this.totalPages = res.pagination?.totalPages;
     })
+  }
+  getPatientReportsByDoctor(patientId:number){
+    this.http.get<any>(`Report/GetPaginatedReportsByPatientIdAndDoctorId?PatientId=${patientId}&PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+    .subscribe(res=>{
+      this.reports = res;
+      this.totalPages = res.pagination?.totalPages;
+    })
+  }
+  goBack(): void {
+    this.router.navigate(['/doctor/patients']); // Geri gitmek için yönlendirme yapılır
+  }
+
+  onFilterChange(event: any): void {
+    this.loadAppointments();
+  }
+
+  loadAppointments(): void {
+    // Filtreye göre randevu verilerini yükleme işlemi yapılır
+    if (this.selectedFilter === 'all') {
+      this.getPatientReports(this.patientId);
+    } else if (this.selectedFilter === 'mine') {
+      this.getPatientReportsByDoctor(this.patientId);
+    }
   }
   setReport(model:PatientReportsModel){
     this.reportDetail = model;
@@ -76,7 +104,7 @@ export class PatientReportsComponent implements OnInit{
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.pageIndex = page;
-      this.getPatientReports();
+      this.loadAppointments();
     }
   }
 
@@ -84,7 +112,7 @@ export class PatientReportsComponent implements OnInit{
   prevPage() {
     if (this.pageIndex > 1) {
       this.pageIndex--;
-      this.getPatientReports();
+      this.loadAppointments();
     }
   }
 
@@ -92,7 +120,7 @@ export class PatientReportsComponent implements OnInit{
   nextPage() {
     if (this.pageIndex < this.totalPages) {
       this.pageIndex++;
-      this.getPatientReports();
+      this.loadAppointments();
     }
   }
 
@@ -100,7 +128,7 @@ export class PatientReportsComponent implements OnInit{
   goToFirstPage() {
     if (this.reports.pagination.pageIndex > 1) {
       this.pageIndex = 1;
-      this.getPatientReports();
+      this.loadAppointments();
     }
   }
 
@@ -108,7 +136,7 @@ export class PatientReportsComponent implements OnInit{
   goToLastPage() {
     if (this.totalPages > this.pageIndex) {
       this.pageIndex = this.totalPages;
-      this.getPatientReports();
+      this.loadAppointments();
     }
   }
 
@@ -130,7 +158,7 @@ export class PatientReportsComponent implements OnInit{
 
   // Kaç adet listeleneceğini beliritir
   goToChangeSelectedCount() {
-    this.getPatientReports();
+    this.loadAppointments();
   }
 
   // Başlangıç indisini hesaplar

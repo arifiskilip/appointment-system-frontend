@@ -1,0 +1,122 @@
+<app-blank pageName="Hastalar">
+  <section class="content">
+    <div class="input-group">
+      <input type="text" [(ngModel)]="searchText" placeholder="Ara" class="form-control">
+      <div class="input-group-append">
+        <button type="button" class="btn btn-success" (click)="searchPatient()">
+          <i class="fas fa-search" style="margin-right: 8px;"></i>
+          Ara
+        </button>
+      </div>
+    </div>
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="row">
+         @if(patients?.items.length>0){
+           @for (item of patients?.items; track $index) {
+            <div
+            class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column"
+          >
+            <div class="card bg-light d-flex flex-fill">
+              <div class="card-header text-muted border-bottom-0">
+                {{item.identityNumber}}
+              </div>
+              <div class="card-body pt-0">
+                <div class="row">
+                  <div class="col-7">
+                    <h2 class="lead"><b>  {{item.firstName+" "+item.lastName}}</b></h2>
+                    <p class="text-muted text-sm">
+                      <b>Yaş: </b>   {{calculateAge(item.birthDate.toString())}}
+                    </p>
+                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fa fa-solid fa-person-half-dress"></i
+                        ></span>
+                        Cinsiyet:   {{item.genderName}}
+                      </li>
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fa fa-solid fa-phone"></i
+                        ></span>
+                        Telefon:   {{item.phoneNumber}}
+                      </li>
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fa fa-solid fa-envelope"></i
+                        ></span>
+                        Email:   {{item.email}}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-5 text-center">
+                    @if(item.imageUrl){
+                      <img
+                      [src]="imageUrl.getImage(item?.imageUrl)"
+                      alt="user-avatar"
+                      class="img-circle img-fluid"
+                    />
+                    }
+                    @else {
+                      @if(item?.genderId ===1){
+                        <img
+                        [src]="imageUrl.getWomenAvatar()"
+                        alt="user-avatar"
+                        class="img-circle img-fluid"
+                      />
+                      }
+                      @else {
+                        <img
+                        [src]="imageUrl.getManAvatar()"
+                        alt="user-avatar"
+                        class="img-circle img-fluid"
+                      />
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="text-right">
+                  <a [routerLink]="'/doctor/patient/appointments/'+item.id" class="btn btn-sm bg-teal">
+                    <i class="fa fa-solid fa-clock-rotate-left"></i>Randevular
+                  </a>
+                  <a [routerLink]="'/doctor/patient/reports/'+item.id" class="btn btn-sm btn-primary">
+                    <i class="fa fa-solid fa-file-pdf"></i> Raporla
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           }
+         }
+         @else {
+            <div class="alert alert-info">Mevcut hasta yok.</div>
+         }
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" (click)="goToFirstPage()">İlk</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="prevPage()">Önceki</a>
+            </li>
+            <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+              <a class="page-link" (click)="goToPage(pageNumber)" [ngClass]="{'active' : pageNumber===pageIndex}">{{ pageNumber }}</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="nextPage()">Sonraki</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="goToLastPage()">Son</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+</app-blank>

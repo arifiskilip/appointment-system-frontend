@@ -16,7 +16,6 @@ import { HomePageComponent } from './components/home/home-page/home-page.compone
 import { DoctorDashboardComponent } from './components/doctor/doctor-dashboard/doctor-dashboard.component';
 import { DoctorProfileComponent } from './components/doctor/doctor-profile/doctor-profile.component';
 import { DoctorScheduleComponent } from './components/doctor/doctor-schedule/doctor-schedule.component';
-import { DoctorTestComponent } from './components/doctor/doctor-test/doctor-test.component';
 import { PatientAppointmentComponent } from './components/patient/patient-appointment/patient-appointment.component';
 import { VerificationCodeComponent } from './components/home/verification-code/verification-code.component';
 import { inject } from '@angular/core';
@@ -26,9 +25,11 @@ import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 import { PatientReportsComponent } from './components/patient/patient-reports/patient-reports.component';
 import { UnauthorizedComponent } from './components/home/unauthorized/unauthorized.component';
-import { map } from 'rxjs';
 import { RoleGuard } from './guards/role.guard';
 import { DoctorAppointmentsComponent } from './components/doctor/doctor-appointments/doctor-appointments.component';
+import { DoctorPatientsComponent } from './components/doctor/doctor-patients/doctor-patients.component';
+import { DoctorPatientAppointmentsHistoryComponent } from './components/doctor/doctor-patient-appointments-history/doctor-patient-appointments-history.component';
+import { DoctorPatientReportsHistoryComponent } from './components/doctor/doctor-patient-reports-history/doctor-patient-reports-history.component';
 
 
 export const routes: Routes = [
@@ -105,13 +106,21 @@ export const routes: Routes = [
         component: DoctorScheduleComponent
       },
       {
-        path: 'test',
-        component: DoctorTestComponent
-      },
-      {
         path:"appointments",
         component:DoctorAppointmentsComponent
-      }
+      },
+      {
+        path:"patients",
+        component:DoctorPatientsComponent
+      },
+      {
+        path:"patient/appointments/:patientId",
+        component:DoctorPatientAppointmentsHistoryComponent
+      },
+      {
+        path:"patient/reports/:patientId",
+        component:DoctorPatientReportsHistoryComponent
+      },
     ],
   },
   {
