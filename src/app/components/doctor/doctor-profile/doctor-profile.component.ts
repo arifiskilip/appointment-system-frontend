@@ -160,6 +160,7 @@ export class DoctorProfileComponent implements OnInit {
           Validators.minLength(3),
           Validators.maxLength(50),
         ],
+        
       ],
       lastName: [
         '',
