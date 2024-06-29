@@ -52,8 +52,21 @@ export class SearchAppointmentComponent implements OnInit {
           this.doctors = res
         })
     }
+    formatDate(date: Date): string {
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const hours = ('0' + date.getHours()).slice(-2);
+      const minutes = ('0' + date.getMinutes()).slice(-2);
+  
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
     onSubmit() {
       if (this.searchForm.valid) {
+        if(this.searchForm.get('startDate').value){
+          let date = new Date(this.searchForm.get('startDate').value);
+          date.getDate() == new Date().getDate() ? this.searchForm.get('startDate').setValue(this.formatDate(new Date())): null; 
+        }
         const queryParams = {
           clinicId: this.searchForm.get('clinic').value || '',
           doctorId: this.searchForm.get('doctor').value || '',

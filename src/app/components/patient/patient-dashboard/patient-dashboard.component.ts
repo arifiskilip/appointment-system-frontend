@@ -26,7 +26,7 @@ export class PatientDashboardComponent implements OnInit {
   patientAppointment:PatientAppointmentsModel;
   chartLabels:string[]=[]
   chartDatas:number[]=[]
-  getPatientDashboardModel(){
+  getPatientDashboardModel(){ 
     this.http.get<PatientDashboardModel>("Appointment/GetPatientDashboardModel")
     .subscribe(res=>{
       this.patientDashboardModel = res

@@ -265,7 +265,6 @@ export class PatientProfileComponent implements OnInit {
         .put<any>('Auth/UpdatePassword', this.patientPasswordUpdateForm.value)
         .subscribe((res) => {
           this.swal.callToast(res.message);
-          this.patientPasswordUpdateForm.reset();
         });
     }
   }

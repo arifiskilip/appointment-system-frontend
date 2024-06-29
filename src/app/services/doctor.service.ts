@@ -17,7 +17,7 @@ export class DoctorService {
     this.userSubject.next(user);
   }
 
-  getPatientDetail(url:string){
+  getDoctortDetail(url:string){
     return this.http.get<DoctorModel>(url);
   }
 }
