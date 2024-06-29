@@ -1,7 +1,7 @@
 <app-blank pageName="Hastalar">
   <section class="content">
     <div class="card">
-      <div class="card-header">
+      <!-- <div class="card-header">
         <h3 class="card-title">Hastalar</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -11,36 +11,26 @@
             <i class="fas fa-times"></i>
           </button>
         </div>
-      </div>
+      </div> -->
 
 
       <div class="card-body p-0" style="display: block">
         <div class="row mb-3 mt-3">
-          <div class="col-md-4 col-sm-12 mb-2">
-            <select class="form-control">
-              <option value="">Bölüme Göre Filtrele</option>
-              <option value="kardiyoloji">Kardiyoloji</option>
-              <option value="ortopedi">Ortopedi</option>
-              <!-- Diğer bölümler -->
-            </select>
-          </div>
-          <div class="col-md-4 col-sm-12 mb-2">
-            <select class="form-control">
-              <option value="">Ünvana Göre Filtrele</option>
-              <option value="prof">Profesör</option>
-              <option value="doc">Doçent</option>
-              <!-- Diğer unvanlar -->
-            </select>
-          </div>
-          <div class="col-md-4 col-sm-12">
-            <input type="text" class="form-control" placeholder="Doktor Ara">
+          <div class="input-group">
+            <input type="text" [(ngModel)]="searchText" placeholder="Hasta Ara" class="form-control">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-success" (click)="searchPatient()">
+                <i class="fas fa-search" style="margin-right: 8px;"></i>
+                Ara
+              </button>
+            </div>
           </div>
         </div>
 
         <table class="table table-striped table-hover projects">
           <thead>
             <tr>
-              <th style="width: 1%" >#</th>
+              <th style="width: 1%">#</th>
               <th style="width: 20%">Hasta Adı</th>
               <th style="width: 15%">Resim</th>
               <th style="width: 15%">Yaş</th>
@@ -51,50 +41,67 @@
           </thead>
           <tbody>
             @if(patients?.items.length > 0) {
-              @for (item of patients?.items; track $index) {
-                <tr>
-                  <td>#</td>
-                  <td>
-                    <a> {{item.firstName + ' ' + item.lastName}}</a>
-                    <br />
-                    <small> {{item.genderName}} </small>
-                  </td>
-                  <td>
-                    <ul class="list-inline">
-                      <li class="list-inline-item">
-                        <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td>
-                    <a> {{calculateAge(item.birthDate.toString())}}</a>
-                  </td>
-                  <td>
-                    <a>{{item.phoneNumber}}</a>
-                  </td>
-                  <td class="project-state">
-                    <span class="badge" [ngClass]="!item.isDeleted ? 'badge-success' : 'badge-danger'">{{ !item.isDeleted ? 'Aktif' : 'Pasif' }}</span>
-                  </td>
-                  <td class="project-actions text-right">
-                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="'/admin/patient-details/' + item.id">
-                      <i class="fas fa-circle-info"> </i>
-                      Detay
-                    </button>
-                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModalLabel" (click)="getPatientDetail(item.id)">
-                      <i class="fas fa-pencil-alt"> </i>
-                      Düzenle
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" href="#">
+            @for (item of patients?.items; track $index) {
+            <tr>
+              <td>#</td>
+              <td>
+                <a> {{item.firstName + ' ' + item.lastName}}</a>
+                <br />
+                <small> {{item.genderName}} </small>
+              </td>
+              <td>
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <a> {{calculateAge(item.birthDate.toString())}}</a>
+              </td>
+              <td>
+                <a>{{item.phoneNumber}}</a>
+              </td>
+              <td class="project-state">
+                <span class="badge" [ngClass]="!item.isDeleted ? 'badge-success' : 'badge-danger'">{{ !item.isDeleted ?
+                  'Aktif' : 'Pasif' }}</span>
+              </td>
+              <td class="project-actions text-right">
+
+                <button type="button" class="btn btn-primary btn-sm" [routerLink]="'/admin/patient-details/' + item.id">
+                  <i class="fas fa-circle-info"> </i>
+                  Detay
+                </button>
+                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModalLabel"
+                  (click)="getPatientDetail(item.id)">
+                  <i class="fas fa-pencil-alt"> </i>
+                  Düzenle
+                </button>
+
+                @if(!item.isDeleted) {
+                <button class="btn btn-danger btn-sm" style="width: 86px" (click)="confirmDelete(item)">
+                  <i class="fas fa-trash me-2"></i>
+                  Sil
+                </button>
+                }
+                @else {
+                <button class="btn btn-info btn-sm" (click)="confirmActivate(item)">
+                  <i class="fas fa-plus me-2"></i>
+                  Aktif Et
+                </button>
+                }
+
+                <!-- <button type="button" [ngClass]="!item.isDeleted ? 'btn btn-info btn-sm' : 'btn btn-danger btn-sm'" (click)="confirmDelete(item)">
                       <i class="fas fa-trash"> </i>
                       Sil
-                    </button>
-                  </td>
-                </tr>
-              }
+                    </button> -->
+              </td>
+            </tr>
+            }
             }
             @else {
-              <div class="alert alert-info">Mevcut hasta yok.</div>
-           }
+            <div class="alert alert-info">Mevcut hasta yok.</div>
+            }
           </tbody>
           <button class="btn btn-outline-success m-3" data-toggle="modal" data-target="#addModal">Ekle</button>
         </table>
@@ -115,7 +122,8 @@
     </div>
 
     <!-- Add/Edit Modal -->
-    <div class="modal fade" id="updateModalLabel" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateModalLabel" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <form class="form-horizontal" [formGroup]="patientEditForm">
           <div class="modal-content">
@@ -129,22 +137,29 @@
               <div class="form-group row">
                 <label for="firstName" class="col-sm-2 col-form-label">Ad</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="firstName" placeholder="İsim" formControlName="firstName" [appValid]="firstName.valid" />
+                  <input type="text" class="form-control" id="firstName" placeholder="İsim" formControlName="firstName"
+                    [appValid]="firstName.valid" />
                   <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
-                    <div *ngIf="firstName.errors?.required">{{ validationMessages.patientEdit.firstName.required }}</div>
-                    <div *ngIf="firstName.errors?.minlength">{{ validationMessages.patientEdit.firstName.minlength }}</div>
-                    <div *ngIf="firstName.errors?.maxlength">{{ validationMessages.patientEdit.firstName.maxlength }}</div>
+                    <div *ngIf="firstName.errors?.required">{{ validationMessages.patientEdit.firstName.required }}
+                    </div>
+                    <div *ngIf="firstName.errors?.minlength">{{ validationMessages.patientEdit.firstName.minlength }}
+                    </div>
+                    <div *ngIf="firstName.errors?.maxlength">{{ validationMessages.patientEdit.firstName.maxlength }}
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="lastName" class="col-sm-2 col-form-label">Soyad</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="lastName" placeholder="Soyisim" formControlName="lastName" [appValid]="lastName.valid" />
+                  <input type="text" class="form-control" id="lastName" placeholder="Soyisim" formControlName="lastName"
+                    [appValid]="lastName.valid" />
                   <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
                     <div *ngIf="lastName.errors?.required">{{ validationMessages.patientEdit.lastName.required }}</div>
-                    <div *ngIf="lastName.errors?.minlength">{{ validationMessages.patientEdit.lastName.minlength }}</div>
-                    <div *ngIf="lastName.errors?.maxlength">{{ validationMessages.patientEdit.lastName.maxlength }}</div>
+                    <div *ngIf="lastName.errors?.minlength">{{ validationMessages.patientEdit.lastName.minlength }}
+                    </div>
+                    <div *ngIf="lastName.errors?.maxlength">{{ validationMessages.patientEdit.lastName.maxlength }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -169,17 +184,22 @@
               <div class="form-group row">
                 <label for="phone" class="col-sm-2 col-form-label">Telefon Numarası</label>
                 <div class="col-sm-10">
-                  <input type="tel" class="form-control" id="phone" placeholder="Telefon" formControlName="phoneNumber" [appValid]="phoneNumber.valid" />
-                  <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
-                    <div *ngIf="phoneNumber.errors?.required">{{ validationMessages.patientEdit.phoneNumber.required }}</div>
-                    <div *ngIf="phoneNumber.errors?.phoneNumber">{{ validationMessages.patientEdit.phoneNumber.checkPhone }}</div>
+                  <input type="tel" class="form-control" id="phone" placeholder="Telefon" formControlName="phoneNumber"
+                    [appValid]="phoneNumber.valid" />
+                  <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                    class="invalid-feedback">
+                    <div *ngIf="phoneNumber.errors?.required">{{ validationMessages.patientEdit.phoneNumber.required }}
+                    </div>
+                    <div *ngIf="phoneNumber.errors?.phoneNumber">{{
+                      validationMessages.patientEdit.phoneNumber.checkPhone }}</div>
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="birthday" class="col-sm-2 col-form-label">Doğum Tarihi</label>
                 <div class="col-sm-10">
-                  <input type="date" class="form-control" id="birthday" placeholder="Doğum Tarihi" formControlName="birthDate" [appValid]="birthDate.valid" />
+                  <input type="date" class="form-control" id="birthday" placeholder="Doğum Tarihi"
+                    formControlName="birthDate" [appValid]="birthDate.valid" />
                   <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="invalid-feedback">
                     <div *ngIf="birthDate.errors?.required">{{ validationMessages.register.birthDate.required }}</div>
                   </div>
@@ -188,7 +208,8 @@
             </div>
             <div class="modal-footer">
               <div class="col-sm-6 text-left">
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close" (click)="update()">Güncelle</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close"
+                  (click)="update()">Güncelle</button>
               </div>
             </div>
           </div>

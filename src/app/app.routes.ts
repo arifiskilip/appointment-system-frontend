@@ -97,7 +97,7 @@ export const routes: Routes = [
     path: 'doctor',
     component: DoctorLayoutComponent,
     canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified(),RoleGuard],
-    data: { roles: ['Doctor'] },
+    data: { roles: ['Doctor','Admin'] },
     children: [
       {
         path: '',

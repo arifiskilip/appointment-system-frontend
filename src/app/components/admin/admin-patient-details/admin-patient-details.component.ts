@@ -331,7 +331,7 @@ groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   saveImage(): void {
     if (this.patientEditForm.valid) {
       const formData: FormData = new FormData();
-      const patientId = this.authService.isAuthenticatedByUserId.toString();
+      const patientId = this.route.snapshot.paramMap.get('id');
       formData.append('patientId', patientId);
       formData.append('file', this.image);
       this.http.post<any>('Patient/AddImage', formData).subscribe((res) => {

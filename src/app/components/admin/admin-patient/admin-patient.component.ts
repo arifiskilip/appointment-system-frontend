@@ -12,6 +12,7 @@ import { SharedModule } from '../../../common/shared/shared.module';
 import { ValidDirective } from '../../../common/directives/valid.directive';
 import { Paginate } from '../../../models/paginateModel';
 import { ImageUrl } from '../../../common/constants/imageUrl';
+import { take } from 'rxjs';
 declare var $: any;
 
 
@@ -30,6 +31,7 @@ export class AdminPatientComponent implements OnInit{
   patientEditForm: FormGroup;
   patient: PatientModel;
   validationMessages: ValidationMessages = new ValidationMessages();
+  searchText:string="";
 
   constructor(
     private router: Router,
@@ -49,6 +51,7 @@ export class AdminPatientComponent implements OnInit{
   getPatientDetail(userId: number): void {
     this.http
       .get<PatientModel>(`Patient/GetPatientById?Id=${userId}`)
+      .pipe(take(1))
       .subscribe((res) => {
         this.patient = res;
         const formattedDate = this.formatDate(res.birthDate.toString());
@@ -152,6 +155,7 @@ export class AdminPatientComponent implements OnInit{
       .get<any>(
         `Patient/GetPatientsPaginated?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
       )
+      .pipe(take(1))
       .subscribe((res) => {
         this.patients = res.patients;
         this.totalPages = this.patients.pagination.totalPages;
@@ -169,6 +173,52 @@ export class AdminPatientComponent implements OnInit{
     }
 
     return age;
+  }
+
+
+  confirmDelete(patient: PatientModel): void {
+    const confirmation = window.confirm(`${patient.firstName} ${patient.lastName} isimli hastayı silmek istediğinize emin misiniz?`);
+    if (confirmation) {
+      this.changeIsDeletedPatient(patient.id);
+    }
+  }
+
+  confirmActivate(patient: PatientModel): void {
+    const confirmation = window.confirm(`${patient.firstName} ${patient.lastName} isimli hastayı aktif etmek istediğinize emin misiniz?`);
+    if (confirmation) {
+      this.changeIsDeletedPatient(patient.id);
+    }
+  }
+
+  changeIsDeletedPatient(patientId: number) {
+    if (patientId == null) {
+      console.error('Patient ID is required');
+      return;
+    }
+
+    this.http.post<any>(`Patient/DeletePatientByAdmin?PatientId=${patientId}`)
+      .subscribe(
+        () => {
+          this.swal.callToast('Değişiklik gerçekleşti!');
+          this.getPatients(); // Listeyi yenile
+      });
+  }
+
+  searchPatient(){
+    if(this.searchText.length>1){
+      this.http
+      .get<any>(
+        `Patient/GetSearchPatients?SearchTerm=${this.searchText}&Index=${this.pageIndex}&Size=${this.pageSize}`
+      )
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.patients = res;
+        this.totalPages = this.patients.pagination.totalPages;
+      });
+    }
+    else{
+      this.getPatients();
+    }
   }
 
   //Pagination
