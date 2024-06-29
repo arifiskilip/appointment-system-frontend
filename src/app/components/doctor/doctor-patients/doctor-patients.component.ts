@@ -5,6 +5,7 @@ import { Paginate } from '../../../models/paginateModel';
 import { PatientModel } from '../../../models/patientModel';
 import { ImageUrl } from '../../../common/constants/imageUrl';
 import { SharedModule } from '../../../common/shared/shared.module';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-doctor-patients',
@@ -31,6 +32,7 @@ export class DoctorPatientsComponent implements OnInit{
       .get<any>(
         `Patient/GetPatientsPaginated?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
       )
+      .pipe(take(1))
       .subscribe((res) => {
         this.patients = res.patients;
         this.totalPages = this.patients.pagination.totalPages;
@@ -43,6 +45,7 @@ export class DoctorPatientsComponent implements OnInit{
       .get<any>(
         `Patient/GetSearchPatients?SearchTerm=${this.searchText}&Index=${this.pageIndex}&Size=${this.pageSize}`
       )
+      .pipe(take(1))
       .subscribe((res) => {
         this.patients = res;
         this.totalPages = this.patients.pagination.totalPages;
