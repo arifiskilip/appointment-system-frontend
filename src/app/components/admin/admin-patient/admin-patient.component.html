@@ -12,6 +12,8 @@
           </button>
         </div>
       </div>
+
+
       <div class="card-body p-0" style="display: block">
         <div class="row mb-3 mt-3">
           <div class="col-md-4 col-sm-12 mb-2">
@@ -35,60 +37,69 @@
           </div>
         </div>
 
-        <table class="table table-striped projects">
+        <table class="table table-striped table-hover projects">
           <thead>
             <tr>
-              <th style="width: 1%">#</th>
+              <th style="width: 1%" >#</th>
               <th style="width: 20%">Hasta Adı</th>
               <th style="width: 15%">Resim</th>
               <th style="width: 15%">Yaş</th>
-              <th style="width: 15%">Son Ziyaret</th>
+              <th style="width: 15%">Telefon Numarası</th>
               <th style="width: 8%" class="text-center">Durum</th>
               <th style="width: 30%"></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#</td>
-              <td>
-                <a> Arif İskilip</a>
-                <br />
-                <small> Cinsiyet </small>
-              </td>
-              <td>
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
-                  </li>
-                </ul>
-              </td>
-              <td>
-                <a> 24</a>
-              </td>
-              <td>
-                <a> 01.01.2023</a>
-              </td>
-              <td class="project-state">
-                <span class="badge badge-success">Success</span>
-              </td>
-              <td class="project-actions text-right">
-                <button type="button" class="btn btn-primary btn-sm" (click)="onButtonClick()">
-                  <i class="fas fa-circle-info"> </i>
-                  Detay
-                </button>
-                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#addEditModal">
-                  <i class="fas fa-pencil-alt"> </i>
-                  Düzenle
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" href="#">
-                  <i class="fas fa-trash"> </i>
-                  Sil
-                </button>
-              </td>
-            </tr>
+            @if(patients?.items.length > 0) {
+              @for (item of patients?.items; track $index) {
+                <tr>
+                  <td>#</td>
+                  <td>
+                    <a> {{item.firstName + ' ' + item.lastName}}</a>
+                    <br />
+                    <small> {{item.genderName}} </small>
+                  </td>
+                  <td>
+                    <ul class="list-inline">
+                      <li class="list-inline-item">
+                        <img alt="Avatar" class="table-avatar" src="https://avatars.githubusercontent.com/u/71379630?v=4" />
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <a> {{calculateAge(item.birthDate.toString())}}</a>
+                  </td>
+                  <td>
+                    <a>{{item.phoneNumber}}</a>
+                  </td>
+                  <td class="project-state">
+                    <span class="badge" [ngClass]="!item.isDeleted ? 'badge-success' : 'badge-danger'">{{ !item.isDeleted ? 'Aktif' : 'Pasif' }}</span>
+                  </td>
+                  <td class="project-actions text-right">
+                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="'/admin/patient-details/' + item.id">
+                      <i class="fas fa-circle-info"> </i>
+                      Detay
+                    </button>
+                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModalLabel" (click)="getPatientDetail(item.id)">
+                      <i class="fas fa-pencil-alt"> </i>
+                      Düzenle
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" href="#">
+                      <i class="fas fa-trash"> </i>
+                      Sil
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+            @else {
+              <div class="alert alert-info">Mevcut hasta yok.</div>
+           }
           </tbody>
           <button class="btn btn-outline-success m-3" data-toggle="modal" data-target="#addModal">Ekle</button>
         </table>
+
+
       </div>
       <div class="card-footer">
         <nav aria-label="Contacts Page Navigation">
@@ -104,7 +115,7 @@
     </div>
 
     <!-- Add/Edit Modal -->
-    <div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateModalLabel" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <form class="form-horizontal" [formGroup]="patientEditForm">
           <div class="modal-content">
@@ -177,7 +188,7 @@
             </div>
             <div class="modal-footer">
               <div class="col-sm-6 text-left">
-                <button type="submit" (click)="update()" class="btn btn-success">Güncelle</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close" (click)="update()">Güncelle</button>
               </div>
             </div>
           </div>

@@ -46,7 +46,7 @@ export const routes: Routes = [
   {
     path: 'verificationcode',
     component: VerificationCodeComponent,
-    canActivate: [()=> inject(AuthService).isUserVerified()],
+    canActivate: [()=> inject(AuthService).isAuthenticated()],
     data: { roles: 'Patient' }
   },
   {

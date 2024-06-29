@@ -1,6 +1,6 @@
 import { PatientService } from './../../../services/patient.service';
 import { AuthService } from './../../../services/auth.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, } from '@angular/core';
 import { BlankComponent } from "../../blank/blank.component";
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -10,6 +10,8 @@ import { SwalService } from '../../../services/swal.service';
 import { ValidationMessages } from '../../../common/constants/validationMessages';
 import { SharedModule } from '../../../common/shared/shared.module';
 import { ValidDirective } from '../../../common/directives/valid.directive';
+import { Paginate } from '../../../models/paginateModel';
+import { ImageUrl } from '../../../common/constants/imageUrl';
 declare var $: any;
 
 
@@ -21,8 +23,10 @@ declare var $: any;
     imports: [BlankComponent, SharedModule, ValidDirective]
 })
 export class AdminPatientComponent implements OnInit{
-  @Input() id?: number;
 
+  @ViewChild('updateEditModal') updateEditModal: ElementRef;
+  patients:Paginate<PatientModel[]>;
+  imageUrl:ImageUrl = new ImageUrl();
   patientEditForm: FormGroup;
   patient: PatientModel;
   validationMessages: ValidationMessages = new ValidationMessages();
@@ -38,20 +42,17 @@ export class AdminPatientComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.getPatientDetail();
     this.createPatientEditForm();
-    this.createPatientEditForm();
+    this.getPatients();
   }
 
-  getPatientDetail(): void {
-    const userId = this.authService.isAuthenticatedByUserId;
+  getPatientDetail(userId: number): void {
     this.http
       .get<PatientModel>(`Patient/GetPatientById?Id=${userId}`)
       .subscribe((res) => {
         this.patient = res;
         const formattedDate = this.formatDate(res.birthDate.toString());
         this.patientEditForm.patchValue({ ...res, birthDate: formattedDate });
-        this.patientService.setUser(res);
       });
   }
 
@@ -120,7 +121,9 @@ export class AdminPatientComponent implements OnInit{
         .put('Patient/UpdatePatient', this.patientEditForm.value)
         .subscribe(() => {
           this.swal.callToast('Güncelleme işlemi başarılı!');
-          this.getPatientDetail();
+          this.getPatientDetail(this.patientEditForm.value.id);
+          // $('#updateModalLabel').modal('hide'); // Modal'ı kapat
+          this.getPatients(); // Hastalar listesini güncelle
         });
     }
   }
@@ -144,50 +147,102 @@ export class AdminPatientComponent implements OnInit{
     return this.patientEditForm.get('bloodTypeId');
   }
 
-  onButtonClick() {
-    this.router.navigate([`/admin/patient-details/${this.id}`])
+  getPatients(){
+    this.http
+      .get<any>(
+        `Patient/GetPatientsPaginated?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
+      )
+      .subscribe((res) => {
+        this.patients = res.patients;
+        this.totalPages = this.patients.pagination.totalPages;
+      });
   }
 
-  doctorSchedule = {
-    day: '',
-    startTime: '',
-    endTime: '',
-    patientInterval: ''
-  };
+  calculateAge(birthDateString: string): number {
+    const birthDate = new Date(birthDateString);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
 
-  schedules = [
-    {
-      id: 1,
-      day: '2024-06-05',
-      startTime: '09:00',
-      endTime: '12:00',
-      patientInterval: 30
-    },
-    {
-      id: 2,
-      day: '2024-06-06',
-      startTime: '13:00',
-      endTime: '17:00',
-      patientInterval: 20
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
-  ];
-  selectedSchedule: any;
 
-  loadSchedules() {
-
+    return age;
   }
 
-  editSchedule(schedule:any) {
-    this.selectedSchedule = { ...schedule };
-    $('#editScheduleModal').modal('show');
+  //Pagination
+  pageSize: number = 10;
+
+  // Mevcut sayfa numarası
+  pageIndex: number = 1;
+
+  // Toplam sayfa sayısı
+  totalPages: number;
+  // Sayfaya git
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.pageIndex = page;
+      this.getPatients();
+    }
   }
 
-  onEditSubmit() {
-
-      $('#editScheduleModal').modal('hide');
+  // Önceki sayfaya git
+  prevPage() {
+    if (this.pageIndex > 1) {
+      this.pageIndex--;
+      this.getPatients();
+    }
   }
 
-  deleteSchedule() {
-      this.loadSchedules();
+  // Sonraki sayfaya git
+  nextPage() {
+    if (this.pageIndex < this.totalPages) {
+      this.pageIndex++;
+      this.getPatients();
+    }
   }
+
+  // İlk sayfaya git
+  goToFirstPage() {
+    if (this.patients.pagination.pageIndex > 1) {
+      this.pageIndex = 1;
+      this.getPatients();
+    }
+  }
+
+  // Son sayfaya git
+  goToLastPage() {
+    if (this.totalPages > this.pageIndex) {
+      this.pageIndex = this.totalPages;
+      this.getPatients();
+    }
+  }
+
+  // Sayfa numaralarını döndürür
+  getPageNumbers(): number[] {
+    const pageNumbers = [];
+    const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
+    const startPage = Math.max(
+      1,
+      this.pageIndex - Math.floor(maxPagesToShow / 2)
+    );
+    const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  // Kaç adet listeleneceğini beliritir
+  goToChangeSelectedCount() {
+    this.getPatients();
+  }
+
+  // Başlangıç indisini hesaplar
+  calculateStartIndex(): number {
+    return (this.pageIndex - 1) * this.pageSize + 1;
+  }
+
 }

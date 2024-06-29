@@ -19,6 +19,7 @@ import { ImageUrl } from '../../../common/constants/imageUrl';
 import { PatientService } from '../../../services/patient.service';
 import { Paginate } from '../../../models/paginateModel';
 import { PatientAppointmentsModel } from '../../../models/patientAppointmentsModel';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-patient-profile',
@@ -46,7 +47,8 @@ export class AdminPatientDetailsComponent implements OnInit {
     private http: HttpService,
     private formBuilder: FormBuilder,
     private swal: SwalService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -63,30 +65,46 @@ export class AdminPatientDetailsComponent implements OnInit {
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
-  groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
+  // groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
+  // getPatientAppointments() {
+  //   this.http
+  //     .get<any>(
+  //       `Appointment/GetPaginatedPatientAppointments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
+  //     )
+  //     .subscribe((res) => {
+  //       this.patientAppointments = res.patientAppointments;
+  //       this.patientAppointments.items.forEach((appointment) => {
+  //         const date = new Date(appointment.intervalDate).toLocaleDateString(
+  //           'tr-TR',
+  //           { year: 'numeric', month: 'short', day: 'numeric' }
+  //         );
+  //         if (!this.groupedAppointments[date]) {
+  //           this.groupedAppointments[date] = [];
+  //         }
+  //         this.groupedAppointments[date].push(appointment);
+  //       });
+  //     });
+  // }
+groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   getPatientAppointments() {
-    this.http
-      .get<any>(
-        `Appointment/GetPaginatedPatientAppointments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
-      )
-      .subscribe((res) => {
-        this.patientAppointments = res.patientAppointments;
-        this.patientAppointments.items.forEach((appointment) => {
-          const date = new Date(appointment.intervalDate).toLocaleDateString(
-            'tr-TR',
-            { year: 'numeric', month: 'short', day: 'numeric' }
-          );
-          if (!this.groupedAppointments[date]) {
-            this.groupedAppointments[date] = [];
-          }
-          this.groupedAppointments[date].push(appointment);
+    this.route.paramMap.subscribe((params) => {
+      const patientId = params.get('id');
+      this.http
+        .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}`)
+        .subscribe((res) => {
+          this.patientAppointments = res.patientAppointments;
         });
-      });
+    });
+
   }
 
   getDates(): string[] {
     return Object.keys(this.groupedAppointments);
   }
+
+  // getDates(): string[] {
+  //   return Object.keys(this.groupedAppointments);
+  // }
 
   getStatusIcon(appointmentStatus: string): string {
     switch (appointmentStatus) {
@@ -129,16 +147,24 @@ export class AdminPatientDetailsComponent implements OnInit {
       this.getPatientAppointments();
     }
   }
+
   getPatientDetail(): void {
-    const userId = this.authService.isAuthenticatedByUserId;
-    this.http
-      .get<PatientModel>(`Patient/GetPatientById?Id=${userId}`)
-      .subscribe((res) => {
-        this.patient = res;
-        const formattedDate = this.formatDate(res.birthDate.toString());
-        this.patientEditForm.patchValue({ ...res, birthDate: formattedDate });
-        this.patientService.setUser(res);
-      });
+    // URL'den hasta ID'sini al
+    const patientId = this.route.snapshot.paramMap.get('id');
+
+    if (patientId) {
+      this.http
+        .get<PatientModel>(`Patient/GetPatientById?Id=${patientId}`)
+        .subscribe((res) => {
+          this.patient = res;
+          const formattedDate = this.formatDate(res.birthDate.toString());
+          this.patientEditForm.patchValue({ ...res, birthDate: formattedDate });
+          this.patientService.setUser(res);
+        });
+    } else {
+      console.error('Hasta ID bulunamadı');
+      // Hata durumunu ele alın, örneğin kullanıcıyı başka bir sayfaya yönlendirin
+    }
   }
 
   formatDate(date: string): string {
