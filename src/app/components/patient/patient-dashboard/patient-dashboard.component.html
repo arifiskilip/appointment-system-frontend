@@ -74,8 +74,8 @@
               <div class="card-body">
                 <p>Doktor: {{patientAppointment?.doctorName}}</p>
                 <p>Bölüm: {{patientAppointment?.branchName}}</p>
-                <p>Tarih: {{patientAppointment?.intervalDate | date : "dd/MM/yyyy HH:mm"}}</p>
-                <button class="btn btn-danger">
+                <p>Tarih: {{patientAppointment?.intervalDate | date : "dd MMMM yyyy HH:mm"}}</p>
+                <button (click)="canceledAppointment(patientAppointment.appointmentId)" class="btn btn-danger">
                   <i class="fa fa-times"></i>
                   İptal Et
                 </button>
