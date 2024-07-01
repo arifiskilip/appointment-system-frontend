@@ -42,7 +42,7 @@
                         <i class="fas fa-cog"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Güncelle</a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#updateUserModal" (click)="setDoctor(doctor.id)">Güncelle</a>
                         @if(doctor.isDeleted){
                           <a class="dropdown-item" (click)="doctorActive(doctor.id)">Aktif Et</a>
                         }
@@ -70,7 +70,7 @@
                           </li>
                           <li class="small">
                             <span class="fa-li"><i class="fas fa-lg fa-birthday-cake"></i></span>
-                            Yaş: {{doctor.birthDate}}
+                            Yaş: {{calculateAge(doctor.birthDate.toString())}}
                           </li>
                           <li class="small">
                             <span class="fa-li"><i class="fa fa-lg fa-user-xmark"></i></span>
@@ -117,6 +117,12 @@
           @else {
             <div class="alert alert-warning">Mevcut Doktor Bulunmamakta.</div>
           }
+          
+        
+          
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-success" data-toggle="modal" data-target="#registerDoctorModal">Doktor Ekle</button>
         </div>
       </div>
 
@@ -147,5 +153,292 @@
         </nav>
       </div>
     </div>
+
+    <!-- doctor-update.component.html -->
+<div class="modal" tabindex="-1" role="dialog" id="updateUserModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Kullanıcı Bilgilerini Güncelle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="doctorUpdateForm">
+          <!-- Other form fields -->
+          <div class="form-group">
+            <label for="firstName">Ad <i class="fa fa-user"></i></label>
+            <input type="text" id="firstName" formControlName="firstName" class="form-control" />
+            <div *ngIf="doctorUpdateForm.get('firstName').invalid && doctorUpdateForm.get('firstName').touched" class="text-danger">
+              Ad zorunludur.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Soyad <i class="fa fa-user"></i></label>
+            <input type="text" id="lastName" formControlName="lastName" class="form-control" />
+            <div *ngIf="doctorUpdateForm.get('lastName').invalid && doctorUpdateForm.get('lastName').touched" class="text-danger">
+              Soyad zorunludur.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Telefon Numarası <i class="fa fa-phone"></i></label>
+            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" />
+            <div *ngIf="doctorUpdateForm.get('phoneNumber').invalid && doctorUpdateForm.get('phoneNumber').touched" class="text-danger">
+              Geçerli bir telefon numarası girin.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="birthDate">Doğum Tarihi <i class="fa fa-calendar"></i></label>
+            <input type="date" id="birthDate" formControlName="birthDate" class="form-control" />
+            <div *ngIf="doctorUpdateForm.get('birthDate').invalid && doctorUpdateForm.get('birthDate').touched" class="text-danger">
+              Geçerli bir doğum tarihi girin.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="titleId">Ünvan <i class="fa fa-id-badge"></i></label>
+            <select id="titleId" formControlName="titleId" class="form-control">
+              <option *ngFor="let title of titles" [value]="title.id">{{ title.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="branchId">Bölüm <i class="fa fa-building"></i></label>
+            <select id="branchId" formControlName="branchId" class="form-control">
+              <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+            </select>
+          </div>
+          <button type="button" (click)="update()" class="btn btn-primary" [disabled]="doctorUpdateForm.invalid">Güncelle</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- Register Modal -->
+ <div class="modal" tabindex="-1" role="dialog" id="registerDoctorModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Doktor Ekle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm">
+          <!-- Other form fields -->
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName"
+              placeholder="Ad"
+              [appValid]="firstName.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+              <div *ngIf="firstName.errors?.['required']">
+                {{ validationMessages.register.firstName.required }}
+              </div>
+              <div *ngIf="firstName.errors?.minlength">
+                {{ validationMessages.register.firstName.minlength }}
+              </div>
+              <div *ngIf="firstName.errors?.maxlength">
+                {{ validationMessages.register.firstName.maxlength }}
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName"
+              placeholder="Soyad"
+              [appValid]="lastName.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+              <div *ngIf="lastName.errors?.required">
+                {{ validationMessages.register.lastName.required }}
+              </div>
+              <div *ngIf="lastName.errors?.minlength">
+                {{ validationMessages.register.lastName.minlength }}
+              </div>
+              <div *ngIf="lastName.errors?.maxlength">
+                {{ validationMessages.register.lastName.maxlength }}
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="Email"
+              [appValid]="email.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+              <div *ngIf="email.errors?.required">
+                {{ validationMessages.register.email.required }}
+              </div>
+              <div *ngIf="email.errors?.email">
+                {{ validationMessages.register.email.email }}
+              </div>
+              <div *ngIf="email.errors?.minlength">
+                {{ validationMessages.register.email.minlength }}
+              </div>
+              <div *ngIf="email.errors?.maxlength">
+                {{ validationMessages.register.email.maxlength }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phoneNumber"
+              placeholder="Telefon Numarası"
+              [appValid]="phoneNumber.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-phone"></span>
+              </div>
+            </div>
+            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="invalid-feedback">
+              <div *ngIf="phoneNumber.errors?.required">
+                {{ validationMessages.register.phoneNumber.required }}
+              </div>
+              <div *ngIf="phoneNumber.errors?.phoneNumber">
+                {{ validationMessages.register.phoneNumber.checkPhone }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="identityNumber"
+              placeholder="Kimlik Numarası"
+              [appValid]="identityNumber.valid"
+              maxlength="11"
+              minlength="11"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-address-card"></span>
+              </div>
+            </div>
+            <div *ngIf="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)" class="invalid-feedback">
+              <div *ngIf="identityNumber.errors.required">Kimlik numarası zorunlu.</div>
+              <div *ngIf="identityNumber.errors.minlength || identityNumber.errors.maxlength">Kimlik numarası 11 haneli olmalıdır.</div>
+              <div *ngIf="identityNumber.errors.identityNumber">{{ identityNumber.errors.identityNumber.message }}</div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="Şifre"
+              [appValid]="password.valid"
+            />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+              <div *ngIf="password.errors?.required">
+                {{ validationMessages.register.password.required }}
+              </div>
+              <div *ngIf="password.errors?.minlength">
+                {{ validationMessages.register.password.minlength }}
+              </div>
+              <div *ngIf="password.errors?.maxlength">
+                {{ validationMessages.register.password.maxlength }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <select class="form-control" formControlName="genderId"    [appValid]="gender.valid">
+              <option value="">Cinsiyet</option>
+              <option value="1">Kadın</option>
+              <option value="2">Erkek</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-venus-mars"></span>
+              </div>
+            </div>
+            <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="invalid-feedback">
+              <div *ngIf="gender.errors?.required">
+                {{ validationMessages.register.gender.required }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input class="form-control" type="date" formControlName="birthDate" placeholder="Doğum tarihi" [appValid]="birthDate.valid">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-calendar-days"></span>
+              </div>
+            </div>
+            <div *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="invalid-feedback">
+              <div *ngIf="birthDate.errors?.required">
+                {{ validationMessages.register.birthDate.required }}
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <select id="titleId" formControlName="titleId" class="form-control" [appValid]="getTitleId.valid">
+              <option *ngFor="let title of titles" [value]="title.id">{{ title.name }}</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fa fa-id-badge"></span>
+              </div>
+            </div>
+            <div *ngIf="getTitleId.invalid && (getTitleId.dirty || getTitleId.touched)" class="invalid-feedback">
+              <div *ngIf="getTitleId.errors?.required">
+                Ünvan alanı zorunludur.
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <select id="branchId" formControlName="branchId" class="form-control" [appValid]="getBranchId.valid">
+              <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fa fa-building"></span>
+              </div>
+            </div>
+            <div *ngIf="getBranchId.invalid && (getBranchId.dirty || getBranchId.touched)" class="invalid-feedback">
+              <div *ngIf="getBranchId.errors?.required">
+                Branş alanı zorunludur.
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="doctorRegister()" [disabled]="!registerForm.valid">Ekle</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   </section>
 </app-blank>
