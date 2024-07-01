@@ -28,7 +28,7 @@
 
           </thead>
           <tbody>
-            @if (appointmentIntervalsSearchModel.length>0) {
+            @if (appointmentIntervalsSearchModel?.length>0) {
               @for (item of appointmentIntervalsSearchModel; track $index) {
                 <tr style="cursor: pointer;" (click)="getPaginatedGroupedIntervalsByDoctorId(item.doctorId)">
                   <td>

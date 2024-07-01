@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BlankComponent } from '../../blank/blank.component';
 import { SharedModule } from '../../../common/shared/shared.module';
 import { HttpService } from '../../../services/http.service';
 import { PatientAppointmentsModel } from '../../../models/patientAppointmentsModel';
 import { Paginate } from '../../../models/paginateModel';
 import { SwalService } from '../../../services/swal.service';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { take } from 'rxjs';
+declare var $: any;
 @Component({
   selector: 'app-patient-appointment-list',
   standalone: true,
@@ -16,11 +18,13 @@ import { SwalService } from '../../../services/swal.service';
 export class PatientAppointmentListComponent implements OnInit {
   ngOnInit(): void {
     this.getPatientAppointments();
+    this.createFeedbackForm();
   }
   /**
    *
    */
-  constructor(private http:HttpService , private swalService:SwalService) {}
+  constructor(private http:HttpService , private swalService:SwalService, private fb:FormBuilder) {}
+
   tab: 'past' | 'today' = 'today';
 
   setTab(tab: 'past' | 'today') {
@@ -29,6 +33,37 @@ export class PatientAppointmentListComponent implements OnInit {
   }
 
   appointments: Paginate<PatientAppointmentsModel[]>;
+
+  feedbackForm:FormGroup;
+  createFeedbackForm(){
+    this.feedbackForm = this.fb.group({
+      appointmentId:['',Validators.required],
+      description: ['', [Validators.required, Validators.minLength(10)]]
+    });
+  }
+  get description() {
+    return this.feedbackForm.get('description');
+  }
+  resetForm() {
+    $('#addFeedbackForm').modal('hide');
+    this.feedbackForm.reset();
+  }
+  showModal(appointmentId:number){
+    $('#addFeedbackForm').modal('show');
+    this.feedbackForm.get('appointmentId').setValue(appointmentId);
+  }
+  addFeedback(){
+    console.log(this.feedbackForm.valid);
+    if(this.feedbackForm.valid){
+      this.http.post<any>('Feedback/Add',this.feedbackForm.value)
+      .pipe(take(1))
+      .subscribe(res=>{
+        this.swalService.callToast("Geri bildiriminiz için teşekkürler!");
+        this.resetForm();
+        this.getPatientAppointments();
+      })
+    }
+  }
   getPatientAppointments() {
     if(this.tab == "today"){
       this.http
@@ -54,7 +89,7 @@ export class PatientAppointmentListComponent implements OnInit {
 
   canceledAppointment(appointmendId:number){
    this.swalService.callSwal("Randevu İptali","Randevunuzu iptal etmek istediğinizden emin misiniz?",()=>{
-    this.http.post(`Appointment/CancelAppointmentByPatient`,{appointmentId:appointmendId})
+    this.http.post(`Appointment/CancelAppointmentByPatient?AppointmentId=`+appointmendId)
     .subscribe(()=>{
       this.getPatientAppointments();
       this.swalService.callToast("Randenuz iptal edilmiştir.");

@@ -4,7 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpService } from './http.service';
 import { IsUserVerifiedModel } from '../models/isUserVerifiedModel';
 import { LocalStorageService } from './local-storage.service';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, take } from 'rxjs';
 import { SwalService } from './swal.service';
 
 @Injectable({
@@ -63,18 +63,19 @@ export class AuthService {
     return this.getUserRole() === 'Doctor';
   }
 
-  isUserVerified():Observable<boolean> {
-    return this.http.get<IsUserVerifiedModel>('Auth/IsEmailVerified').pipe(
-      map(res => {
-        if (res.isEmailVerified) {
-          this.localStorage.setItem('userId', res.userId.toString());
-          return true;
-        } else {
-          this.router.navigateByUrl('/verificationcode');
-          return false;
-        }
-      })
-    );
+  isUserVerified(): Observable<boolean>  {
+    return this.http.get<IsUserVerifiedModel>('Auth/IsEmailVerified')
+      .pipe(
+        map(res => {
+          if (res.isEmailVerified) {
+            this.localStorage.setItem('userId', res.userId.toString());
+            return true;
+          } else {
+            this.router.navigateByUrl('/verificationcode');
+            return false;
+          }
+        })
+      );
   }
 
   logout() {
