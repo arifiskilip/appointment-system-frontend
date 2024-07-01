@@ -1,75 +1,148 @@
 <app-blank pageName="Doktorlar">
   <section class="content">
+    <div class="row align-items-center container-fluid">
+      <div class="col-md-3">
+        <select class="form-control form-control-border" [(ngModel)]="branchId">
+          <option value="0">Tüm Branşlar</option>
+          <option [value]="item.id" *ngFor="let item of branches">{{item.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-control form-control-border" [(ngModel)]="titleId">
+          <option value="0">Tüm Ünvanlar</option>
+          <option [value]="item.id" *ngFor="let item of titles">{{item.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <input type="text" [(ngModel)]="search" class="form-control" placeholder="Doktor Adı">
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-success btn-block" (click)="getFilter()">
+          <i class="fas fa-filter"></i> Filtrele
+        </button>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-danger btn-block" (click)="clearFilter()">
+          <i class="fas fa-times"></i> Temizle
+        </button>
+      </div>
+    </div>
+    
     <div class="card card-solid">
       <div class="card-body pb-0">
         <div class="row">
-          <div
-            class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column"
-          >
-            <div class="card bg-light d-flex flex-fill">
-              <div class="card-header text-muted border-bottom-0">
-                Digital Strategist
-              </div>
-              <div class="card-body pt-0">
-                <div class="row">
-                  <div class="col-7">
-                    <h2 class="lead"><b>Nicole Pearson</b></h2>
-                    <p class="text-muted text-sm">
-                      <b>About: </b> Web Designer / UX / Graphic Artist / Coffee
-                      Lover
-                    </p>
-                    <ul class="ml-4 mb-0 fa-ul text-muted">
-                      <li class="small">
-                        <span class="fa-li"
-                          ><i class="fas fa-lg fa-building"></i
-                        ></span>
-                        Address: Demo Street 123, Demo City 04312, NJ
-                      </li>
-                      <li class="small">
-                        <span class="fa-li"
-                          ><i class="fas fa-lg fa-phone"></i
-                        ></span>
-                        Phone #: + 800 - 12 12 23 52
-                      </li>
-                    </ul>
+          @if(doctors && doctors.items.length>0){
+            @for (doctor of doctors.items; track $index) {
+              <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                <div class="card bg-light d-flex flex-fill">
+                  <div class="card-header text-muted border-bottom-0">
+                    {{doctor.titleName}}
+                    <div class="dropdown float-right">
+                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Güncelle</a>
+                        @if(doctor.isDeleted){
+                          <a class="dropdown-item" (click)="doctorActive(doctor.id)">Aktif Et</a>
+                        }
+                        @else {<a class="dropdown-item" (click)="doctorDelete(doctor.id)">Sil</a>}
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-5 text-center">
-                    <img
-                      src="https://avatars.githubusercontent.com/u/71379630?v=4"
-                      alt="user-avatar"
-                      class="img-circle img-fluid"
-                    />
+                  <div class="card-body pt-0">
+                    <div class="row">
+                      <div class="col-7">
+                        <h2 class="lead"><b>{{doctor.firstName + " " + doctor.lastName}}</b></h2>
+                        <p class="text-muted text-sm"><b>Bölüm: </b>{{doctor.branchName}}</p>
+                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                          <li class="small">
+                            <span class="fa-li"><i class="fas fa-lg fa-envelope"></i></span>
+                            Email: {{doctor.email}}
+                          </li>
+                          <li class="small">
+                            <span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                            Telefon: {{doctor.phoneNumber}}
+                          </li>
+                          <li class="small">
+                            <span class="fa-li"><i class="fas fa-lg fa-id-card"></i></span>
+                            Tc No: {{doctor.identityNumber}}
+                          </li>
+                          <li class="small">
+                            <span class="fa-li"><i class="fas fa-lg fa-birthday-cake"></i></span>
+                            Yaş: {{doctor.birthDate}}
+                          </li>
+                          <li class="small">
+                            <span class="fa-li"><i class="fa fa-lg fa-user-xmark"></i></span>
+                            Durum: @if(!doctor.isDeleted){
+                              <span class="badge badge-success">Aktif</span>
+                            }
+                            @else {
+                              <span class="badge badge-danger">Pasif</span>
+                            }
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-5 text-center">
+                        @if(doctor.imageUrl){
+                          <img [src]="getImage.getImage(doctor.imageUrl)" alt="user-avatar" class="img-circle img-fluid" />
+                        }
+                        @else {
+                          @if(doctor.genderId==1){
+                            <img [src]="getImage.getWomenAvatar()" alt="user-avatar" class="img-circle img-fluid" />
+                     
+                          }
+                          @else {
+                            <img [src]="getImage.getManAvatar()" alt="user-avatar" class="img-circle img-fluid" />
+                          }
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="text-right">
+                      <a routerLink='/admin/doctor/appointment-history/{{doctor.id}}' class="btn btn-sm bg-teal">
+                        <i class="fas fa-comments"></i> Randevu Geçmişi
+                      </a>
+                      <a routerLink="/admin/doctor/report-history/{{doctor.id}}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-user"></i> Raporlar
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="card-footer">
-                <div class="text-right">
-                  <a href="#" class="btn btn-sm bg-teal">
-                    <i class="fas fa-comments"></i>
-                  </a>
-                  <a href="#" class="btn btn-sm btn-primary">
-                    <i class="fas fa-user"></i> View Profile
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+              
+            }
+          }
+          @else {
+            <div class="alert alert-warning">Mevcut Doktor Bulunmamakta.</div>
+          }
         </div>
       </div>
 
       <div class="card-footer">
-        <nav aria-label="Contacts Page Navigation">
-          <ul class="pagination justify-content-center m-0">
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" (click)="goToFirstPage()">İlk</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            <li class="page-item">
+              <a class="page-link" (click)="prevPage()">Önceki</a>
+            </li>
+            <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+              <a
+                class="page-link"
+                (click)="goToPage(pageNumber)"
+                [ngClass]="{ active: pageNumber === pageIndex }"
+                >{{ pageNumber }}</a
+              >
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="nextPage()">Sonraki</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="goToLastPage()">Son</a>
+            </li>
           </ul>
         </nav>
       </div>
