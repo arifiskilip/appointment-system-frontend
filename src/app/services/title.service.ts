@@ -43,7 +43,7 @@ export class TitleService {
   }
 
   update(model:TitleModel):Observable<any>{
-console.log("model isdeleted:" + model.IsDeleted)
+console.log("model isdeleted:" + model.isDeleted)
     // return this.httpClient.put<TitleModel>(`${this.apiUrl}/${data.Id}`,data);
     console.log("model---" +model)
     // return this.httpClient.put<TitleModel>(`${this.apiUrl+"/title/update"}/${data.id}`,data);

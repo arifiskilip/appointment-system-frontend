@@ -1,17 +1,14 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { BlankComponent } from "../../blank/blank.component";
 import { NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Title } from '@angular/platform-browser';
 import { SwalService } from '../../../services/swal.service';
-import bootstrap from '../../../../main.server';
 import { Paginate } from '../../../models/paginateModel';
 import { ValidationMessages } from '../../../common/constants/validationMessages';
 import { ValidDirective } from '../../../common/directives/valid.directive';
 import { TitleModel } from '../../../models/titleModel';
 import { TitleService } from '../../../services/title.service';
-import { ResetDirective } from '../../../../reset.directive';
 
 
 // declare var $: any; // jQuery kullanacağımızı belirtiyoruz
@@ -22,7 +19,7 @@ import { ResetDirective } from '../../../../reset.directive';
   standalone: true,
   templateUrl: './admin-title.component.html',
   styleUrl: './admin-title.component.scss',
-  imports: [BlankComponent, ReactiveFormsModule, CommonModule, ValidDirective, ResetDirective]
+  imports: [BlankComponent, ReactiveFormsModule, CommonModule, ValidDirective]
 })
 export class AdminTitleComponent {
   title: TitleModel[] = []
@@ -169,8 +166,8 @@ export class AdminTitleComponent {
 
     if (this.titleForm.valid) {
       let titleModel: TitleModel = {
-        Name: this.titleForm.value.unvan,
-        IsDeleted: this.titleForm.value.isDeleted == null ? false :
+        name: this.titleForm.value.unvan,
+        isDeleted: this.titleForm.value.isDeleted == null ? false :
           this.titleForm.value.isDeleted
       }
 
@@ -220,9 +217,9 @@ export class AdminTitleComponent {
 
   update(): void {
     if (this.updateTitleForm && this.updateTitleForm.valid) {
-      this.selectedTitle.Name = this.updateTitleForm.value.unvan;
-      this.selectedTitle.IsDeleted = this.updateTitleForm.value.isDeleted;
-      this.selectedTitle.Id = Number(this.updateTitleForm.value.id);
+      this.selectedTitle.name = this.updateTitleForm.value.unvan;
+      this.selectedTitle.isDeleted = this.updateTitleForm.value.isDeleted;
+      this.selectedTitle.id = Number(this.updateTitleForm.value.id);
 
       this.titleService.update(this.selectedTitle).subscribe((response) => {
         this.getTitles()
