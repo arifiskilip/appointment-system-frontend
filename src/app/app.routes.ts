@@ -32,6 +32,8 @@ import { DoctorAppointmentsComponent } from './components/doctor/doctor-appointm
 import { DoctorPatientsComponent } from './components/doctor/doctor-patients/doctor-patients.component';
 import { DoctorPatientAppointmentsHistoryComponent } from './components/doctor/doctor-patient-appointments-history/doctor-patient-appointments-history.component';
 import { DoctorPatientReportsHistoryComponent } from './components/doctor/doctor-patient-reports-history/doctor-patient-reports-history.component';
+import { DoctorAppointmentHistoryComponent } from './components/admin/admin-doctor/doctor-appointment-history/doctor-appointment-history.component';
+import { DoctorReportHistoryComponent } from './components/admin/admin-doctor/doctor-report-history/doctor-report-history.component';
 
 
 export const routes: Routes = [
@@ -70,6 +72,14 @@ export const routes: Routes = [
       {
         path: 'doctor',
         component: AdminDoctorComponent,
+      },
+      {
+        path:'doctor/appointment-history/:doctorId',
+        component:DoctorAppointmentHistoryComponent
+      },
+      {
+        path:'doctor/report-history/:doctorId',
+        component:DoctorReportHistoryComponent
       },
       {
         path: 'branch',
