@@ -100,7 +100,7 @@
             }
             }
             @else {
-            <div class="alert alert-info">Mevcut hasta yok.</div>
+            <div class="alert alert-danger">Mevcut hasta yok.</div>
             }
           </tbody>
           <button class="btn btn-outline-success m-3" data-toggle="modal" data-target="#addModal">Ekle</button>
@@ -109,13 +109,23 @@
 
       </div>
       <div class="card-footer">
-        <nav aria-label="Contacts Page Navigation">
-          <ul class="pagination justify-content-center m-0">
-            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" (click)="goToFirstPage()">İlk</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="prevPage()">Önceki</a>
+            </li>
+            <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+              <a class="page-link" (click)="goToPage(pageNumber)" [ngClass]="{'active' : pageNumber===pageIndex}">{{ pageNumber }}</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="nextPage()">Sonraki</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="goToLastPage()">Son</a>
+            </li>
           </ul>
         </nav>
       </div>

@@ -65,38 +65,52 @@ export class AdminPatientDetailsComponent implements OnInit {
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
-  // groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
-  // getPatientAppointments() {
-  //   this.http
-  //     .get<any>(
-  //       `Appointment/GetPaginatedPatientAppointments?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
-  //     )
-  //     .subscribe((res) => {
-  //       this.patientAppointments = res.patientAppointments;
-  //       this.patientAppointments.items.forEach((appointment) => {
-  //         const date = new Date(appointment.intervalDate).toLocaleDateString(
-  //           'tr-TR',
-  //           { year: 'numeric', month: 'short', day: 'numeric' }
-  //         );
-  //         if (!this.groupedAppointments[date]) {
-  //           this.groupedAppointments[date] = [];
-  //         }
-  //         this.groupedAppointments[date].push(appointment);
-  //       });
-  //     });
-  // }
-groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
+  groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   getPatientAppointments() {
     this.route.paramMap.subscribe((params) => {
       const patientId = params.get('id');
-      this.http
-        .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}`)
-        .subscribe((res) => {
-          this.patientAppointments = res.patientAppointments;
-        });
+        this.http
+          .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}&PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+          .subscribe((res) => {
+            console.log('HTTP Response:', res);
+            this.patientAppointments = res.appointments;
+            this.groupedAppointments = {};
+            console.log('HTTP Response:', this.patientAppointments.items);
+            this.patientAppointments?.items.forEach((appointment) => {
+              const date = new Date(appointment.intervalDate).toLocaleDateString(
+                'tr-TR',
+                { year: 'numeric', month: 'short', day: 'numeric' }
+              );
+              if (!this.groupedAppointments[date]) {
+                this.groupedAppointments[date] = [];
+              }
+              this.groupedAppointments[date].push(appointment);
+            });
+          });
     });
-
   }
+// groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
+  // getPatientAppointments() {
+  //   this.route.paramMap.subscribe((params) => {
+  //     const patientId = params.get('id');
+  //     this.http
+  //       .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}`)
+  //       .subscribe((res) => {
+  //         this.patientAppointments = res.patientAppointments;
+  //         this.patientAppointments.items.forEach((appointment) => {
+  //                   const date = new Date(appointment.intervalDate).toLocaleDateString(
+  //                     'tr-TR',
+  //                     { year: 'numeric', month: 'short', day: 'numeric' }
+  //                   );
+  //                   if (!this.groupedAppointments[date]) {
+  //                     this.groupedAppointments[date] = [];
+  //                   }
+  //                   this.groupedAppointments[date].push(appointment);
+  //                 });
+  //       });
+  //   });
+
+  // }
 
   getDates(): string[] {
     return Object.keys(this.groupedAppointments);
@@ -135,7 +149,6 @@ groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   nextPage() {
     if(this.patientAppointments.pagination.hasNextPage){
       this.pageIndex++;
-      this.groupedAppointments={};
       this.getPatientAppointments();
     }
   }
@@ -143,7 +156,6 @@ groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   previousPage() {
     if(this.patientAppointments.pagination.hasPreviousPage){
       this.pageIndex--;
-      this.groupedAppointments={};
       this.getPatientAppointments();
     }
   }
