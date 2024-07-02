@@ -1,13 +1,219 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, numberAttribute } from '@angular/core';
 import { BlankComponent } from "../../blank/blank.component";
+import { Paginate } from '../../../models/paginateModel';
+import { FeedbackService } from '../../../services/feedback.service';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FeedbackDetailModel } from '../../../models/feedbackDetailModel';
+import { response } from 'express';
+import { BranchModel } from '../../../models/branchModel';
+import { DoctorModel } from '../../../models/doctorModel';
+import { BranchListModel } from '../../../models/branchListModel';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SwalService } from '../../../services/swal.service';
+import { FeedbackListModel } from '../../../models/feedbackListModel';
 
 @Component({
-    selector: 'app-admin-feedback',
-    standalone: true,
-    templateUrl: './admin-feedback.component.html',
-    styleUrl: './admin-feedback.component.scss',
-    imports: [BlankComponent]
+  selector: 'app-admin-feedback',
+  standalone: true,
+  templateUrl: './admin-feedback.component.html',
+  styleUrl: './admin-feedback.component.scss',
+  imports: [BlankComponent, CommonModule, ReactiveFormsModule]
 })
-export class AdminFeedbackComponent {
+export class AdminFeedbackComponent implements OnInit {
+
+  items: any[] = []
+  dataLoaded: boolean = false
+  detailDataLoaded: boolean = false
+  titleItems: Paginate<FeedbackListModel[]>;
+  feedbackDetail: FeedbackDetailModel;
+  searchForm: FormGroup;
+  minDate: string;
+  clinics: BranchModel[];
+  doctors: DoctorModel[];
+
+  apiUrl = "http://localhost:7073/api"
+
+
+
+  constructor(private feedbackService: FeedbackService, private formBuilder: FormBuilder, private http: HttpClient, private router: Router, private route: ActivatedRoute, private swal: SwalService) {
+    this.setForm()
+  }
+
+  setForm() {
+    this.searchForm = this.formBuilder.group({
+      clinic: [''],
+      doctor: [''],
+      orderbyList: ['new']
+    });
+
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+  }
+
+  ngOnInit(): void {
+    this.getFeedbacks()
+    this.getBranches()
+  }
+
+
+  get doctorId() {
+    let doctorId;
+    if (this.searchForm && this.searchForm.get('doctor') != null)
+      doctorId = this.searchForm.get('doctor').value || '0';
+    return doctorId
+  }
+
+
+  get orderbyList() {
+    let orderbyList;
+    if (this.searchForm && this.searchForm.get('orderbyList') != null)
+      orderbyList = this.searchForm.get('orderbyList').value;
+    return orderbyList
+  }
+
+  get branchId() {
+    let branchId;
+    if (this.searchForm && this.searchForm.get('clinic') != null)
+      branchId = this.searchForm.get('clinic').value || '0';
+    return branchId
+  }
+
+
+  getFeedbacks() {
+    this.feedbackService.getFeedbacksPagination(this.pageIndex, this.pageSize, this.orderbyList, this.branchId, this.doctorId).subscribe((response) => {
+      this.titleItems = response.patientFeedbacks
+      this.items = response.patientFeedbacks.items
+      this.items.forEach((item) => {
+        item.CreatedDate = new Date(item.CreatedDate)
+        item.DeletedDate = new Date(item.CreatedDate)
+      }
+      );
+      this.totalPages = response.patientFeedbacks.pagination.totalPages
+      this.dataLoaded = true
+    })
+  }
+
+
+
+  onSelect(feedbackId: number): void {
+    this.feedbackService.getFeedbackById(feedbackId).subscribe((response) => {
+      this.feedbackDetail = response
+      this.detailDataLoaded = true;
+      this.feedbackDetail = response;
+    })
+  }
+
+  getBranches() {
+    let newPath = this.apiUrl + "/Branch/GetAll"
+    this.http.get<BranchListModel>(newPath).subscribe(res => {
+      this.clinics = res.branches
+    })
+  }
+
+  getDoctors() {
+    let clinicId = this.searchForm.get("clinic").value;
+    let newPath = this.apiUrl + "/Doctor/GetAllByBranchId?BranchId=" + clinicId
+    this.http.get<DoctorModel[]>(newPath).subscribe(res => {
+      this.doctors = res
+    })
+  }
+
+  delete(id: number): void {
+    this.swal.callSwal("Feedback Silme", "Silmek istediğinizden emin misiniz?", () => {
+      this.feedbackService.delete(id).subscribe((response) => {
+        this.getFeedbacks();
+        this.swal.callToast("Seçilen feedback başarıyla silindi.");
+      })
+    }, "Evet")
+
+  }
+
+  onSubmit() {
+    this.getFeedbacks()
+  }
+
+
+  onClear() {
+    this.setForm();
+    this.getFeedbacks()
+  }
+
+
+  //Pagination
+  pageSize: number = 10;
+
+  // Mevcut sayfa numarası
+  pageIndex: number = 1;
+
+  // Toplam sayfa sayısı
+  totalPages: number;
+  // Sayfaya git
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.pageIndex = page;
+      this.getFeedbacks();
+    }
+  }
+
+  // Önceki sayfaya git
+  prevPage() {
+    if (this.pageIndex > 1) {
+      this.pageIndex--;
+      this.getFeedbacks();
+    }
+  }
+
+  // Sonraki sayfaya git
+  nextPage() {
+    if (this.pageIndex < this.totalPages) {
+      this.pageIndex++;
+      this.getFeedbacks();
+    }
+  }
+
+  // İlk sayfaya git
+  goToFirstPage() {
+    if (this.titleItems.pagination.pageIndex > 1) {
+      this.pageIndex = 1;
+      this.getFeedbacks();
+    }
+  }
+
+  // Son sayfaya git
+  goToLastPage() {
+    if (this.totalPages > this.pageIndex) {
+      this.pageIndex = this.totalPages;
+      this.getFeedbacks();
+    }
+  }
+
+  // Sayfa numaralarını döndürür
+  getPageNumbers(): number[] {
+    const pageNumbers = [];
+    const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
+    const startPage = Math.max(
+      1,
+      this.pageIndex - Math.floor(maxPagesToShow / 2)
+    );
+    const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  // Kaç adet listeleneceğini beliritir
+  goToChangeSelectedCount() {
+    this.getFeedbacks();
+  }
+
+  // Başlangıç indisini hesaplar
+  calculateStartIndex(): number {
+    return (this.pageIndex - 1) * this.pageSize + 1;
+  }
+
 
 }
