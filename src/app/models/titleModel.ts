@@ -1,7 +1,7 @@
 export interface TitleModel{
-    Id?:number;
-    Name:string;
-    CreatedDate?:Date;
-    UpdatedDate?:Date;
-    IsDeleted:boolean;
+    id?:number;
+    name:string;
+    createdDate?:Date;
+    updatedDate?:Date;
+    isDeleted:boolean;
 }

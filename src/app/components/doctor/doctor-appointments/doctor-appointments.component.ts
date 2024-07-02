@@ -1,6 +1,6 @@
 import { PatientModel } from './../../../models/patientModel';
 import { AppointmentsForCurrentDay } from './../../../models/appointmentsForCurrentDay';
-import { Component, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarOptions } from '@fullcalendar/core';
@@ -12,6 +12,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from '../../../services/http.service';
 import { take } from 'rxjs';
 import { SwalService } from '../../../services/swal.service';
+import { ImageUrl } from '../../../common/constants/imageUrl';
+import localeTr from '@angular/common/locales/tr';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeTr);
 
 declare var $: any;
 
@@ -19,11 +24,13 @@ declare var $: any;
   selector: 'app-doctor-appointments',
   standalone: true,
   imports: [BlankComponent,SharedModule,FullCalendarModule],
+  providers:[{ provide: LOCALE_ID, useValue: 'tr-TR' }],
   templateUrl: './doctor-appointments.component.html',
   styleUrl: './doctor-appointments.component.scss'
 })
 export class DoctorAppointmentsComponent implements OnInit{
   reportForm:FormGroup;
+  imageUrl:ImageUrl = new ImageUrl();
   constructor(private fb:FormBuilder, private http:HttpService, private swal:SwalService) {
   }
   ngOnInit(): void {
@@ -32,7 +39,7 @@ export class DoctorAppointmentsComponent implements OnInit{
     this.reportForm = this.fb.group({
       appointmentId: [''],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      file: ['']
+      file: ['',[Validators.required]]
     });
   }
 
@@ -50,6 +57,9 @@ export class DoctorAppointmentsComponent implements OnInit{
     })
   }
   
+  getApiUrl() {
+    return 'https://localhost:7073/';
+  }
   get filteredAppointments() {
     const todayStart = new Date(this.today.setHours(0, 0, 0, 0));
     const todayEnd = new Date(this.today.setHours(23, 59, 59, 999));
@@ -82,6 +92,7 @@ export class DoctorAppointmentsComponent implements OnInit{
       .pipe(take(1))
       .subscribe(res=>{
        this.getUserDetail(patientId)
+       this.reportForm.get('appointmentId').setValue(id);
         $('#addReportModal').modal('show');
         this.initializeCalendarOptions();
         this.getAppointmentsForCurrentDay();
@@ -94,6 +105,18 @@ export class DoctorAppointmentsComponent implements OnInit{
     $('#addReportModal').modal('hide');
   }
 
+  addReport(){
+    if(this.reportForm.valid){
+      let formData:FormData = new FormData();
+      formData.append('appointmentId',this.reportForm.get('appointmentId').value);
+      formData.append('description',this.reportForm.get('description').value);
+      formData.append('file',this.reportForm.get('file').value);
+      this.http.post('Report/Add',formData).subscribe(()=>{
+        this.swal.callToast("Ekleme işlemi başarılı.");
+        this.closeModal();
+      })
+    }
+  }
   calculateAge(birthDateString: string): number {
     const birthDate = new Date(birthDateString);
     const today = new Date();
@@ -119,7 +142,6 @@ export class DoctorAppointmentsComponent implements OnInit{
       this.http.post<any>('Appointment/CancelAppointmentByDoctor',{appointmentId:id})
       .pipe(take(1))
       .subscribe(res=>{
-        $('#addReportModal').modal('show');
         this.initializeCalendarOptions();
         this.getAppointmentsForCurrentDay();
         this.swal.callToast("Randevu iptal edildi.");
@@ -128,11 +150,10 @@ export class DoctorAppointmentsComponent implements OnInit{
   }
 
   waitedAppointment(id: number) {
-    this.swal.callSwal("Randevu İptal Edilecektir","Randevuyu iptal etmek istediğinizden emin misiniz?",()=>{
+    this.swal.callSwal("Randevu Beklemeye Alınacaktır","Randevuyu tekrar aktif etmek istediğinizden emin misiniz?",()=>{
       this.http.post<any>('Appointment/AvailableAppointmentByDoctor',{appointmentId:id})
       .pipe(take(1))
       .subscribe(res=>{
-        $('#addReportModal').modal('show');
         this.initializeCalendarOptions();
         this.getAppointmentsForCurrentDay();
         this.swal.callToast("Randevu beklemeye alındı.");
@@ -169,38 +190,4 @@ export class DoctorAppointmentsComponent implements OnInit{
       }))
     }
   }
-
-  patientInfo = {
-    name: 'John Doe',
-    surname: 'Doe',
-    email: 'john.doe@example.com',
-    idNumber: '12345678901',
-    phoneNumber: '+1 234 567 890',
-    bloodType: 'O+',
-    image: 'https://avatars.githubusercontent.com/u/71379630?v=4',
-    age: 30,
-    gender: 'Male'
-  };
-
-  open(content: any) {
-    $('#addReportModal').modal('show');
-  }
-
-  onSubmit() {
-    if (this.reportForm.valid) {
-      // Handle form submission
-      console.log(this.reportForm.value);
-    } else {
-      // Handle form errors
-      console.log('Form is invalid');
-    }
-  }
-}
-
-interface Appointment {
-  id: number;
-  patientName: string;
-  time: string;
-  date: Date;
-  status: 'accepted' | 'rejected' | 'pending';
 }

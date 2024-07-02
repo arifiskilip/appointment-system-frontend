@@ -7,13 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Paginate } from '../../../../models/paginateModel';
 import { SwalService } from '../../../../services/swal.service';
 import { ImageUrl } from '../../../../common/constants/imageUrl';
+import { SharedModule } from '../../../../common/shared/shared.module';
 
 @Component({
     selector: 'app-appointment-list',
     standalone: true,
     templateUrl: './appointment-list.component.html',
     styleUrl: './appointment-list.component.scss',
-    imports: [BlankComponent]
+    imports: [BlankComponent,SharedModule]
 })
 export class AppointmentListComponent implements OnInit, OnDestroy{
   query: string = '';
@@ -50,7 +51,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy{
       this.queryParamsSubscription.unsubscribe();
     }
   }
-
+  
   search() {
     this.http.get<any>('AppointmentInterval/Search' + this.query)
       .pipe(take(1))

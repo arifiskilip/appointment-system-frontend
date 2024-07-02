@@ -12,7 +12,7 @@
                 <label for="klinik" style="font-size: 20px;">Klinik *</label>
                 <select formControlName="clinic" (change)="getDoctors()" class="form-control select2bs4" style="width: 100%">
                   <option value="">Lütfen seçiniz</option>
-                  <option *ngFor="let clinic of clinics" [value]="clinic.id">{{ clinic.name }}</option>
+                  <option *ngFor="let clinic of clinics" [value]="clinic.Id">{{ clinic.Name }}</option>
                 </select>
                 <div *ngIf="searchForm.get('clinic').invalid && searchForm.get('clinic').touched" style="font-size: 16px; color: #dc3545;">
                   * Zorunlu alan

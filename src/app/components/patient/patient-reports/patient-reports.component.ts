@@ -1,10 +1,11 @@
+import { PatientReportsModel } from './../../../models/patientReportsModel';
 import { Component, OnInit } from '@angular/core';
 import { BlankComponent } from "../../blank/blank.component";
 import { SharedModule } from '../../../common/shared/shared.module';
 import { HttpService } from '../../../services/http.service';
 import { SwalService } from '../../../services/swal.service';
 import { Paginate } from '../../../models/paginateModel';
-import { PatientReportsModel } from '../../../models/patientReportsModel';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-patient-reports',
@@ -15,7 +16,7 @@ import { PatientReportsModel } from '../../../models/patientReportsModel';
 })
 export class PatientReportsComponent implements OnInit{
   ngOnInit(): void {
-   
+   this.getPatientReports();
   }
 
   constructor(private http:HttpService, private swal:SwalService) {
@@ -23,14 +24,32 @@ export class PatientReportsComponent implements OnInit{
   }
 
   reports:Paginate<PatientReportsModel[]>;
+  reportDetail:PatientReportsModel;
   getPatientReports(){
-    this.http.get<Paginate<PatientReportsModel[]>>(`Report/GetAllReportsPatient?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+    this.http.get<any>(`Report/GetAllReportsPatient?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
     .subscribe(res=>{
-      this.reports = res;
-      this.totalPages = res.pagination.totalPages;
+      this.reports = res.patientReports;
+      this.totalPages = res.pagination?.totalPages;
     })
   }
+  setReport(model:PatientReportsModel){
+    this.reportDetail = model;
+  }
+  getApiUrl() {
+    return 'https://localhost:7073/';
+  }
+  dowloandReport(){
+    const url = this.getApiUrl()+this.reportDetail.reportFile;
+    const filename =`${this.reportDetail.patientName}-${this.reportDetail.reportId}.pdf`;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    link.setAttribute('target', '_blank');
 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   currentDate:Date= new Date();
   getBadgeStatusIcon(appointmentStatus: string) {
     switch (appointmentStatus) {

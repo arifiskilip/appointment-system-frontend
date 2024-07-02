@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { BlankComponent } from '../../blank/blank.component';
 import { SharedModule } from '../../../common/shared/shared.module';
 import { AuthService } from '../../../services/auth.service';
@@ -19,16 +19,23 @@ import { ImageUrl } from '../../../common/constants/imageUrl';
 import { PatientService } from '../../../services/patient.service';
 import { Paginate } from '../../../models/paginateModel';
 import { PatientAppointmentsModel } from '../../../models/patientAppointmentsModel';
+import { FeedbackModel } from '../../../models/feedbackModel';
+import { take } from 'rxjs';
+import localeTr from '@angular/common/locales/tr';
+import { registerLocaleData } from '@angular/common';
 
+registerLocaleData(localeTr);
 @Component({
   selector: 'app-patient-profile',
   standalone: true,
   templateUrl: './patient-profile.component.html',
+  providers:[{ provide: LOCALE_ID, useValue: 'tr-TR' }],
   styleUrls: ['./patient-profile.component.scss'],
   imports: [BlankComponent, SharedModule, ValidDirective],
 })
 export class PatientProfileComponent implements OnInit {
   patient: PatientModel;
+  feedbacks:Paginate<FeedbackModel[]>;
   patientAppointments: Paginate<PatientAppointmentsModel[]>;
   pageIndex: number = 1;
   pageSize: number = 10;
@@ -54,6 +61,7 @@ export class PatientProfileComponent implements OnInit {
     this.createPatientEditForm();
     this.createPatientPasswordUpdateForm();
     this.getPatientAppointments();
+    this.getFedbacks();
   }
 
   getApiUrl() {
@@ -62,6 +70,13 @@ export class PatientProfileComponent implements OnInit {
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+  getFedbacks(){
+    this.http.get<any>('Feedback/GetAllByPatient')
+    .pipe(take(1))
+    .subscribe(res=>{
+      this.feedbacks = res.patientFeedbacks;
+    })
   }
   groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   getPatientAppointments() {
@@ -265,7 +280,6 @@ export class PatientProfileComponent implements OnInit {
         .put<any>('Auth/UpdatePassword', this.patientPasswordUpdateForm.value)
         .subscribe((res) => {
           this.swal.callToast(res.message);
-          this.patientPasswordUpdateForm.reset();
         });
     }
   }

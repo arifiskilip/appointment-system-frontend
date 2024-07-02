@@ -1,23 +1,43 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <a routerLink="/" class="brand-link">
-    <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">Angular App</span>
+  <a routerLink="/doctor" class="brand-link">
+    <h4 class="text-center">
+      <span class="brand-text font-weight-light">MHRS</span>
+    </h4>
   </a>
 
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
+      @if(doctor){
+       @if(doctor?.imageUrl){
+        <div class="image">
+        <img [src]="getApiUrl()+doctor.imageUrl" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+      </div>
+       }
+       @else {
+        @if(doctor?.genderId==1){
+          <div class="image">
+            <img [src]="constImageUrl.womenAvatar" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+          </div>
+        }
+        @else {<div class="image">
+          <img [src]="constImageUrl.manAvatar" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
+        </div>}
+       }
+      }
+      @else {
+        <div class="image">
         <img src="https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
       </div>
+      }
       <div class="info">
-        <a routerLink="/admin/profile" class="d-block">FirstName</a>
+        <a routerLink="/doctor/profile" class="d-block">{{doctor?.firstName+" "+doctor?.lastName}}</a>
       </div>
     </div>
 
     <!-- SidebarSearch Form -->
     <div class="form-inline">
       <div class="input-group">
-        <input class="form-control form-control-sidebar" [(ngModel)]="search" type="search" placeholder="Search">
+        <input class="form-control form-control-sidebar" [(ngModel)]="search" type="search" placeholder="Ara">
         <div class="input-group-append">
           <button class="btn btn-sidebar">
             <i class="fas fa-search fa-fw"></i>
