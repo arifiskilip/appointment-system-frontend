@@ -13,6 +13,8 @@ import { ValidDirective } from '../../../common/directives/valid.directive';
 import { Paginate } from '../../../models/paginateModel';
 import { ImageUrl } from '../../../common/constants/imageUrl';
 import { take } from 'rxjs';
+import { BranchModel } from '../../../models/branchModel';
+import { TitleModel } from '../../../models/titleModel';
 declare var $: any;
 
 
@@ -27,11 +29,17 @@ export class AdminPatientComponent implements OnInit{
 
   @ViewChild('updateEditModal') updateEditModal: ElementRef;
   patients:Paginate<PatientModel[]>;
-  imageUrl:ImageUrl = new ImageUrl();
   patientEditForm: FormGroup;
   patient: PatientModel;
   validationMessages: ValidationMessages = new ValidationMessages();
   searchText:string="";
+  getImage:ImageUrl = new ImageUrl();
+  registerForm: FormGroup;
+  branches:BranchModel[];
+  titles:TitleModel[];
+  titleId:number=0;
+  branchId:number=0;
+
 
   constructor(
     private router: Router,
@@ -45,6 +53,7 @@ export class AdminPatientComponent implements OnInit{
 
   ngOnInit(): void {
     this.createPatientEditForm();
+    this.createRegisterForm();
     this.getPatients();
   }
 
@@ -149,6 +158,15 @@ export class AdminPatientComponent implements OnInit{
   get bloodType() {
     return this.patientEditForm.get('bloodTypeId');
   }
+  get password() {
+    return this.registerForm.get('password');
+  }
+  get gender() {
+    return this.registerForm.get('genderId');
+  }
+  get identityNumber() {
+    return this.registerForm.get('identityNumber');
+  }
 
   getPatients(){
     this.http
@@ -220,6 +238,108 @@ export class AdminPatientComponent implements OnInit{
       this.getPatients();
     }
   }
+
+  createRegisterForm() {
+    this.registerForm = this.formBuilder.group(
+      {
+        firstName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+          ],
+        ],
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+          ],
+        ],
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+          ],
+        ],
+        phoneNumber: ['', [Validators.required, this.phoneNumberValidator()]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(50),
+          ],
+        ],
+        isEmailVerified:[true],
+        identityNumber: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(11),
+            Validators.maxLength(11),
+            this.identityNumberValidator(),
+          ],
+        ],
+        genderId: ['', [Validators.required]],
+        birthDate:['',Validators.required],
+        bloodTypeId: ['', [Validators.required]],
+      }
+    );
+  }
+
+  patientRegister() {
+    if (this.registerForm.valid) {
+     this.http.post<any>('Auth/PatientRegister',this.registerForm.value)
+     .pipe(take(1))
+     .subscribe(res=>{
+      this.swal.callToast("Ekleme işlemi başarılı.");
+      this.getPatients();
+     })
+    }
+  }
+
+  identityNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const identityNumber = control.value;
+      if (
+        !identityNumber ||
+        identityNumber.length !== 11 ||
+        !/^\d{11}$/.test(identityNumber)
+      ) {
+        return {
+          identityNumber: {
+            valid: false,
+            message: 'Geçersiz kimlik numarası.',
+          },
+        };
+      }
+
+      const digits = identityNumber.split('').map(Number);
+      const sumOdd = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
+      const sumEven = digits[1] + digits[3] + digits[5] + digits[7];
+      const checksum1 = (sumOdd * 7 - sumEven) % 10;
+      const checksum2 =
+        digits.slice(0, 10).reduce((a: any, b: any) => a + b, 0) % 10;
+
+      if (digits[9] !== checksum1 || digits[10] !== checksum2) {
+        return {
+          identityNumber: {
+            valid: false,
+            message: 'Geçersiz kimlik numarası.',
+          },
+        };
+      }
+
+      return null;
+    };
+  }
+
 
   //Pagination
   pageSize: number = 10;
