@@ -80,7 +80,7 @@
             </div>
           </div>
         </form>
-        <table class="table table-striped projects" *ngIf="dataLoaded == true">
+        <table class="table table-striped projects">
           <thead>
             <tr>
               <th style="width: 1%">#</th>
@@ -91,7 +91,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let feedback of items">
+            <tr *ngFor="let feedback of titleItems?.items">
               <td>#</td>
               <td>
                 <a> {{ feedback.patientName }}</a>
@@ -102,13 +102,11 @@
                 <a> {{ feedback.identityNumber }}</a>
               </td>
               <td>
-                <a> {{ feedback.createdDate }}</a>
+                <a> {{ feedback.createdDate |date:'dd MMMM yyyy MM:hh'}}</a>
               </td>
               <td class="project-actions text-right">
                 <button
                   class="btn btn-info btn-sm mr-2"
-                  data-toggle="modal"
-                  data-target="#feedbackDetail"
                   (click)="onSelect(feedback.feedbackId)"
                 >
                   <i class="fas fa-circle-info"> </i>
@@ -123,6 +121,7 @@
                 </button>
               </td>
             </tr>
+            
           </tbody>
         </table>
       </div>
@@ -163,7 +162,6 @@
       role="dialog"
       aria-labelledby="feedbackDetail"
       aria-hidden="true"
-      *ngIf="detailDataLoaded == true"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -187,42 +185,42 @@
                   <h6>
                     <i class="fas fa-user"></i> Hasta Adı:
                     <span style="font-weight: normal"
-                      >{{ this.feedbackDetail.patientName }}
+                      >{{ this.feedbackDetail?.patientName }}
                     </span>
                   </h6>
                   <hr />
                   <h6>
                     <i class="fas fa-calendar-alt"></i> Randevu ID:
                     <span style="font-weight: normal">{{
-                      this.feedbackDetail.appointmentId
+                      this.feedbackDetail?.appointmentId
                     }}</span>
                   </h6>
                   <hr />
                   <h6>
                     <i class="fas fa-calendar-day"></i> Randevu Tarihi:
                     <span style="font-weight: normal">{{
-                      this.feedbackDetail.intervalDate
+                      this.feedbackDetail?.intervalDate |date:'dd MMMM yyyy - HH:mm'
                     }}</span>
                   </h6>
                   <hr />
                   <h6>
                     <i class="fas fa-hospital"></i> Polikinlik:
                     <span style="font-weight: normal">{{
-                      this.feedbackDetail.branchName
+                      this.feedbackDetail?.branchName
                     }}</span>
                   </h6>
                   <hr />
                   <h6>
                     <i class="fas fa-user-md"></i> Doktor:
                     <span style="font-weight: normal">{{
-                      this.feedbackDetail.doctorName
+                      this.feedbackDetail?.doctorName
                     }}</span>
                   </h6>
                   <hr />
                   <!-- <h6><i class="fas fa-info-circle"></i> Durum: <span style="font-weight: normal;">status</span></h6>
                         <hr> -->
                   <h6><i class="fas fa-comment-dots"></i> Açıklama:</h6>
-                  <p id="description">{{ this.feedbackDetail.description }}</p>
+                  <p id="description">{{ this.feedbackDetail?.description }}</p>
                 </div>
               </div>
             </div>

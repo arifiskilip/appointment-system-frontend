@@ -1,9 +1,9 @@
-import { Component, OnInit, numberAttribute } from '@angular/core';
+import { Component, LOCALE_ID, OnInit, numberAttribute } from '@angular/core';
 import { BlankComponent } from "../../blank/blank.component";
 import { Paginate } from '../../../models/paginateModel';
 import { FeedbackService } from '../../../services/feedback.service';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { FeedbackDetailModel } from '../../../models/feedbackDetailModel';
 import { response } from 'express';
 import { BranchModel } from '../../../models/branchModel';
@@ -13,19 +13,22 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SwalService } from '../../../services/swal.service';
 import { FeedbackListModel } from '../../../models/feedbackListModel';
+import { HttpService } from '../../../services/http.service';
+import localeTr from '@angular/common/locales/tr';
+import { take } from 'rxjs';
 
+registerLocaleData(localeTr);
+declare var $:any;
 @Component({
   selector: 'app-admin-feedback',
   standalone: true,
+  providers:[{ provide: LOCALE_ID, useValue: 'tr-TR' }],
   templateUrl: './admin-feedback.component.html',
   styleUrl: './admin-feedback.component.scss',
   imports: [BlankComponent, CommonModule, ReactiveFormsModule]
 })
 export class AdminFeedbackComponent implements OnInit {
 
-  items: any[] = []
-  dataLoaded: boolean = false
-  detailDataLoaded: boolean = false
   titleItems: Paginate<FeedbackListModel[]>;
   feedbackDetail: FeedbackDetailModel;
   searchForm: FormGroup;
@@ -33,11 +36,7 @@ export class AdminFeedbackComponent implements OnInit {
   clinics: BranchModel[];
   doctors: DoctorModel[];
 
-  apiUrl = "http://localhost:7073/api"
-
-
-
-  constructor(private feedbackService: FeedbackService, private formBuilder: FormBuilder, private http: HttpClient, private router: Router, private route: ActivatedRoute, private swal: SwalService) {
+  constructor(private feedbackService: FeedbackService, private formBuilder: FormBuilder, private http: HttpService, private router: Router, private route: ActivatedRoute, private swal: SwalService) {
     this.setForm()
   }
 
@@ -82,16 +81,14 @@ export class AdminFeedbackComponent implements OnInit {
 
 
   getFeedbacks() {
-    this.feedbackService.getFeedbacksPagination(this.pageIndex, this.pageSize, this.orderbyList, this.branchId, this.doctorId).subscribe((response) => {
+    this.feedbackService.getFeedbacksPagination(this.pageIndex, this.pageSize, this.orderbyList, this.branchId, this.doctorId)
+    .pipe(take(1))
+    .subscribe((response) => {
       this.titleItems = response.patientFeedbacks
-      this.items = response.patientFeedbacks.items
-      this.items.forEach((item) => {
-        item.CreatedDate = new Date(item.CreatedDate)
-        item.DeletedDate = new Date(item.CreatedDate)
+      this.totalPages = this.titleItems.pagination.totalPages
+      if(this.titleItems.items.length==0){
+        this.swal.callToast("Geri bildirim mevcut değil.",'info');
       }
-      );
-      this.totalPages = response.patientFeedbacks.pagination.totalPages
-      this.dataLoaded = true
     })
   }
 
@@ -100,13 +97,12 @@ export class AdminFeedbackComponent implements OnInit {
   onSelect(feedbackId: number): void {
     this.feedbackService.getFeedbackById(feedbackId).subscribe((response) => {
       this.feedbackDetail = response
-      this.detailDataLoaded = true;
-      this.feedbackDetail = response;
+      $('#feedbackDetail').modal('show');
     })
   }
 
   getBranches() {
-    let newPath = this.apiUrl + "/Branch/GetAll"
+    let newPath = "Branch/GetAll"
     this.http.get<BranchListModel>(newPath).subscribe(res => {
       this.clinics = res.branches
     })
@@ -114,10 +110,12 @@ export class AdminFeedbackComponent implements OnInit {
 
   getDoctors() {
     let clinicId = this.searchForm.get("clinic").value;
-    let newPath = this.apiUrl + "/Doctor/GetAllByBranchId?BranchId=" + clinicId
-    this.http.get<DoctorModel[]>(newPath).subscribe(res => {
-      this.doctors = res
-    })
+    if(clinicId){
+      let newPath = "Doctor/GetAllByBranchId?BranchId=" + clinicId
+      this.http.get<DoctorModel[]>(newPath).subscribe(res => {
+        this.doctors = res
+      })
+    }
   }
 
   delete(id: number): void {

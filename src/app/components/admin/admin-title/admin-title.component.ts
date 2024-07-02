@@ -44,7 +44,6 @@ export class AdminTitleComponent {
   getTitles() {
 
     this.titleService.getTitlesPagination(this.pageIndex, this.pageSize).subscribe((response) => {
-      console.log("response1:" + response)
       this.titleItems = response.titles
       this.items = response.titles.items
       this.items.forEach((item) => {
@@ -53,7 +52,6 @@ export class AdminTitleComponent {
       }
       );
       this.totalPages = response.titles.pagination.totalPages
-      console.log("items1:" + this.items)
       this.dataLoaded = true
     })
   }
@@ -67,9 +65,7 @@ export class AdminTitleComponent {
   totalPages: number;
   // Sayfaya git
   goToPage(page: number) {
-    console.log("goto page >= 1 && page <= this.totalPages" + "page numarası:" + page + "this.totalPages :==>" + this.totalPages)
     if (page >= 1 && page <= this.totalPages) {
-      console.log("burdaa pageafg")
       this.pageIndex = page;
       this.getTitles();
     }
@@ -77,7 +73,6 @@ export class AdminTitleComponent {
 
   // Önceki sayfaya git
   prevPage() {
-    console.log("this.pageIndex > 1" + this.pageIndex)
     if (this.pageIndex > 1) {
       this.pageIndex--;
       this.getTitles();
@@ -86,7 +81,6 @@ export class AdminTitleComponent {
 
   // Sonraki sayfaya git
   nextPage() {
-    console.log("this.pageIndex < this.totalPages::" + "this.pageinex:" + this.pageIndex + "this.totalPages:" + this.totalPages)
     if (this.pageIndex < this.totalPages) {
       this.pageIndex++;
       this.getTitles();
@@ -95,7 +89,6 @@ export class AdminTitleComponent {
 
   // İlk sayfaya git
   goToFirstPage() {
-    console.log('this.titleItems.pagination.pageIndex ' + this.titleItems.pagination.pageIndex)
     if (this.titleItems.pagination.pageIndex > 1) {
       this.pageIndex = 1;
       this.getTitles();

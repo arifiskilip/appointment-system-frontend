@@ -1,12 +1,12 @@
 export interface FeedbackListModel{
-    PatientId?:number;
-    FeedbackId?:number;
-    PatientName:string;
-    IdentityNumber:string;
-    Gender:string;
-    AppointmentId:number;
-    IntervalDate?:Date;
-    CreatedDate?:Date;
+    patientId?:number;
+    feedbackId?:number;
+    patientName:string;
+    identityNumber:string;
+    gender:string;
+    appointmentId:number;
+    intervalDate?:Date;
+    createdDate?:Date;
 }
 
 

@@ -40,7 +40,6 @@ export class AdminBranchComponent{
   branchItems: Paginate<BranchModel[]>;
   getBranchs() {
     this.branchService.getBranchsPagination(this.pageIndex, this.pageSize).subscribe((response) => {
-      console.log("response1:" + response)
         this.branchItems = response.branches;
         this.items = response.branches.items;
         this.items.forEach((item) => {
@@ -48,7 +47,6 @@ export class AdminBranchComponent{
           item.DeletedDate = new Date(item.CreatedDate)
         });
         this.totalPages = response.branches.pagination.totalPages
-        console.log("items1:" + this.items)
         this.dataLoaded = true
      });
   } 
@@ -64,9 +62,7 @@ export class AdminBranchComponent{
   
   // Sayfaya git
   goToPage(page: number) {
-    console.log("goto page >= 1 && page <= this.totalPages" + "page numarası:" + page + "this.totalPages :==>" + this.totalPages)
     if (page >= 1 && page <= this.totalPages) {
-      console.log("burdaa pageafg")
       this.pageIndex = page;
       this.getBranchs();
     }
@@ -74,7 +70,6 @@ export class AdminBranchComponent{
 
   // Önceki sayfaya git
   prevPage() {
-    console.log("this.pageIndex > 1" + this.pageIndex)
     if (this.pageIndex > 1) {
       this.pageIndex--;
       this.getBranchs();
@@ -83,7 +78,6 @@ export class AdminBranchComponent{
 
   // Sonraki sayfaya git
   nextPage() {
-    console.log("this.pageIndex < this.totalPages::" + "this.pageinex:" + this.pageIndex + "this.totalPages:" + this.totalPages)
     if (this.pageIndex < this.totalPages) {
       this.pageIndex++;
       this.getBranchs();
@@ -92,7 +86,6 @@ export class AdminBranchComponent{
 
   // İlk sayfaya git
   goToFirstPage() {
-    console.log('this.branchItems.pagination.pageIndex ' + this.branchItems.pagination.pageIndex)
     if (this.branchItems.pagination.pageIndex > 1) {
       this.pageIndex = 1;
       this.getBranchs();
