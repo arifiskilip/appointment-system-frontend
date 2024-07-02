@@ -29,10 +29,10 @@
                       <span
                         [ngClass]="[
                           'badge',
-                          title.isDeleted ? 'badge-success' : 'badge-danger'
+                          !title.isDeleted ? 'badge-success' : 'badge-danger'
                         ]"
                       >
-                        {{ title.isDeleted ? "Aktif" : "Pasif" }}
+                        {{ title.isDeleted ? "Pasif" : "Aktif" }}
                       </span>
                     </td>
                     <td class="project-actions text-right">

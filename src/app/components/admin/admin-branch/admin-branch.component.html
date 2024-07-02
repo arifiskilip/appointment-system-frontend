@@ -15,7 +15,7 @@
                     <th style="width: 10px">#</th>
                     <th>Branş Adı</th>
                     <th>Oluşturulma Tarihi</th>
-                    <th>Güncelleme Tarihi Tarihi</th>
+                    <th>Güncelleme Tarihi</th>
                     <th>Durum</th>
                     <th></th>
                   </tr>
@@ -30,10 +30,10 @@
                       <span
                         [ngClass]="[
                           'badge',
-                          branch.isDeleted ? 'badge-success' : 'badge-danger'
+                          !branch.isDeleted ? 'badge-success' : 'badge-danger'
                         ]"
                       >
-                        {{ branch.isDeleted ? "Aktif" : "Pasif" }}
+                        {{ branch.isDeleted ? "Pasif" : "Aktif" }}
                       </span>
                     </td>
                     <td class="project-actions text-right">
@@ -202,6 +202,16 @@
               <div *ngIf="name.errors?.['maxlength']">
                 {{ validationMessages.branch.name.maxLength }}
               </div>
+            </div>
+          </div>
+          <div class="input-group mt-3 col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="isDeleted"
+              />
+              <label class="form-check-label"> Branş aktif mi? </label>
             </div>
           </div>
         </form>
