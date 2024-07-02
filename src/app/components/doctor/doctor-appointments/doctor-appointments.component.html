@@ -1,0 +1,197 @@
+<app-blank pageName="Doktor Randevu Takvimi">
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Sekmeler -->
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="tab === 'Created'" (click)="setTab('Created')">Bekleyen Randevular</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="tab === 'Completed'" (click)="setTab('Completed')">Onaylanan Randevular</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="tab === 'Canceled'" (click)="setTab('Canceled')">İptal Edilen Randevular</a>
+          </li>
+        </ul>
+  
+        <!-- Randevular -->
+        <div class="row mt-3">
+          <ng-container *ngFor="let appointment of filteredAppointments">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">{{ appointment.patientName }}</h3>
+                  <div class="card-tools">
+                    <span class="badge" [ngClass]="{
+                      'badge-success': appointment.appointmentStatusName === 'Completed',
+                      'badge-danger': appointment.appointmentStatusName === 'Canceled',
+                      'badge-warning': appointment.appointmentStatusName === 'Created'
+                    }">{{ getAppointmentStatusName(appointment.appointmentStatusName) | titlecase }}</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p>Randevu Saati: {{ appointment.intervalDate|date:'HH:mm' }}</p>
+                  <p>Randevu Tarihi: {{ appointment.intervalDate| date:'dd MMMM yyyy'}}</p>
+                  <div>
+                    @if(appointment.appointmentStatusName === 'Created'){
+                      <div #containerWaitingDiv>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <button class="btn btn-success" (click)="acceptAppointment(appointment.id, appointment.patientId)">
+                            <i class="fas fa-check"></i> Kabul Et
+                          </button>
+                          <button class="btn btn-danger" (click)="rejectAppointment(appointment.id)">
+                            <i class="fas fa-times"></i> Reddet
+                          </button>
+                        </div>
+                      </div>
+                    }
+                    @else if(appointment.appointmentStatusName === 'Canceled')
+                    {
+                      <div #containerRejectedDiv>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                          <button class="btn btn-success" (click)="acceptAppointment(appointment.id, appointment.patientId)">
+                            <i class="fas fa-check"></i> Kabul Et
+                          </button>
+                          <button class="btn btn-primary" (click)="waitedAppointment(appointment.id)">
+                            <i class="fas fa-clock"></i> Beklemeye Al
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <!-- Takvim -->
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-calendar-alt mr-1"></i> Takvim</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <full-calendar [options]="calendarOptions"></full-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+
+
+          <!-- Add Report -->
+    <div
+    class="modal fade"
+    id="addReportModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">
+            <i class="fas fa-plus-circle"></i> Hasta Rapor Ekranı
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6 patient-info">
+                  <div class="patient-info-item">
+                    @if(currentPatient?.imageUrl){
+                      <img [src]="getApiUrl()+currentPatient.imageUrl" alt="Patient Image" class="patient-image">
+                    }
+                    @else {
+                      @if(currentPatient?.genderId===1){
+                        <img [src]="imageUrl.womenAvatar" alt="Patient Image" class="patient-image">
+                      }
+                      @else {
+                        <img [src]="imageUrl.manAvatar" alt="Patient Image" class="patient-image">
+                      }
+                    }
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Ad:</strong> {{ currentPatient?.firstName }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Soyad:</strong> {{ currentPatient?.lastName }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Email:</strong> {{ currentPatient?.email }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Tc No:</strong> {{ currentPatient?.identityNumber }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Telefon:</strong> {{ currentPatient?.phoneNumber }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Kan Grubu:</strong> {{ currentPatient?.bloodTypeName }}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Yaş:</strong> {{ calculateAge(currentPatient?.birthDate.toString())}}
+                  </div>
+                  <div class="patient-info-item">
+                    <strong>Cinsiyet:</strong> {{ currentPatient?.genderName }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <form [formGroup]="reportForm">
+                    <div class="form-group">
+                      <label for="description">Açıklama</label>
+                      <textarea id="description" formControlName="description" class="form-control"></textarea>
+                      <div *ngIf="f.description.invalid && (f.description.dirty || f.description.touched)" class="text-danger">
+                        Açıklama zorunludur ve en az 10 karakter olmalıdır.
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="file">Rapor Ekle</label>
+                      <input type="file" id="file" formControlName="file" (change)="onFileChange($event)" class="form-control" />
+                      <div *ngIf="f.file.invalid && (f.file.dirty || f.file.touched)" class="text-danger">
+                        Dosya zorunludur.
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-success" (click)="addReport()" [disabled]="reportForm.invalid">
+                      <i class="fas fa-upload"></i> Yükle
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+  </app-blank>
+  

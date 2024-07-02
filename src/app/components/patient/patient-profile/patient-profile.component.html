@@ -218,29 +218,32 @@
                   id="activity"
                 >
                   <!-- Post -->
-                  <div class="post">
-                    <div class="user-block">
-                      <img
-                        class="img-circle img-bordered-sm"
-                        src="https://avatars.githubusercontent.com/u/71379630?v=4"
-                        alt="user image"
-                      />
-                      <span class="username">
-                        <a href="#">Jonathan Burke Jr.</a>
-                      </span>
-                      <span class="description"
-                        >Shared publicly - 7:30 PM today</span
-                      >
-                    </div>
-                    <!-- /.user-block -->
-                    <p>
-                      Lorem ipsum represents a long-held tradition for
-                      designers, typographers and the like. Some people hate it
-                      and argue for its demise, but others ignore the hate as
-                      they create awesome tools to help create filler text for
-                      everyone from bacon lovers to Charlie Sheen fans.
-                    </p>
-                  </div>
+                  @if(feedbacks && feedbacks.items.length>0){
+                    @for (feedback of feedbacks?.items; track $index) {
+                      <div class="post">
+                        <div class="user-block">
+                          <img
+                            class="img-circle img-bordered-sm"
+                            src="https://avatars.githubusercontent.com/u/71379630?v=4"
+                            alt="user image"
+                          />
+                          <span class="username">
+                            <a>{{patient.firstName+" "+patient.lastName}}</a>
+                          </span>
+                          <span class="description"
+                            >{{feedback.createdDate | date:'dd MMMM yyyy HH:mm'}}</span
+                          >
+                        </div>
+                        <!-- /.user-block -->
+                        <p>
+                         {{feedback.description}}
+                        </p>
+                      </div>
+                    }
+                  }
+                  @else {
+                    <div class="alert alert-warning">Mevcut geribildiriminiz bulunmamaktadır.</div>
+                  }
                   <!-- /.post -->
                 </div>
                 <!-- /.tab-pane -->
@@ -304,7 +307,7 @@
                       </ng-container>
                       <!-- END timeline item -->
                     </ng-container>
-                    <div *ngIf="patientAppointments.pagination.hasNextPage">
+                    <div *ngIf="patientAppointments?.pagination.hasNextPage">
                       <i class="far fa-clock bg-gray"></i>
                     </div>
                   </div>
@@ -313,10 +316,10 @@
                   </div>
                   <!-- Pagination buttons -->
                   <div class="pagination-container">
-                    <button class="btn btn-primary" *ngIf="patientAppointments.pagination.hasPreviousPage" (click)="previousPage()">
+                    <button class="btn btn-primary" *ngIf="patientAppointments?.pagination.hasPreviousPage" (click)="previousPage()">
                       <i class="fas fa-arrow-left"></i> Geri
                     </button>
-                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments.pagination.hasNextPage">
+                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments?.pagination.hasNextPage">
                       İleri <i class="fas fa-arrow-right"></i>
                     </button>
                   </div>

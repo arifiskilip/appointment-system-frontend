@@ -8,6 +8,7 @@ import { ValidationMessages } from '../../../common/constants/validationMessages
 import { LoginResponseModel } from '../../../models/loginResponseModel';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ValidDirective } from '../../../common/directives/valid.directive';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private swal: SwalService,
     private formBuilder: FormBuilder,
-    private localStorage:LocalStorageService
+    private localStorage:LocalStorageService,
+    private tokenHelper:JwtHelperService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +80,9 @@ export class LoginComponent implements OnInit {
       .subscribe((res) => {
         this.localStorage.setItem('token', res.accessToken.token);
         this.swal.callToast('Giriş işlemi başarılı.');
-        this.router.navigateByUrl('/patient');
+        const decodeToken = this.tokenHelper.decodeToken(res.accessToken.token)
+        const url:string = "/"+decodeToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+        this.router.navigateByUrl(url.toLowerCase())
       });
   }
 

@@ -1,23 +1,26 @@
+import { Subscription, take } from 'rxjs';
 import { AppointmentIntervalsSearchModel } from './../../../../models/appointmentIntervalsSearchModel';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BlankComponent } from "../../../blank/blank.component";
 import { HttpService } from '../../../../services/http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Paginate } from '../../../../models/paginateModel';
 import { SwalService } from '../../../../services/swal.service';
 import { ImageUrl } from '../../../../common/constants/imageUrl';
+import { SharedModule } from '../../../../common/shared/shared.module';
 
 @Component({
     selector: 'app-appointment-list',
     standalone: true,
     templateUrl: './appointment-list.component.html',
     styleUrl: './appointment-list.component.scss',
-    imports: [BlankComponent]
+    imports: [BlankComponent,SharedModule]
 })
-export class AppointmentListComponent implements OnInit{
+export class AppointmentListComponent implements OnInit, OnDestroy{
   query: string = '';
   appointmentIntervalsSearchModel: AppointmentIntervalsSearchModel[];
   imageUrl: ImageUrl = new ImageUrl();
+  private queryParamsSubscription: Subscription;
 
   constructor(
     private http: HttpService,
@@ -27,8 +30,8 @@ export class AppointmentListComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.query = '';
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(params => {
+      this.query = '';
       const clinicId = params['clinicId'] ?? '';
       const doctorId = params['doctorId'] ?? '';
       const startDate = params['startDate'] ?? '';
@@ -38,12 +41,23 @@ export class AppointmentListComponent implements OnInit{
       this.query = this.buildQuery({ clinicId, doctorId, startDate, endDate });
 
       if (this.query.length > 0 && page === 'list') {
-        this.http.get<any>('AppointmentInterval/Search' + this.query)
-          .subscribe(res => {
-            this.appointmentIntervalsSearchModel = res.appointmentIntervals.items;
-          });
+        this.search();
       }
     });
+  }
+  //Abonelikleri temizle
+  ngOnDestroy(): void {
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
+  }
+  
+  search() {
+    this.http.get<any>('AppointmentInterval/Search' + this.query)
+      .pipe(take(1))
+      .subscribe(res => {
+        this.appointmentIntervalsSearchModel = res.appointmentIntervals.items;
+      });
   }
 
   buildQuery(params: { [key: string]: string }): string {

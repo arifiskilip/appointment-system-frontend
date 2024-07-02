@@ -50,6 +50,15 @@
                         class="btn btn-danger btn-sm"
                         (click)="deleteItem(branch.id)"
                       >
+                      <a class="btn btn-primary btn-sm" href="#">
+                        <i class="fas fa-circle-info"> </i>
+                        Detay
+                      </a>
+                      <button class="btn btn-info btn-sm"  data-toggle="modal" data-target="#updateBranchModal">
+                        <i class="fas fa-pencil-alt"> </i>
+                        Düzenle
+                      </button>
+                      <a class="btn btn-danger btn-sm" href="#">
                         <i class="fas fa-trash"> </i>
                         Sil
                       </a>
@@ -172,6 +181,52 @@
           Kaydet
         </button>
         }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateBranchModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBranchModalLabel"><i class="fas fa-plus-circle"></i> Yeni Branş Ekle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="branchAddForm">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Branş Adı" 
+            [appValid]="branchAddForm.get('name')?.valid"
+            formControlName="name" />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-briefcase-medical"></span>
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['required']">
+                {{ validationMessages.branch.name.required }}
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['minlength']">
+                {{ validationMessages.branch.name.minLength }}
+              </div>
+            </div>
+            <div *ngIf="name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors?.['maxlength']">
+                {{ validationMessages.branch.name.maxLength }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+        <button type="button" class="btn btn-primary">Kaydet</button>
       </div>
     </div>
   </div>
