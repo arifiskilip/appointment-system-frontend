@@ -1,9 +1,9 @@
 export class ValidationMessages {
   branch = {
     name: {
-      required: "'Branş' boş olmamalı.",
-      minLength: "'Branş', 3 karakterden büyük veya eşit olmalıdır.",
-      maxLength: "'Branş', 50 karakterden küçük veya eşit olmalıdır.",
+      required: "'Branch' boş olmamalı.",
+      minLength: "'Branch', 3 karakterden büyük veya eşit olmalıdır.",
+      maxLength: "'Branch', 50 karakterden küçük veya eşit olmalıdır.",
     },
   };
   login = {

@@ -1,4 +1,7 @@
 export interface BranchModel{
-    id:number;
-    name:string;
+    Id?:number;
+    Name:string;
+    CreatedDate?:Date;
+    UpdatedDate?:Date;
+    IsDeleted:boolean;
 }

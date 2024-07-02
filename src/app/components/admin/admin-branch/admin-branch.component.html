@@ -9,7 +9,7 @@
             </div>
 
             <div class="card-body">
-              <table class="table table-bordered">
+              <table *ngIf="dataLoaded == true"  class="table table-bordered">
                 <thead>
                   <tr>
                     <th style="width: 10px">#</th>
@@ -21,13 +21,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1.</td>
-                    <td>Update software</td>
-                    <td>01.01.2022</td>
-                    <td>-</td>
-                    <td><span class="badge badge-success">Success</span></td>
+                  <tr *ngFor="let branch of items">
+                    <td>{{ branch.id }}</td>
+                    <td>{{ branch.name }}</td>
+                    <td>{{ branch.createdDate }}</td>
+                    <td>{{ branch.updatedDate }}</td>
+                    <td>
+                      <span
+                        [ngClass]="[
+                          'badge',
+                          branch.isDeleted ? 'badge-success' : 'badge-danger'
+                        ]"
+                      >
+                        {{ branch.isDeleted ? "Aktif" : "Pasif" }}
+                      </span>
+                    </td>
                     <td class="project-actions text-right">
+                      <a
+                      class="btn btn-info btn-sm"
+                      (click)="onSelect(branch)"
+                      data-toggle="modal"
+                      data-target="#addBranchModal"
+                    >
+                      <i class="fas fa-pencil-alt"> </i>
+                        Güncelle
+                      </a>
+                      <a
+                        class="btn btn-danger btn-sm"
+                        (click)="deleteItem(branch.id)"
+                      >
                       <a class="btn btn-primary btn-sm" href="#">
                         <i class="fas fa-circle-info"> </i>
                         Detay
@@ -44,17 +66,43 @@
                   </tr>
                 </tbody>
               </table>
-              <button class="btn btn-outline-success mt-3" data-toggle="modal" data-target="#addBranchModal">Ekle</button>
+              <button
+                class="btn btn-outline-success mt-3"
+                (click)="onSelectAdd()"
+                data-toggle="modal"
+                data-target="#addBranchModal"
+              >
+                Ekle
+              </button>
             </div>
-
             <div class="card-footer clearfix">
-              <ul class="pagination pagination-sm m-0 float-right">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
-              </ul>
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item">
+                    <a class="page-link" (click)="goToFirstPage()">İlk</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" (click)="prevPage()">Önceki</a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngFor="let pageNumber of getPageNumbers()"
+                  >
+                    <a
+                      class="page-link"
+                      (click)="goToPage(pageNumber)"
+                      [ngClass]="{ active: pageNumber === pageIndex }"
+                      >{{ pageNumber }}</a
+                    >
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" (click)="nextPage()">Sonraki</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" (click)="goToLastPage()">Son</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -65,46 +113,74 @@
 
 <!-- Branş Ekleme Modal -->
 <div class="modal fade" id="addBranchModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" id="myModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addBranchModalLabel"><i class="fas fa-plus-circle"></i> Yeni Branş Ekle</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="addBranchModalLabel">
+          @if(isUpdateForm) { Branş Güncelle } @else { Yeni Branş Ekle }
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Close()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="branchAddForm">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Branş Adı" 
-            [appValid]="branchAddForm.get('name')?.valid"
-            formControlName="name" />
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-briefcase-medical"></span>
+        <form   [formGroup]="isUpdateForm ? updateBranchForm : branchForm"
+        (ngSubmit)="add()"
+        >
+          <div class="row">
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="Branş Adı" id="myInput" [appValid]="name?.valid"
+              formControlName="name" />
               </div>
+              @if (name.touched && name.errors) {
+              <div *ngIf="name.invalid" class="text-danger">
+                <div *ngIf="name.errors?.['required']">
+                  ** {{ validationMessages.branch.name.required }}
+                </div>
+              </div>
+              <div *ngIf="name.invalid" class="text-danger">
+                <div *ngIf="name.errors?.['minlength']">
+                  {{ validationMessages.branch.name.minLength }}
+                </div>
+              </div>
+              <div *ngIf="name.invalid" class="text-danger">
+                <div *ngIf="name.errors?.['maxlength']">
+                  {{ validationMessages.branch.name.maxLength }}
+                </div>
+              </div>
+              }
             </div>
-            <div *ngIf="name.invalid" class="invalid-feedback">
-              <div *ngIf="name.errors?.['required']">
-                {{ validationMessages.branch.name.required }}
-              </div>
-            </div>
-            <div *ngIf="name.invalid" class="invalid-feedback">
-              <div *ngIf="name.errors?.['minlength']">
-                {{ validationMessages.branch.name.minLength }}
-              </div>
-            </div>
-            <div *ngIf="name.invalid" class="invalid-feedback">
-              <div *ngIf="name.errors?.['maxlength']">
-                {{ validationMessages.branch.name.maxLength }}
-              </div>
+          <div class="input-group mt-3 col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="isDeleted"
+              />
+              <label class="form-check-label"> Branş aktif mi? </label>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-        <button type="button" class="btn btn-primary">Kaydet</button>
+        <button
+          type="button"
+          #closeButton
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="Close()"
+        >
+          Kapat
+        </button>
+        @if(isUpdateForm) {
+        <button type="submit" class="btn btn-primary" (click)="update()">
+          Güncelle
+        </button>
+        } @else {
+        <button type="submit" class="btn btn-primary" (click)="add()">
+          Kaydet
+        </button>
+        }
       </div>
     </div>
   </div>

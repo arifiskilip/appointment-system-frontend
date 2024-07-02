@@ -8,6 +8,7 @@ export interface DoctorModel{
     isEmailVerified:boolean;
     identityNumber:string;
     imageUrl:string;
+    isDeleted:boolean;
     genderId:number;
     genderName:string;
     titleId:number;
