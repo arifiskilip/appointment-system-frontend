@@ -4,8 +4,6 @@ import { NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SwalService } from '../../../services/swal.service';
-import { Title } from '@angular/platform-browser';
-import bootstrap from '../../../../main.server';
 import { Paginate } from '../../../models/paginateModel';
 import { ValidationMessages } from '../../../common/constants/validationMessages';
 import { ValidDirective } from '../../../common/directives/valid.directive';
@@ -173,8 +171,8 @@ export class AdminBranchComponent{
 
     if (this.branchForm.valid) {
       let branchModel: BranchModel = {
-        Name: this.branchForm.value.name,
-        IsDeleted: this.branchForm.value.isDeleted == null ? false :
+        name: this.branchForm.value.name,
+        isDeleted: this.branchForm.value.isDeleted == null ? false :
           this.branchForm.value.isDeleted
       }
 
@@ -223,9 +221,9 @@ export class AdminBranchComponent{
 
   update(): void {
     if (this.updateBranchForm && this.updateBranchForm.valid) {
-      this.selectedBranch.Name = this.updateBranchForm.value.name;
-      this.selectedBranch.IsDeleted = this.updateBranchForm.value.isDeleted;
-      this.selectedBranch.Id = Number(this.updateBranchForm.value.id);
+      this.selectedBranch.name = this.updateBranchForm.value.name;
+      this.selectedBranch.isDeleted = this.updateBranchForm.value.isDeleted;
+      this.selectedBranch.id = Number(this.updateBranchForm.value.id);
 
       this.branchService.update(this.selectedBranch).subscribe((response) => {
         this.getBranchs()

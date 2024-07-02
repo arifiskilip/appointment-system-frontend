@@ -201,7 +201,7 @@ export class RegisterComponent implements OnInit {
             message: 'Geçersiz kimlik numarası.',
           },
         };
-      }
+      } 
 
       return null;
     };

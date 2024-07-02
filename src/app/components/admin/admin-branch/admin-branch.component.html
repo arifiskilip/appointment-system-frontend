@@ -37,30 +37,11 @@
                       </span>
                     </td>
                     <td class="project-actions text-right">
-                      <a
-                      class="btn btn-info btn-sm"
-                      (click)="onSelect(branch)"
-                      data-toggle="modal"
-                      data-target="#addBranchModal"
-                    >
-                      <i class="fas fa-pencil-alt"> </i>
-                        Güncelle
+                      <a class="btn btn-info btn-sm" (click)="onSelect(branch)" data-toggle="modal" data-target="#addBranchModal">
+                        <i class="fas fa-pencil-alt"></i> Güncelle
                       </a>
-                      <a
-                        class="btn btn-danger btn-sm"
-                        (click)="deleteItem(branch.id)"
-                      >
-                      <a class="btn btn-primary btn-sm" href="#">
-                        <i class="fas fa-circle-info"> </i>
-                        Detay
-                      </a>
-                      <button class="btn btn-info btn-sm"  data-toggle="modal" data-target="#updateBranchModal">
-                        <i class="fas fa-pencil-alt"> </i>
-                        Düzenle
-                      </button>
-                      <a class="btn btn-danger btn-sm" href="#">
-                        <i class="fas fa-trash"> </i>
-                        Sil
+                      <a class="btn btn-danger btn-sm" (click)="deleteItem(branch.id)">
+                        <i class="fas fa-trash"></i> Sil
                       </a>
                     </td>
                   </tr>
@@ -186,20 +167,21 @@
   </div>
 </div>
 
-<div class="modal fade" id="updateBranchModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="updateBranchModal" tabindex="-1" role="dialog" aria-labelledby="updateBranchModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addBranchModalLabel"><i class="fas fa-plus-circle"></i> Yeni Branş Ekle</h5>
+        <h5 class="modal-title" id="updateBranchModalLabel"><i class="fas fa-plus-circle"></i> Yeni Branş Ekle</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="branchAddForm">
+        <form [formGroup]="branchForm">
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Branş Adı" 
-            [appValid]="branchAddForm.get('name')?.valid"
+            [appValid]="branchForm.get('name')?.valid"
             formControlName="name" />
             <div class="input-group-append">
               <div class="input-group-text">
