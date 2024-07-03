@@ -108,7 +108,9 @@ export class AdminFeedbackComponent implements OnInit {
       $('#feedbackDetail').modal('show');
     })
   }
-
+  modalHide(){
+    $('#feedbackDetail').modal('hide');
+  }
   getBranches() {
     let newPath = "Branch/GetAll"
     this.http.get<BranchListModel>(newPath).subscribe(res => {

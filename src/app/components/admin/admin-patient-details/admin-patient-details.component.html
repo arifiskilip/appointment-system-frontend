@@ -315,24 +315,24 @@
                       <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                           <li class="page-item">
-                            <a class="page-link" (click)="goToFirstPage()">İlk</a>
+                            <a class="page-link" (click)="goToFirstPageReport()">İlk</a>
                           </li>
                           <li class="page-item">
-                            <a class="page-link" (click)="prevPage()">Önceki</a>
+                            <a class="page-link" (click)="prevPageReport()">Önceki</a>
                           </li>
-                          <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+                          <li class="page-item" *ngFor="let pageNumber of getPageNumbersReport()">
                             <a
                               class="page-link"
-                              (click)="goToPage(pageNumber)"
-                              [ngClass]="{ active: pageNumber === pageIndex }"
+                              (click)="goToPageReport(pageNumber)"
+                              [ngClass]="{ active: pageNumber === pageIndexReport }"
                               >{{ pageNumber }}</a
                             >
                           </li>
                           <li class="page-item">
-                            <a class="page-link" (click)="nextPage()">Sonraki</a>
+                            <a class="page-link" (click)="nextPageReport()">Sonraki</a>
                           </li>
                           <li class="page-item">
-                            <a class="page-link" (click)="goToLastPage()">Son</a>
+                            <a class="page-link" (click)="goToLastPageReport()">Son</a>
                           </li>
                         </ul>
                       </nav>
@@ -447,14 +447,14 @@
                     </div>
                   </div>
                   <div *ngIf="!getDates().length">
-                    <p>No appointments available.</p>
+                    <div class="alert alert-warning">Mevcut rapor bulunmamaktadır.</div>
                   </div>
                   <!-- Pagination buttons -->
                   <div class="pagination-container">
                     <button class="btn btn-primary" *ngIf="patientAppointments?.pagination.hasPreviousPage" (click)="previousPage()">
                       <i class="fas fa-arrow-left"></i> Geri
                     </button>
-                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments?.pagination.hasNextPage">
+                    <button class="btn btn-primary" (click)="forwardPage()" *ngIf="patientAppointments?.pagination.hasNextPage">
                       İleri <i class="fas fa-arrow-right"></i>
                     </button>
                   </div>
@@ -470,107 +470,78 @@
                 <!-- Feedbacks -->
                 <div class="post">
                   <div class="card-body p-0" style="display: block">
-                    <form [formGroup]="searchForm">
-                      <div class="row mb-3 mt-3 ml-2">
-                        <div class="col-md-3 col-sm-12 mb-2">
-                          <div class="form-group">
-                            <select formControlName="orderbyList" class="form-control">
-                              <option value="new">En Yeni</option>
-                              <option value="old">En Eski</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                          <div class="form-group">
-                            <select
-                              formControlName="clinic"
-                              (change)="getDoctors()"
-                              class="form-control select2bs4"
-                              style="width: 100%"
-                            >
-                              <option value="">Branş seçiniz</option>
-                              <option *ngFor="let clinic of clinics" [value]="clinic.id">
-                                {{ clinic.name }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                          <div class="form-group">
-                            <select
-                              formControlName="doctor"
-                              class="form-control"
-                              id="hekim"
-                            >
-                              <option value="">Doktor seçiniz</option>
-                              <option *ngFor="let doctor of doctors" [value]="doctor.id">
-                                {{ doctor.firstName + " " + doctor.lastName }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                          <button
-                            type="submit"
-                            class="btn btn-primary mr-2"
-                            (click)="onSubmit()"
+                    @if(patientFeedbacks?.items.length>0){
+                      <table class="table table-striped projects">
+                        <thead>
+                          <tr>
+                            <th style="width: 1%">#</th>
+                            <th style="width: 20%">Hasta Adı</th>
+                            <th style="width: 15%">Kimlik No</th>
+                            <th style="width: 15%">Geri Bildirim Tarihi</th>
+                            <th style="width: 30%"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let feedback of patientFeedbacks?.items">
+                            <td>#</td>
+                            <td>
+                              <a> {{ feedback.patientName }}</a>
+                              <br />
+                              <small> {{ feedback.gender }} </small>
+                            </td>
+                            <td>
+                              <a> {{ feedback.identityNumber }}</a>
+                            </td>
+                            <td>
+                              <a> {{ feedback.createdDate |date:'dd MMMM yyyy MM:hh'}}</a>
+                            </td>
+                            <td class="project-actions text-right">
+                              <button
+                                class="btn btn-info btn-sm mr-2"
+                                (click)="onSelect(feedback.id)"
+                              >
+                                <i class="fas fa-circle-info"> </i>
+                                Detay
+                              </button>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                (click)="delete(feedback.id)"
+                              >
+                                <i class="fas fa-trash"> </i>
+                                Sil
+                              </button>
+                            </td>
+                          </tr>
+  
+                        </tbody>
+                      </table>
+                    }@else {
+                      <div class="alert alert-warning">Mevcut geri bildirim bulunamaktadır.</div>
+                    }
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                          <a class="page-link" (click)="goToFirstPageFeedback()">İlk</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" (click)="prevPageFeedback()">Önceki</a>
+                        </li>
+                        <li class="page-item" *ngFor="let pageNumber of getPageNumbersFeedback()">
+                          <a
+                            class="page-link"
+                            (click)="goToPageReport(pageNumber)"
+                            [ngClass]="{ active: pageNumber === pageIndexFeedback }"
+                            >{{ pageNumber }}</a
                           >
-                            Filtrele
-                          </button>
-                          <button
-                            type="submit"
-                            class="btn btn-danger mr-2"
-                            (click)="onClear()"
-                          >
-                            Temizle
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                    <table class="table table-striped projects">
-                      <thead>
-                        <tr>
-                          <th style="width: 1%">#</th>
-                          <th style="width: 20%">Hasta Adı</th>
-                          <th style="width: 15%">Kimlik No</th>
-                          <th style="width: 15%">Geri Bildirim Tarihi</th>
-                          <th style="width: 30%"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let feedback of titleItems?.items">
-                          <td>#</td>
-                          <td>
-                            <a> {{ feedback.patientName }}</a>
-                            <br />
-                            <small> {{ feedback.gender }} </small>
-                          </td>
-                          <td>
-                            <a> {{ feedback.identityNumber }}</a>
-                          </td>
-                          <td>
-                            <a> {{ feedback.createdDate |date:'dd MMMM yyyy MM:hh'}}</a>
-                          </td>
-                          <td class="project-actions text-right">
-                            <button
-                              class="btn btn-info btn-sm mr-2"
-                              (click)="onSelect(feedback.feedbackId)"
-                            >
-                              <i class="fas fa-circle-info"> </i>
-                              Detay
-                            </button>
-                            <button
-                              class="btn btn-danger btn-sm"
-                              (click)="delete(feedback.feedbackId)"
-                            >
-                              <i class="fas fa-trash"> </i>
-                              Sil
-                            </button>
-                          </td>
-                        </tr>
-
-                      </tbody>
-                    </table>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" (click)="nextPageFeedback()">Sonraki</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" (click)="goToLastPageFeedback()">Son</a>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
                 </div>
                 <!-- /.Feedbacks -->
@@ -900,5 +871,91 @@
         </div>
       </div>
     </div>
+
+    <!-- Feedback Detail Modl -->
+    <div
+    class="modal fade"
+    id="feedbackDetail"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="feedbackDetail"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="feedbackDetail">
+            <i class="fas fa-comments"></i> Hasta Geribildirim
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="modalHide()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h6>
+                  <i class="fas fa-user"></i> Hasta Adı:
+                  <span style="font-weight: normal"
+                    >{{ this.feedbackDetail?.patientName }}
+                  </span>
+                </h6>
+                <hr />
+                <h6>
+                  <i class="fas fa-calendar-alt"></i> Randevu ID:
+                  <span style="font-weight: normal">{{
+                    this.feedbackDetail?.appointmentId
+                  }}</span>
+                </h6>
+                <hr />
+                <h6>
+                  <i class="fas fa-calendar-day"></i> Randevu Tarihi:
+                  <span style="font-weight: normal">{{
+                    this.feedbackDetail?.intervalDate |date:'dd MMMM yyyy - HH:mm'
+                  }}</span>
+                </h6>
+                <hr />
+                <h6>
+                  <i class="fas fa-hospital"></i> Polikinlik:
+                  <span style="font-weight: normal">{{
+                    this.feedbackDetail?.branchName
+                  }}</span>
+                </h6>
+                <hr />
+                <h6>
+                  <i class="fas fa-user-md"></i> Doktor:
+                  <span style="font-weight: normal">{{
+                    this.feedbackDetail?.doctorName
+                  }}</span>
+                </h6>
+                <hr />
+                <!-- <h6><i class="fas fa-info-circle"></i> Durum: <span style="font-weight: normal;">status</span></h6>
+                      <hr> -->
+                <h6><i class="fas fa-comment-dots"></i> Açıklama:</h6>
+                <p id="description">{{ this.feedbackDetail?.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="modalHide()"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   </section>
 </app-blank>

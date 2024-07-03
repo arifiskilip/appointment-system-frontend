@@ -192,11 +192,10 @@ export class AdminPatientComponent implements OnInit{
   getPatients(){
     this.http
       .get<any>(
-        `Patient/GetPatientsPaginated?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
+        `Patient/GetPatientsPaginated?Index=${this.pageIndex}&Size=${this.pageSize}`
       )
       .pipe(take(1))
       .subscribe((res) => {
-        console.log(res);
         this.patients = res.patients;
         this.totalPages = this.patients.pagination.totalPages;
       });
@@ -218,17 +217,20 @@ export class AdminPatientComponent implements OnInit{
 
 
   confirmDelete(patient: PatientModel): void {
-    const confirmation = window.confirm(`${patient.firstName} ${patient.lastName} isimli hastayı silmek istediğinize emin misiniz?`);
-    if (confirmation) {
-      this.changeIsDeletedPatient(patient.id);
-    }
+    this.swal.callSwal('Hasta Silinecektir',
+      `${patient.firstName} ${patient.lastName} isimli hastayı silmek istediğinize emin misiniz?`,
+      ()=>{
+        this.changeIsDeletedPatient(patient.id);
+      }
+    )
   }
 
   confirmActivate(patient: PatientModel): void {
-    const confirmation = window.confirm(`${patient.firstName} ${patient.lastName} isimli hastayı aktif etmek istediğinize emin misiniz?`);
-    if (confirmation) {
-      this.changeIsDeletedPatient(patient.id);
-    }
+    this.swal.callSwal('Hasta Aktif Edilecektir',`${patient.firstName} ${patient.lastName} isimli hastayı aktif etmek istediğinize emin misiniz?`,
+      ()=>{
+        this.changeIsDeletedPatient(patient.id);
+      }
+    ,'Aktif Et')
   }
 
   changeIsDeletedPatient(patientId: number) {

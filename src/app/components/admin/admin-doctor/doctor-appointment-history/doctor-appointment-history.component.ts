@@ -54,6 +54,7 @@ export class DoctorAppointmentHistoryComponent implements OnInit{
     })
   }
   getFilter(){
+    this.appointmentQuery = `Appointment/GetPaginatedAppointmentsByDoctor?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`;
     if(this.appointmentStatusId != 0){
       this.appointmentQuery+=`&AppointmentStatusId=${this.appointmentStatusId}`
     }

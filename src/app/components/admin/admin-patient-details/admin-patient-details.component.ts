@@ -23,10 +23,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DoctorModel } from '../../../models/doctorModel';
 import { BranchModel } from '../../../models/branchModel';
 import { FeedbackService } from '../../../services/feedback.service';
-import { FeedbackListModel } from '../../../models/feedbackListModel';
 import { take } from 'rxjs';
 import { FeedbackDetailModel } from '../../../models/feedbackDetailModel';
 import { PatientReportsModel } from '../../../models/patientReportsModel';
+import { FeedbackListModel } from '../../../models/feedbackListModel';
 
 declare var $:any;
 
@@ -51,7 +51,7 @@ export class AdminPatientDetailsComponent implements OnInit {
   searchForm: FormGroup;
   doctors: DoctorModel[];
   clinics: BranchModel[];
-  titleItems: Paginate<FeedbackListModel[]>;
+  patientFeedbacks: Paginate<FeedbackListModel[]>;
   minDate: string;
   feedbackDetail: FeedbackDetailModel;
   patientId: number;
@@ -75,6 +75,7 @@ export class AdminPatientDetailsComponent implements OnInit {
     this.createPatientPasswordUpdateForm();
     this.getPatientAppointments();
     this.getPatientReports();
+    this.getFeedbacks();
 
   }
 
@@ -132,15 +133,19 @@ export class AdminPatientDetailsComponent implements OnInit {
   }
 
   getFeedbacks() {
-    this.feedbackService.getFeedbacksPagination(this.pageIndex, this.pageSize, this.orderbyList, this.branchId, this.doctorId)
+    this.route.paramMap.subscribe((params) => {
+      const patientId = params.get('id'); 
+      this.http.get<Paginate<FeedbackListModel[]>>
+    (`Feedback/GetAllFeedbacksByPatientId?PageIndex=${this.pageIndexFeedback}&PageSize=${this.pageSizeFeedback}&patientId=${patientId}`)
     .pipe(take(1))
     .subscribe((response) => {
-      this.titleItems = response.patientFeedbacks
-      this.totalPages = this.titleItems.pagination.totalPages
-      if(this.titleItems.items.length==0){
-        this.swal.callToast("Geri bildirim mevcut değil.",'info');
-      }
+      console.log(response)
+      this.patientFeedbacks = response;
+      this.totalPagesFeedback = this.patientFeedbacks.pagination.totalPages
     })
+      
+    
+    });
   }
 
   onSelect(feedbackId: number): void {
@@ -149,7 +154,9 @@ export class AdminPatientDetailsComponent implements OnInit {
       $('#feedbackDetail').modal('show');
     })
   }
-
+  modalHide(){
+    $('#feedbackDetail').modal('hide');
+  }
   delete(id: number): void {
     this.swal.callSwal("Feedback Silme", "Silmek istediğinizden emin misiniz?", () => {
       this.feedbackService.delete(id).subscribe((response) => {
@@ -165,11 +172,10 @@ export class AdminPatientDetailsComponent implements OnInit {
 getPatientReports(){
   this.route.paramMap.subscribe((params) => {
     const patientId = params.get('id');
-  this.http.get<any>(`Report/GetPaginatedReportsByPatientId?PatientId=${patientId}&PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+  this.http.get<any>(`Report/GetPaginatedReportsByPatientId?PatientId=${patientId}&PageIndex=${this.pageIndexReport}&PageSize=${this.pageSizeReport}`)
   .subscribe(res=>{
-    console.log('HTTP Resp:', res);
     this.reports = res;
-    this.totalPages = res.pagination?.totalPages;
+    this.totalPagesReport = res.pagination?.totalPages;
   })
 });
 }
@@ -201,15 +207,18 @@ dowloandReport(){
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
-
+  pageIndexAppointments=1;
+  pageSizeAppoitnemtns=10;
+  totalPageAppointments:number;
   groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
   getPatientAppointments() {
     this.route.paramMap.subscribe((params) => {
       const patientId = params.get('id');
         this.http
-          .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}&PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`)
+          .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}&PageIndex=${this.pageIndexAppointments}&PageSize=${this.pageSizeAppoitnemtns}`)
           .subscribe((res) => {
             this.patientAppointments = res.appointments;
+            this.totalPageAppointments = this.patientAppointments.pagination.totalPages;
             this.groupedAppointments = {};
             this.patientAppointments?.items.forEach((appointment) => {
               const date = new Date(appointment.intervalDate).toLocaleDateString(
@@ -224,36 +233,10 @@ dowloandReport(){
           });
     });
   }
-// groupedAppointments: { [key: string]: PatientAppointmentsModel[] } = {};
-  // getPatientAppointments() {
-  //   this.route.paramMap.subscribe((params) => {
-  //     const patientId = params.get('id');
-  //     this.http
-  //       .get<any>(`Appointment/GetPaginatedAppointmentsByPatient?PatientId=${patientId}`)
-  //       .subscribe((res) => {
-  //         this.patientAppointments = res.patientAppointments;
-  //         this.patientAppointments.items.forEach((appointment) => {
-  //                   const date = new Date(appointment.intervalDate).toLocaleDateString(
-  //                     'tr-TR',
-  //                     { year: 'numeric', month: 'short', day: 'numeric' }
-  //                   );
-  //                   if (!this.groupedAppointments[date]) {
-  //                     this.groupedAppointments[date] = [];
-  //                   }
-  //                   this.groupedAppointments[date].push(appointment);
-  //                 });
-  //       });
-  //   });
-
-  // }
 
   getDates(): string[] {
     return Object.keys(this.groupedAppointments);
   }
-
-  // getDates(): string[] {
-  //   return Object.keys(this.groupedAppointments);
-  // }
 
   getStatusIcon(appointmentStatus: string): string {
     switch (appointmentStatus) {
@@ -283,14 +266,14 @@ dowloandReport(){
 
   forwardPage() {
     if(this.patientAppointments.pagination.hasNextPage){
-      this.pageIndex++;
+      this.pageIndexAppointments++;
       this.getPatientAppointments();
     }
   }
 
   previousPage() {
     if(this.patientAppointments.pagination.hasPreviousPage){
-      this.pageIndex--;
+      this.pageIndexAppointments--;
       this.getPatientAppointments();
     }
   }
@@ -520,63 +503,63 @@ dowloandReport(){
     return this.patientPasswordUpdateForm.get('oldPassword');
   }
 
-  //Pagination
-  pageSize: number = 10;
+  //Pagination Report
+  pageSizeReport: number = 10;
 
   // Mevcut sayfa numarası
-  pageIndex: number = 1;
+  pageIndexReport: number = 1;
 
   // Toplam sayfa sayısı
-  totalPages: number;
+  totalPagesReport: number;
   // Sayfaya git
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageIndex = page;
-      this.getFeedbacks();
+  goToPageReport(page: number) {
+    if (page >= 1 && page <= this.totalPagesReport) {
+      this.pageIndexReport = page;
+      this.getPatientReports();
     }
   }
 
   // Önceki sayfaya git
-  prevPage() {
-    if (this.pageIndex > 1) {
-      this.pageIndex--;
-      this.getFeedbacks();
+  prevPageReport() {
+    if (this.pageIndexReport > 1) {
+      this.pageIndexReport--;
+      this.getPatientReports();
     }
   }
 
   // Sonraki sayfaya git
-  nextPage() {
-    if (this.pageIndex < this.totalPages) {
-      this.pageIndex++;
-      this.getFeedbacks();
+  nextPageReport() {
+    if (this.pageIndexReport < this.totalPagesReport) {
+      this.pageIndexReport++;
+      this.getPatientReports();
     }
   }
 
   // İlk sayfaya git
-  goToFirstPage() {
-    if (this.titleItems.pagination.pageIndex > 1) {
-      this.pageIndex = 1;
-      this.getFeedbacks();
+  goToFirstPageReport() {
+    if (this.patientFeedbacks.pagination.pageIndex > 1) {
+      this.pageIndexReport = 1;
+      this.getPatientReports();
     }
   }
 
   // Son sayfaya git
-  goToLastPage() {
-    if (this.totalPages > this.pageIndex) {
-      this.pageIndex = this.totalPages;
-      this.getFeedbacks();
+  goToLastPageReport() {
+    if (this.totalPagesReport > this.pageIndexReport) {
+      this.pageIndexReport = this.totalPagesReport;
+      this.getPatientReports();
     }
   }
 
   // Sayfa numaralarını döndürür
-  getPageNumbers(): number[] {
+  getPageNumbersReport(): number[] {
     const pageNumbers = [];
     const maxPagesToShow = 5; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
     const startPage = Math.max(
       1,
-      this.pageIndex - Math.floor(maxPagesToShow / 2)
+      this.pageIndexReport - Math.floor(maxPagesToShow / 2)
     );
-    const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+    const endPage = Math.min(this.totalPagesReport, startPage + maxPagesToShow - 1);
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(i);
@@ -585,14 +568,88 @@ dowloandReport(){
   }
 
   // Kaç adet listeleneceğini beliritir
-  goToChangeSelectedCount() {
-    this.getFeedbacks();
+  goToChangeSelectedCountReport() {
+    this.getPatientReports();
   }
 
   // Başlangıç indisini hesaplar
-  calculateStartIndex(): number {
-    return (this.pageIndex - 1) * this.pageSize + 1;
+  calculateStartIndexReport(): number {
+    return (this.pageIndexReport - 1) * this.pageSizeReport + 1;
   }
 
+
+//Pagination Feedback
+pageSizeFeedback: number = 10;
+
+// Mevcut sayfa numarası
+pageIndexFeedback: number = 1;
+
+// Toplam sayfa sayısı
+totalPagesFeedback: number;
+// Sayfaya git
+goToPageFeedback(page: number) {
+  if (page >= 1 && page <= this.totalPagesReport) {
+    this.pageIndexReport = page;
+    this.getFeedbacks();
+  }
+}
+
+// Önceki sayfaya git
+prevPageFeedback() {
+  if (this.pageIndexReport > 1) {
+    this.pageIndexReport--;
+    this.getFeedbacks();
+  }
+}
+
+// Sonraki sayfaya git
+nextPageFeedback() {
+  if (this.pageIndexReport < this.totalPagesReport) {
+    this.pageIndexReport++;
+    this.getFeedbacks();
+  }
+}
+
+// İlk sayfaya git
+goToFirstPageFeedback() {
+  if (this.patientFeedbacks.pagination.pageIndex > 1) {
+    this.pageIndexReport = 1;
+    this.getFeedbacks();
+  }
+}
+
+// Son sayfaya git
+goToLastPageFeedback() {
+  if (this.totalPagesReport > this.pageIndexReport) {
+    this.pageIndexReport = this.totalPagesReport;
+    this.getFeedbacks();
+  }
+}
+
+// Sayfa numaralarını döndürür
+getPageNumbersFeedback(): number[] {
+  const pageNumbers = [];
+  const maxPagesToShow = 5; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
+  const startPage = Math.max(
+    1,
+    this.pageIndexReport - Math.floor(maxPagesToShow / 2)
+  );
+  const endPage = Math.min(this.totalPagesReport, startPage + maxPagesToShow - 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+  return pageNumbers;
+}
+
+// Kaç adet listeleneceğini beliritir
+goToChangeSelectedCountFeedback() {
+  this.getFeedbacks();
+}
+
+// Başlangıç indisini hesaplar
+calculateStartIndexFeedback(): number {
+  return (this.pageIndexReport - 1) * this.pageSizeReport + 1;
+}
 
 }
