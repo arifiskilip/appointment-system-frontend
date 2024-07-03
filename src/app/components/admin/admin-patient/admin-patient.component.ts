@@ -188,10 +188,6 @@ export class AdminPatientComponent implements OnInit{
     return this.patientEditForm.get('bloodTypeId');
   }
 
-  pageSize: number = 10;
-  pageIndex: number = 1;
-  totalItems: number;
-  totalPages: number;
 
   getPatients(){
     this.http
@@ -200,13 +196,12 @@ export class AdminPatientComponent implements OnInit{
       )
       .pipe(take(1))
       .subscribe((res) => {
+        console.log(res);
         this.patients = res.patients;
-        this.totalItems = res.patients.pagination.totalItems;
         this.totalPages = this.patients.pagination.totalPages;
-        this.pageIndex = this.patients.pagination.pageIndex;
-        console.log(this.totalItems, this.totalPages, this.pageIndex);
       });
   }
+
 
   calculateAge(birthDateString: string): number {
     const birthDate = new Date(birthDateString);
@@ -258,8 +253,8 @@ export class AdminPatientComponent implements OnInit{
       )
       .pipe(take(1))
       .subscribe((res) => {
-        this.patients = res.patients.items;
-        this.totalItems = res.patients.pagination.totalItems;
+        this.patients = res;
+        this.totalItems = this.patients.pagination.totalItems;
       });
     }
     else{
@@ -369,87 +364,83 @@ export class AdminPatientComponent implements OnInit{
     };
   }
 
-  onPageChange(newpage: number) {
-    this.pageIndex = newpage;
-    this.getPatients();
+
+  //Pagination
+  pageSize: number = 10;
+
+  // Mevcut sayfa numarası
+  pageIndex: number = 1;
+
+  // Toplam sayfa sayısı
+  totalPages: number;
+
+  totalItems: number;
+  // Sayfaya git
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.pageIndex = page;
+      this.getPatients();
     }
+  }
 
-//   //Pagination
-//   pageSize: number = 10;
+  // Önceki sayfaya git
+  prevPage() {
+    if (this.pageIndex > 1) {
+      this.pageIndex--;
+      this.getPatients();
+    }
+  }
 
-//   // Mevcut sayfa numarası
-//   pageIndex: number = 1;
+  // Sonraki sayfaya git
+  nextPage() {
+    if (this.pageIndex < this.totalPages) {
+      this.pageIndex++;
+      this.getPatients();
+    }
+    console.log(this.pageIndex);
+  }
 
-//   // Toplam sayfa sayısı
-//   totalPages: number;
+  // İlk sayfaya git
+  goToFirstPage() {
 
-//   totalItems: number;
-//   // Sayfaya git
-//   goToPage(page: number) {
-//     if (page >= 1 && page <= this.totalPages) {
-//       this.pageIndex = page;
-//       this.getPatients();
-//     }
-//   }
+      this.pageIndex = 1;
+      this.getPatients();
 
-//   // Önceki sayfaya git
-//   prevPage() {
-//     if (this.pageIndex > 1) {
-//       this.pageIndex--;
-//       this.getPatients();
-//     }
-//   }
+    console.log(this.pageIndex);
+  }
 
-//   // Sonraki sayfaya git
-//   nextPage() {
-//     if (this.pageIndex < this.totalPages) {
-//       this.pageIndex++;
-//       this.getPatients();
-//     }
-//     console.log(this.pageIndex);
-//   }
+  // Son sayfaya git
+  goToLastPage() {
 
-//   // İlk sayfaya git
-//   goToFirstPage() {
+      this.pageIndex = this.totalPages;
+      this.getPatients();
 
-//       this.pageIndex = 1;
-//       this.getPatients();
+  }
 
-//     console.log(this.pageIndex);
-//   }
+  // Sayfa numaralarını döndürür
+  getPageNumbers(): number[] {
+    const pageNumbers = [];
+    const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
+    const startPage = Math.max(
+      1,
+      this.pageIndex - Math.floor(maxPagesToShow / 2)
+    );
+    const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
 
-//   // Son sayfaya git
-//   goToLastPage() {
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
 
-//       this.pageIndex = this.totalPages;
-//       this.getPatients();
+  // Kaç adet listeleneceğini beliritir
+  goToChangeSelectedCount() {
+    this.getPatients();
+  }
 
-//   }
-
-//   // Sayfa numaralarını döndürür
-//   getPageNumbers(): number[] {
-//     const pageNumbers = [];
-//     const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
-//     const startPage = Math.max(
-//       1,
-//       this.pageIndex - Math.floor(maxPagesToShow / 2)
-//     );
-//     const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-
-//     for (let i = startPage; i <= endPage; i++) {
-//       pageNumbers.push(i);
-//     }
-//     return pageNumbers;
-//   }
-
-//   // Kaç adet listeleneceğini beliritir
-//   goToChangeSelectedCount() {
-//     this.getPatients();
-//   }
-
-//   // Başlangıç indisini hesaplar
-//   calculateStartIndex(): number {
-//     return (this.pageIndex - 1) * this.pageSize + 1;
-//   }
+  // Başlangıç indisini hesaplar
+  calculateStartIndex(): number {
+    return (this.pageIndex - 1) * this.pageSize + 1;
+  }
 
 }
