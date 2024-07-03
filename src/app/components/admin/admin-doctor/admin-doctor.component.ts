@@ -57,6 +57,7 @@ export class AdminDoctorComponent implements OnInit{
         .pipe(take(1))
         .subscribe(res=>{
             this.doctors = res.doctors;
+            this.totalPages = this.doctors.pagination.totalPages;
         })
     }
     getBranches(){
