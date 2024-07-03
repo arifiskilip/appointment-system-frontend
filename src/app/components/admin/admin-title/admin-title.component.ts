@@ -11,7 +11,6 @@ import { TitleModel } from '../../../models/titleModel';
 import { TitleService } from '../../../services/title.service';
 
 
-// declare var $: any; // jQuery kullanacağımızı belirtiyoruz
 
 
 @Component({
@@ -25,7 +24,6 @@ export class AdminTitleComponent {
   title: TitleModel[] = []
   items: any[] = []
   isUpdateForm: boolean
-  // @ViewChild('inputElement', { static: true }) inputElement: ElementRef;
   dataLoaded: boolean = false
   selectedTitle: TitleModel | undefined;
   validationMessages: ValidationMessages = new ValidationMessages();
@@ -48,7 +46,7 @@ export class AdminTitleComponent {
       this.items = response.titles.items
       this.items.forEach((item) => {
         item.CreatedDate = new Date(item.CreatedDate)
-        item.DeletedDate = new Date(item.CreatedDate)
+        item.UpdatedDate = new Date(item.UpdatedDate)
       }
       );
       this.totalPages = response.titles.pagination.totalPages
@@ -160,8 +158,8 @@ export class AdminTitleComponent {
     if (this.titleForm.valid) {
       let titleModel: TitleModel = {
         name: this.titleForm.value.unvan,
-        isDeleted: this.titleForm.value.isDeleted == null ? false :
-          this.titleForm.value.isDeleted
+        isDeleted: this.titleForm.value.isDeleted == null ? true :
+          this.titleForm.value.isDeleted ? false : true
       }
 
       this.titleService.add(titleModel).subscribe(response => {
@@ -203,7 +201,7 @@ export class AdminTitleComponent {
 
     this.updateTitleForm.patchValue({
       unvan: title.name,
-      isDeleted: title.isDeleted,
+      isDeleted: title.isDeleted ? false : true ,
       id: title.id
     });
   }
@@ -211,10 +209,10 @@ export class AdminTitleComponent {
   update(): void {
     if (this.updateTitleForm && this.updateTitleForm.valid) {
       this.selectedTitle.name = this.updateTitleForm.value.unvan;
-      this.selectedTitle.isDeleted = this.updateTitleForm.value.isDeleted;
+      this.selectedTitle.isDeleted = this.updateTitleForm.value.isDeleted  ? false : true;
       this.selectedTitle.id = Number(this.updateTitleForm.value.id);
 
-      this.titleService.update(this.selectedTitle).subscribe((response) => {
+      this.titleService.update(this.selectedTitle).subscribe((response) => {   
         this.getTitles()
         this.swal.callToast("Ünvan başarıyla güncellendi.");
       })

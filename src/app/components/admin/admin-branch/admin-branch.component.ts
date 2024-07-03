@@ -9,7 +9,7 @@ import { ValidationMessages } from '../../../common/constants/validationMessages
 import { ValidDirective } from '../../../common/directives/valid.directive';
 import { BranchModel } from '../../../models/branchModel';
 import { BranchService } from '../../../services/branch.service';
-//import { ResetDirective } from '../../../../reset.directive';
+
 
 @Component({
     selector: 'app-admin-branch',
@@ -165,8 +165,8 @@ export class AdminBranchComponent{
     if (this.branchForm.valid) {
       let branchModel: BranchModel = {
         name: this.branchForm.value.name,
-        isDeleted: this.branchForm.value.isDeleted == null ? false :
-          this.branchForm.value.isDeleted
+        isDeleted: this.branchForm.value.isDeleted == null ? true :
+        this.branchForm.value.isDeleted ? false : true
       }
 
       this.branchService.add(branchModel).subscribe(response => {
@@ -207,7 +207,7 @@ export class AdminBranchComponent{
 
     this.updateBranchForm.patchValue({
       name: branch.name,
-      isDeleted: branch.isDeleted,
+      isDeleted: branch.isDeleted ? false : true ,
       id: branch.id
     });
   }
@@ -215,7 +215,7 @@ export class AdminBranchComponent{
   update(): void {
     if (this.updateBranchForm && this.updateBranchForm.valid) {
       this.selectedBranch.name = this.updateBranchForm.value.name;
-      this.selectedBranch.isDeleted = this.updateBranchForm.value.isDeleted;
+      this.selectedBranch.isDeleted = this.updateBranchForm.value.isDeleted  ? false : true;
       this.selectedBranch.id = Number(this.updateBranchForm.value.id);
 
       this.branchService.update(this.selectedBranch).subscribe((response) => {
