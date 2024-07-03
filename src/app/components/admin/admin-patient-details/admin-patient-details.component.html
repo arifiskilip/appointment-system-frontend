@@ -186,7 +186,7 @@
                     [class.active]="activeTab === 'activity'"
                     (click)="setActiveTab('activity')"
                     href="javascript:void(0)"
-                    >Geri Bildirimleri</a
+                    >Raporlar</a
                   >
                 </li>
                 <li class="nav-item">
@@ -196,6 +196,15 @@
                     (click)="setActiveTab('timeline')"
                     href="javascript:void(0)"
                     >Randevu Geçmişi</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'feedbacks'"
+                    (click)="setActiveTab('feedbacks')"
+                    href="javascript:void(0)"
+                    >Geri Bildirimler</a
                   >
                 </li>
                 <li class="nav-item">
@@ -219,27 +228,156 @@
                 >
                   <!-- Post -->
                   <div class="post">
-                    <div class="user-block">
-                      <img
-                        class="img-circle img-bordered-sm"
-                        src="https://avatars.githubusercontent.com/u/71379630?v=4"
-                        alt="user image"
-                      />
-                      <span class="username">
-                        <a href="#">Jonathan Burke Jr.</a>
-                      </span>
-                      <span class="description"
-                        >Shared publicly - 7:30 PM today</span
+                    <section class="content">
+                      <div class="container-fluid">
+                        <!-- Randevular -->
+                        <div class="row mt-3">
+                          <ng-container>
+                            <div class="containet">
+                              <table class="table table-striped projects">
+                                <thead></thead>
+                                <tbody>
+                                  @if(reports && reports?.items?.length>=1){ @for (appointment of
+                                  reports.items; track $index) {
+                                  <tr>
+                                    <td>#</td>
+                                    <td>
+                                      <span class="badge badge-primary" style="font-size: 1em">
+                                        <i
+                                          class="fas fa-calendar-alt"
+                                          style="margin-right: 2px; font-size: 1em"
+                                        ></i>
+                                        {{ appointment.intervalDate | date : "dd-MM-yyyy HH:mm" }}
+                                      </span>
+                                      <br />
+                                      <span
+                                        [class]="
+                                          getBadgeStatusIcon(appointment.appointmentStatus).css
+                                        "
+                                      >
+                                        <i
+                                          class="fas fa-tag"
+                                          style="margin-left: 2px; font-size: 1em"
+                                        ></i>
+                                        {{
+                                          getBadgeStatusIcon(appointment.appointmentStatus).value
+                                        }}</span
+                                      >
+                                    </td>
+                                    <td>
+                                      <ul class="list-inline">
+                                        <p>
+                                          <i class="fas fa-hospital" style="margin-left: 0px"></i>
+                                          Tobeto Hastanesi
+                                        </p>
+                                        <p>
+                                          <i
+                                            class="fas fa-code-branch"
+                                            style="margin-left: 0px"
+                                          ></i>
+                                          {{ appointment.branchName }}
+                                        </p>
+                                      </ul>
+                                    </td>
+                                    <td class="project-state">
+                                      <p>
+                                        <i
+                                          class="fas fa-user-doctor"
+                                          style="margin-left: 0px"
+                                        ></i>
+                                        {{ appointment.doctorName }}
+                                      </p>
+                                    </td>
+                                    <td class="project-actions text-right">
+                                      <button
+                                        class="btn btn-warning btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#detailModal"
+                                        (click)="setReport(appointment)"
+                                      >
+                                        <i class="fa fa-circle-info"> </i>
+                                        Detay
+                                      </button>
+                                    </td>
+                                  </tr>
+                                  } } @else {
+                                  <div class="alert alert-warning">
+                                    Mevcut rapor bulunmamaktadır.
+                                  </div>
+                                  }
+                                </tbody>
+                              </table>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                      <!-- /.container-fluid -->
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                          <li class="page-item">
+                            <a class="page-link" (click)="goToFirstPage()">İlk</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="prevPage()">Önceki</a>
+                          </li>
+                          <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+                            <a
+                              class="page-link"
+                              (click)="goToPage(pageNumber)"
+                              [ngClass]="{ active: pageNumber === pageIndex }"
+                              >{{ pageNumber }}</a
+                            >
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="nextPage()">Sonraki</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="goToLastPage()">Son</a>
+                          </li>
+                        </ul>
+                      </nav>
+                      <!-- Modal -->
+                      <div
+                        class="modal fade"
+                        id="detailModal"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="detailModalLabel"
+                        aria-hidden="true"
                       >
-                    </div>
-                    <!-- /.user-block -->
-                    <p>
-                      Lorem ipsum represents a long-held tradition for
-                      designers, typographers and the like. Some people hate it
-                      and argue for its demise, but others ignore the hate as
-                      they create awesome tools to help create filler text for
-                      everyone from bacon lovers to Charlie Sheen fans.
-                    </p>
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="detailModalLabel">Detay</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>{{reportDetail?.description}}</p>
+                              <button class="btn btn-primary" (click)="dowloandReport()">
+                                <i class="fas fa-download"></i> PDF İndir
+                              </button>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                              >
+                                Kapat
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
                   </div>
                   <!-- /.post -->
                 </div>
@@ -322,6 +460,121 @@
                   </div>
                 </div>
                 <!-- /.tab-pane -->
+
+
+                <div
+                class="active tab-pane"
+                [class.active]="activeTab === 'feedbacks'"
+                id="feedbacks"
+              >
+                <!-- Feedbacks -->
+                <div class="post">
+                  <div class="card-body p-0" style="display: block">
+                    <form [formGroup]="searchForm">
+                      <div class="row mb-3 mt-3 ml-2">
+                        <div class="col-md-3 col-sm-12 mb-2">
+                          <div class="form-group">
+                            <select formControlName="orderbyList" class="form-control">
+                              <option value="new">En Yeni</option>
+                              <option value="old">En Eski</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <div class="form-group">
+                            <select
+                              formControlName="clinic"
+                              (change)="getDoctors()"
+                              class="form-control select2bs4"
+                              style="width: 100%"
+                            >
+                              <option value="">Branş seçiniz</option>
+                              <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                                {{ clinic.name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <div class="form-group">
+                            <select
+                              formControlName="doctor"
+                              class="form-control"
+                              id="hekim"
+                            >
+                              <option value="">Doktor seçiniz</option>
+                              <option *ngFor="let doctor of doctors" [value]="doctor.id">
+                                {{ doctor.firstName + " " + doctor.lastName }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <button
+                            type="submit"
+                            class="btn btn-primary mr-2"
+                            (click)="onSubmit()"
+                          >
+                            Filtrele
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-danger mr-2"
+                            (click)="onClear()"
+                          >
+                            Temizle
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                    <table class="table table-striped projects">
+                      <thead>
+                        <tr>
+                          <th style="width: 1%">#</th>
+                          <th style="width: 20%">Hasta Adı</th>
+                          <th style="width: 15%">Kimlik No</th>
+                          <th style="width: 15%">Geri Bildirim Tarihi</th>
+                          <th style="width: 30%"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let feedback of titleItems?.items">
+                          <td>#</td>
+                          <td>
+                            <a> {{ feedback.patientName }}</a>
+                            <br />
+                            <small> {{ feedback.gender }} </small>
+                          </td>
+                          <td>
+                            <a> {{ feedback.identityNumber }}</a>
+                          </td>
+                          <td>
+                            <a> {{ feedback.createdDate |date:'dd MMMM yyyy MM:hh'}}</a>
+                          </td>
+                          <td class="project-actions text-right">
+                            <button
+                              class="btn btn-info btn-sm mr-2"
+                              (click)="onSelect(feedback.feedbackId)"
+                            >
+                              <i class="fas fa-circle-info"> </i>
+                              Detay
+                            </button>
+                            <button
+                              class="btn btn-danger btn-sm"
+                              (click)="delete(feedback.feedbackId)"
+                            >
+                              <i class="fas fa-trash"> </i>
+                              Sil
+                            </button>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.Feedbacks -->
+              </div>
 
                 <div
                   class="tab-pane"

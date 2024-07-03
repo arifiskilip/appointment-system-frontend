@@ -15,6 +15,7 @@ import { ImageUrl } from '../../../common/constants/imageUrl';
 import { take } from 'rxjs';
 import { BranchModel } from '../../../models/branchModel';
 import { TitleModel } from '../../../models/titleModel';
+import { PaginationComponent } from '../../home/pagination/pagination.component';
 declare var $: any;
 
 
@@ -23,7 +24,7 @@ declare var $: any;
     standalone: true,
     templateUrl: './admin-patient.component.html',
     styleUrl: './admin-patient.component.scss',
-    imports: [BlankComponent, SharedModule, ValidDirective]
+    imports: [BlankComponent, SharedModule, ValidDirective, PaginationComponent]
 })
 export class AdminPatientComponent implements OnInit{
 
@@ -141,22 +142,22 @@ export class AdminPatientComponent implements OnInit{
   }
 
   get firstName() {
-    return this.patientEditForm.get('firstName');
+    return this.registerForm.get('firstName');
   }
   get lastName() {
-    return this.patientEditForm.get('lastName');
+    return this.registerForm.get('lastName');
   }
   get email() {
-    return this.patientEditForm.get('email');
+    return this.registerForm.get('email');
   }
   get phoneNumber() {
-    return this.patientEditForm.get('phoneNumber');
+    return this.registerForm.get('phoneNumber');
   }
   get birthDate() {
-    return this.patientEditForm.get('birthDate');
+    return this.registerForm.get('birthDate');
   }
   get bloodType() {
-    return this.patientEditForm.get('bloodTypeId');
+    return this.registerForm.get('bloodTypeId');
   }
   get password() {
     return this.registerForm.get('password');
@@ -168,6 +169,30 @@ export class AdminPatientComponent implements OnInit{
     return this.registerForm.get('identityNumber');
   }
 
+  get firstNameD() {
+    return this.patientEditForm.get('firstName');
+  }
+  get lastNameD() {
+    return this.patientEditForm.get('lastName');
+  }
+  get emailD() {
+    return this.patientEditForm.get('email');
+  }
+  get phoneNumberD() {
+    return this.patientEditForm.get('phoneNumber');
+  }
+  get birthDateD() {
+    return this.patientEditForm.get('birthDate');
+  }
+  get bloodTypeD() {
+    return this.patientEditForm.get('bloodTypeId');
+  }
+
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  totalItems: number;
+  totalPages: number;
+
   getPatients(){
     this.http
       .get<any>(
@@ -176,7 +201,10 @@ export class AdminPatientComponent implements OnInit{
       .pipe(take(1))
       .subscribe((res) => {
         this.patients = res.patients;
+        this.totalItems = res.patients.pagination.totalItems;
         this.totalPages = this.patients.pagination.totalPages;
+        this.pageIndex = this.patients.pagination.pageIndex;
+        console.log(this.totalItems, this.totalPages, this.pageIndex);
       });
   }
 
@@ -230,8 +258,8 @@ export class AdminPatientComponent implements OnInit{
       )
       .pipe(take(1))
       .subscribe((res) => {
-        this.patients = res;
-        this.totalPages = this.patients.pagination.totalPages;
+        this.patients = res.patients.items;
+        this.totalItems = res.patients.pagination.totalItems;
       });
     }
     else{
@@ -300,6 +328,7 @@ export class AdminPatientComponent implements OnInit{
      .subscribe(res=>{
       this.swal.callToast("Ekleme işlemi başarılı.");
       this.getPatients();
+      this.registerForm.reset();
      })
     }
   }
@@ -340,79 +369,87 @@ export class AdminPatientComponent implements OnInit{
     };
   }
 
-
-  //Pagination
-  pageSize: number = 10;
-
-  // Mevcut sayfa numarası
-  pageIndex: number = 1;
-
-  // Toplam sayfa sayısı
-  totalPages: number;
-  // Sayfaya git
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageIndex = page;
-      this.getPatients();
-    }
-  }
-
-  // Önceki sayfaya git
-  prevPage() {
-    if (this.pageIndex > 1) {
-      this.pageIndex--;
-      this.getPatients();
-    }
-  }
-
-  // Sonraki sayfaya git
-  nextPage() {
-    if (this.pageIndex < this.totalPages) {
-      this.pageIndex++;
-      this.getPatients();
-    }
-  }
-
-  // İlk sayfaya git
-  goToFirstPage() {
-    if (this.patients.pagination.pageIndex > 1) {
-      this.pageIndex = 1;
-      this.getPatients();
-    }
-  }
-
-  // Son sayfaya git
-  goToLastPage() {
-    if (this.totalPages > this.pageIndex) {
-      this.pageIndex = this.totalPages;
-      this.getPatients();
-    }
-  }
-
-  // Sayfa numaralarını döndürür
-  getPageNumbers(): number[] {
-    const pageNumbers = [];
-    const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
-    const startPage = Math.max(
-      1,
-      this.pageIndex - Math.floor(maxPagesToShow / 2)
-    );
-    const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-    return pageNumbers;
-  }
-
-  // Kaç adet listeleneceğini beliritir
-  goToChangeSelectedCount() {
+  onPageChange(newpage: number) {
+    this.pageIndex = newpage;
     this.getPatients();
-  }
+    }
 
-  // Başlangıç indisini hesaplar
-  calculateStartIndex(): number {
-    return (this.pageIndex - 1) * this.pageSize + 1;
-  }
+//   //Pagination
+//   pageSize: number = 10;
+
+//   // Mevcut sayfa numarası
+//   pageIndex: number = 1;
+
+//   // Toplam sayfa sayısı
+//   totalPages: number;
+
+//   totalItems: number;
+//   // Sayfaya git
+//   goToPage(page: number) {
+//     if (page >= 1 && page <= this.totalPages) {
+//       this.pageIndex = page;
+//       this.getPatients();
+//     }
+//   }
+
+//   // Önceki sayfaya git
+//   prevPage() {
+//     if (this.pageIndex > 1) {
+//       this.pageIndex--;
+//       this.getPatients();
+//     }
+//   }
+
+//   // Sonraki sayfaya git
+//   nextPage() {
+//     if (this.pageIndex < this.totalPages) {
+//       this.pageIndex++;
+//       this.getPatients();
+//     }
+//     console.log(this.pageIndex);
+//   }
+
+//   // İlk sayfaya git
+//   goToFirstPage() {
+
+//       this.pageIndex = 1;
+//       this.getPatients();
+
+//     console.log(this.pageIndex);
+//   }
+
+//   // Son sayfaya git
+//   goToLastPage() {
+
+//       this.pageIndex = this.totalPages;
+//       this.getPatients();
+
+//   }
+
+//   // Sayfa numaralarını döndürür
+//   getPageNumbers(): number[] {
+//     const pageNumbers = [];
+//     const maxPagesToShow = 10; // Sayfa numaralarının maksimum gösterileceği miktarı belirleyin
+//     const startPage = Math.max(
+//       1,
+//       this.pageIndex - Math.floor(maxPagesToShow / 2)
+//     );
+//     const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+
+//     for (let i = startPage; i <= endPage; i++) {
+//       pageNumbers.push(i);
+//     }
+//     return pageNumbers;
+//   }
+
+//   // Kaç adet listeleneceğini beliritir
+//   goToChangeSelectedCount() {
+//     this.getPatients();
+//   }
+
+//   // Başlangıç indisini hesaplar
+//   calculateStartIndex(): number {
+//     return (this.pageIndex - 1) * this.pageSize + 1;
+//   }
 
 }
