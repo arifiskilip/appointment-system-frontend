@@ -1,0 +1,904 @@
+<app-blank pageName="Hasta Bilgileri">
+  <section class="content">
+    <!-- Add Image Modal -->
+    <div
+      class="modal fade"
+      id="editImageModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addBranchModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addBranchModalLabel">
+              <i class="fas fa-plus-circle"></i> Profil Fotoğrafı Güncelle
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group mt-2">
+              <label for="images">Profil Fotoğrafı</label>
+              <input
+                type="file"
+                name="images"
+                id="images"
+                class="form-control"
+                accept=".jpg,.png,.jpeg"
+                *ngIf="!isImageSelected"
+                (change)="getImages($event)"
+              />
+            </div>
+            <hr />
+            <div class="form-group mt-2">
+              <p>Seçilen Resim</p>
+              <div class="d-flex flex-wrap">
+                <div
+                  *ngFor="let image of imageUrls; let i = index"
+                  class="position-relative m-1"
+                >
+                  <img
+                    [src]="image.imageUrl"
+                    width="100"
+                    class="border rounded"
+                  />
+                  <span (click)="removeImage(i)">
+                    <i
+                      class="fa fa-times-circle position-absolute text-danger"
+                      style="cursor: pointer; top: -10px; right: -10px"
+                    ></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+            <button type="button" class="btn btn-primary"  (click)="saveImage()">
+              Kaydet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-right">
+                <button
+                  class="btn btn-sm btn-primary position-absolute"
+                  style="top: 10px; right: 10px"
+                  data-toggle="modal"
+                  data-target="#editImageModal"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+              <div class="text-center">
+                @if(patient &&patient.imageUrl){
+                <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="getApiUrl() + patient.imageUrl"
+                  alt="User profile picture"
+                />
+                } @else { @if(patient?.genderId==1){
+                <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="constImageUrl.womenAvatar"
+                  alt="User profile picture"
+                />
+                } @else{
+                <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="constImageUrl.manAvatar"
+                  alt="User profile picture"
+                />
+                } }
+              </div>
+
+              <h3 class="profile-username text-center">
+                {{ patient?.firstName + " " + patient?.lastName }}
+              </h3>
+
+              <p class="text-muted text-center">
+                <b>TC NO:</b> {{ patient?.identityNumber }}
+              </p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Cinsiyet</b>
+                  <a class="float-right">
+                    @if (patient?.genderId===1) { Kadın } @else { Erkek }
+                  </a>
+                </li>
+                <li class="list-group-item">
+                  <b>Kan Grubu</b>
+                  <a class="float-right">{{ patient?.bloodTypeName }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Doğum Yılı</b>
+                  <a class="float-right">{{
+                    patient?.birthDate | date : "dd/MM/yyyy"
+                  }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Yaş</b>
+                  <a class="float-right">{{
+                    getCurrentAge(patient?.birthDate)
+                  }}</a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">İletişim Bilgileri</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <strong><i class="fas fa-book mr-1"></i> E Posta</strong>
+
+              <p class="text-muted">{{ patient?.email }}</p>
+
+              <hr />
+
+              <strong
+                ><i class="fas fa-map-marker-alt mr-1"></i> Telefon</strong
+              >
+
+              <p class="text-muted">{{ patient?.phoneNumber }}</p>
+
+              <hr />
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    [class.active]="activeTab === 'activity'"
+                    (click)="setActiveTab('activity')"
+                    href="javascript:void(0)"
+                    >Raporlar</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'timeline'"
+                    (click)="setActiveTab('timeline')"
+                    href="javascript:void(0)"
+                    >Randevu Geçmişi</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'feedbacks'"
+                    (click)="setActiveTab('feedbacks')"
+                    href="javascript:void(0)"
+                    >Geri Bildirimler</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    [class.active]="activeTab === 'settings'"
+                    (click)="setActiveTab('settings')"
+                    href="javascript:void(0)"
+                    >Profil Düzenle</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content">
+                <div
+                  class="active tab-pane"
+                  [class.active]="activeTab === 'activity'"
+                  id="activity"
+                >
+                  <!-- Post -->
+                  <div class="post">
+                    <section class="content">
+                      <div class="container-fluid">
+                        <!-- Randevular -->
+                        <div class="row mt-3">
+                          <ng-container>
+                            <div class="containet">
+                              <table class="table table-striped projects">
+                                <thead></thead>
+                                <tbody>
+                                  @if(reports && reports?.items?.length>=1){ @for (appointment of
+                                  reports.items; track $index) {
+                                  <tr>
+                                    <td>#</td>
+                                    <td>
+                                      <span class="badge badge-primary" style="font-size: 1em">
+                                        <i
+                                          class="fas fa-calendar-alt"
+                                          style="margin-right: 2px; font-size: 1em"
+                                        ></i>
+                                        {{ appointment.intervalDate | date : "dd-MM-yyyy HH:mm" }}
+                                      </span>
+                                      <br />
+                                      <span
+                                        [class]="
+                                          getBadgeStatusIcon(appointment.appointmentStatus).css
+                                        "
+                                      >
+                                        <i
+                                          class="fas fa-tag"
+                                          style="margin-left: 2px; font-size: 1em"
+                                        ></i>
+                                        {{
+                                          getBadgeStatusIcon(appointment.appointmentStatus).value
+                                        }}</span
+                                      >
+                                    </td>
+                                    <td>
+                                      <ul class="list-inline">
+                                        <p>
+                                          <i class="fas fa-hospital" style="margin-left: 0px"></i>
+                                          Tobeto Hastanesi
+                                        </p>
+                                        <p>
+                                          <i
+                                            class="fas fa-code-branch"
+                                            style="margin-left: 0px"
+                                          ></i>
+                                          {{ appointment.branchName }}
+                                        </p>
+                                      </ul>
+                                    </td>
+                                    <td class="project-state">
+                                      <p>
+                                        <i
+                                          class="fas fa-user-doctor"
+                                          style="margin-left: 0px"
+                                        ></i>
+                                        {{ appointment.doctorName }}
+                                      </p>
+                                    </td>
+                                    <td class="project-actions text-right">
+                                      <button
+                                        class="btn btn-warning btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#detailModal"
+                                        (click)="setReport(appointment)"
+                                      >
+                                        <i class="fa fa-circle-info"> </i>
+                                        Detay
+                                      </button>
+                                    </td>
+                                  </tr>
+                                  } } @else {
+                                  <div class="alert alert-warning">
+                                    Mevcut rapor bulunmamaktadır.
+                                  </div>
+                                  }
+                                </tbody>
+                              </table>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                      <!-- /.container-fluid -->
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                          <li class="page-item">
+                            <a class="page-link" (click)="goToFirstPage()">İlk</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="prevPage()">Önceki</a>
+                          </li>
+                          <li class="page-item" *ngFor="let pageNumber of getPageNumbers()">
+                            <a
+                              class="page-link"
+                              (click)="goToPage(pageNumber)"
+                              [ngClass]="{ active: pageNumber === pageIndex }"
+                              >{{ pageNumber }}</a
+                            >
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="nextPage()">Sonraki</a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" (click)="goToLastPage()">Son</a>
+                          </li>
+                        </ul>
+                      </nav>
+                      <!-- Modal -->
+                      <div
+                        class="modal fade"
+                        id="detailModal"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="detailModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="detailModalLabel">Detay</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>{{reportDetail?.description}}</p>
+                              <button class="btn btn-primary" (click)="dowloandReport()">
+                                <i class="fas fa-download"></i> PDF İndir
+                              </button>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                              >
+                                Kapat
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                  </div>
+                  <!-- /.post -->
+                </div>
+                <!-- /.tab-pane -->
+                <div
+                  class="tab-pane"
+                  [class.active]="activeTab === 'timeline'"
+                  id="timeline"
+                >
+                  <!-- The timeline -->
+                  <div
+                    class="timeline timeline-inverse"
+                    *ngIf="getDates().length"
+                  >
+                    <ng-container *ngFor="let date of getDates()">
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-danger"> {{ date }} </span>
+                      </div>
+                      <!-- /.timeline-label -->
+
+                      <!-- timeline item -->
+                      <ng-container
+                        *ngFor="let appointment of groupedAppointments[date]"
+                      >
+                        <div>
+                          <i
+                            [class]="
+                              getStatusIcon(appointment.appointmentStatus)
+                            "
+                          ></i>
+                          <div class="timeline-item">
+                            <span class="time">
+                              <i class="far fa-clock"></i>
+                              {{ appointment.intervalDate | date : "HH:mm" }}
+                            </span>
+                            <h3 class="timeline-header">
+                              <a href="#">{{ appointment.doctorName }}</a> ile
+                              planlanan randevu
+                            </h3>
+                            <div class="timeline-body">
+                              <p>
+                                <b>Polikinlik:</b> {{ appointment.branchName }}
+                              </p>
+                            </div>
+                            <div class="timeline-footer">
+                              <span
+                                [class]="
+                                  getBadgeStatusIcon(
+                                    appointment.appointmentStatus
+                                  ).css
+                                "
+                                >{{
+                                  getBadgeStatusIcon(
+                                    appointment.appointmentStatus
+                                  ).value
+                                }}</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <!-- END timeline item -->
+                    </ng-container>
+                    <div *ngIf="patientAppointments?.pagination.hasNextPage">
+                      <i class="far fa-clock bg-gray"></i>
+                    </div>
+                  </div>
+                  <div *ngIf="!getDates().length">
+                    <p>No appointments available.</p>
+                  </div>
+                  <!-- Pagination buttons -->
+                  <div class="pagination-container">
+                    <button class="btn btn-primary" *ngIf="patientAppointments?.pagination.hasPreviousPage" (click)="previousPage()">
+                      <i class="fas fa-arrow-left"></i> Geri
+                    </button>
+                    <button class="btn btn-primary" (click)="nextPage()" *ngIf="patientAppointments?.pagination.hasNextPage">
+                      İleri <i class="fas fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.tab-pane -->
+
+
+                <div
+                class="active tab-pane"
+                [class.active]="activeTab === 'feedbacks'"
+                id="feedbacks"
+              >
+                <!-- Feedbacks -->
+                <div class="post">
+                  <div class="card-body p-0" style="display: block">
+                    <form [formGroup]="searchForm">
+                      <div class="row mb-3 mt-3 ml-2">
+                        <div class="col-md-3 col-sm-12 mb-2">
+                          <div class="form-group">
+                            <select formControlName="orderbyList" class="form-control">
+                              <option value="new">En Yeni</option>
+                              <option value="old">En Eski</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <div class="form-group">
+                            <select
+                              formControlName="clinic"
+                              (change)="getDoctors()"
+                              class="form-control select2bs4"
+                              style="width: 100%"
+                            >
+                              <option value="">Branş seçiniz</option>
+                              <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                                {{ clinic.name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <div class="form-group">
+                            <select
+                              formControlName="doctor"
+                              class="form-control"
+                              id="hekim"
+                            >
+                              <option value="">Doktor seçiniz</option>
+                              <option *ngFor="let doctor of doctors" [value]="doctor.id">
+                                {{ doctor.firstName + " " + doctor.lastName }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                          <button
+                            type="submit"
+                            class="btn btn-primary mr-2"
+                            (click)="onSubmit()"
+                          >
+                            Filtrele
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-danger mr-2"
+                            (click)="onClear()"
+                          >
+                            Temizle
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                    <table class="table table-striped projects">
+                      <thead>
+                        <tr>
+                          <th style="width: 1%">#</th>
+                          <th style="width: 20%">Hasta Adı</th>
+                          <th style="width: 15%">Kimlik No</th>
+                          <th style="width: 15%">Geri Bildirim Tarihi</th>
+                          <th style="width: 30%"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let feedback of titleItems?.items">
+                          <td>#</td>
+                          <td>
+                            <a> {{ feedback.patientName }}</a>
+                            <br />
+                            <small> {{ feedback.gender }} </small>
+                          </td>
+                          <td>
+                            <a> {{ feedback.identityNumber }}</a>
+                          </td>
+                          <td>
+                            <a> {{ feedback.createdDate |date:'dd MMMM yyyy MM:hh'}}</a>
+                          </td>
+                          <td class="project-actions text-right">
+                            <button
+                              class="btn btn-info btn-sm mr-2"
+                              (click)="onSelect(feedback.feedbackId)"
+                            >
+                              <i class="fas fa-circle-info"> </i>
+                              Detay
+                            </button>
+                            <button
+                              class="btn btn-danger btn-sm"
+                              (click)="delete(feedback.feedbackId)"
+                            >
+                              <i class="fas fa-trash"> </i>
+                              Sil
+                            </button>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.Feedbacks -->
+              </div>
+
+                <div
+                  class="tab-pane"
+                  [class.active]="activeTab === 'settings'"
+                  id="settings"
+                >
+                  <form class="form-horizontal" [formGroup]="patientEditForm">
+                    <div class="form-group row">
+                      <label for="firstName" class="col-sm-2 col-form-label"
+                        >Ad</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="firstName"
+                          placeholder="İsim"
+                          formControlName="firstName"
+                          [appValid]="firstName.valid"
+                        />
+                        <div
+                          *ngIf="
+                            firstName.invalid &&
+                            (firstName.dirty || firstName.touched)
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="firstName.errors?.['required']">
+                            {{
+                              validationMessages.patientEdit.firstName.required
+                            }}
+                          </div>
+                          <div *ngIf="firstName.errors?.minlength">
+                            {{
+                              validationMessages.patientEdit.firstName.minlength
+                            }}
+                          </div>
+                          <div *ngIf="firstName.errors?.maxlength">
+                            {{
+                              validationMessages.patientEdit.firstName.maxlength
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="lastName" class="col-sm-2 col-form-label"
+                        >Soyad</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="lastName"
+                          placeholder="Soyisim"
+                          formControlName="lastName"
+                          [appValid]="lastName.valid"
+                        />
+                        <div
+                          *ngIf="
+                            lastName.invalid &&
+                            (lastName.dirty || lastName.touched)
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="lastName.errors?.required">
+                            {{
+                              validationMessages.patientEdit.lastName.required
+                            }}
+                          </div>
+                          <div *ngIf="lastName.errors?.minlength">
+                            {{
+                              validationMessages.patientEdit.lastName.minlength
+                            }}
+                          </div>
+                          <div *ngIf="lastName.errors?.maxlength">
+                            {{
+                              validationMessages.patientEdit.lastName.maxlength
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="bloodType" class="col-sm-2 col-form-label"
+                        >Kan Grubu</label
+                      >
+                      <div class="col-sm-10">
+                        <select
+                          class="form-control"
+                          formControlName="bloodTypeId"
+                          [appValid]="bloodType.valid"
+                        >
+                          <option value="1">A+</option>
+                          <option value="2">A-</option>
+                          <option value="3">B+</option>
+                          <option value="4">B-</option>
+                          <option value="5">AB+</option>
+                          <option value="6">AB-</option>
+                          <option value="7">O+</option>
+                          <option value="8">O-</option>
+                        </select>
+                        <div
+                          *ngIf="
+                            bloodType.invalid &&
+                            (bloodType.dirty || bloodType.touched)
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="bloodType.errors?.required">
+                            {{ validationMessages.register.bloodType.required }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="phone" class="col-sm-2 col-form-label"
+                        >Telefon Numarası</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          id="phone"
+                          placeholder="Telefon"
+                          formControlName="phoneNumber"
+                          [appValid]="phoneNumber.valid"
+                        />
+                        <div
+                          *ngIf="
+                            phoneNumber.invalid &&
+                            (phoneNumber.dirty || phoneNumber.touched)
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="phoneNumber.errors?.required">
+                            {{
+                              validationMessages.patientEdit.phoneNumber
+                                .required
+                            }}
+                          </div>
+                          <div *ngIf="phoneNumber.errors?.phoneNumber">
+                            {{
+                              validationMessages.patientEdit.phoneNumber
+                                .checkPhone
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="birthday" class="col-sm-2 col-form-label"
+                        >Doğum Tarihi</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="birthday"
+                          placeholder="Doğum Tarihi"
+                          formControlName="birthDate"
+                          [appValid]="birthDate.valid"
+                        />
+                        <div
+                          *ngIf="
+                            birthDate.invalid &&
+                            (birthDate.dirty || birthDate.touched)
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="birthDate.errors?.required">
+                            {{ validationMessages.register.birthDate.required }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-sm-6 text-left">
+                        <button
+                          type="submit"
+                          (click)="update()"
+                          class="btn btn-success"
+                        >
+                          Güncelle
+                        </button>
+                      </div>
+                      <div class="col-sm-6 text-right">
+                        <button
+                          type="button"
+                          class="btn btn-warning"
+                          data-toggle="modal"
+                          data-target="#passwordResetModal"
+                        >
+                          Şifre Yenile
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    <!-- The Modal -->
+    <div class="modal fade" id="passwordResetModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Şifre Yenile</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <form [formGroup]="patientPasswordUpdateForm">
+              <div class="form-group input-container">
+                <i class="fas fa-lock icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Eski Şifre"
+                  formControlName="oldPassword"
+                  required
+                  [appValid]="oldPassword.valid"
+                />
+                <div
+                  *ngIf="
+                    oldPassword.invalid &&
+                    (oldPassword.dirty || oldPassword.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="oldPassword.errors?.required">
+                    {{ validationMessages.register.password.required }}
+                  </div>
+                  <div *ngIf="oldPassword.errors?.minlength">
+                    {{ validationMessages.register.password.minlength }}
+                  </div>
+                  <div *ngIf="oldPassword.errors?.maxlength">
+                    {{ validationMessages.register.password.maxlength }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group input-container">
+                <i class="fas fa-key icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Yeni Şifre"
+                  [appValid]="password.valid"
+                  formControlName="password"
+                  required
+                />
+                <div
+                  *ngIf="
+                    password.invalid && (password.dirty || password.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="password.errors?.required">
+                    {{ validationMessages.register.password.required }}
+                  </div>
+                  <div *ngIf="password.errors?.minlength">
+                    {{ validationMessages.register.password.minlength }}
+                  </div>
+                  <div *ngIf="password.errors?.maxlength">
+                    {{ validationMessages.register.password.maxlength }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group input-container">
+                <i class="fas fa-key icon"></i>
+                <input
+                  type="password"
+                  class="form-control"
+                  [appValid]="confirmPassword.valid"
+                  formControlName="confirmPassword"
+                  placeholder="Yeni Şifre Tekrar"
+                  required
+                />
+                <div
+                  *ngIf="
+                    confirmPassword.invalid &&
+                    (confirmPassword.dirty || confirmPassword.touched)
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="confirmPassword.errors?.required">
+                    {{ validationMessages.register.confirmPassword.required }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.minlength">
+                    {{ validationMessages.register.confirmPassword.minlength }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.maxlength">
+                    {{ validationMessages.register.confirmPassword.maxlength }}
+                  </div>
+                  <div *ngIf="confirmPassword.errors?.match">
+                    {{ validationMessages.register.confirmPassword.match }}
+                  </div>
+                </div>
+              </div>
+              <button
+                (click)="updatePassword()"
+                type="submit"
+                class="btn btn-primary btn-block"
+              >
+                Şifreyi Yenile
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-blank>

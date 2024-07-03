@@ -36,7 +36,15 @@ export class AdminFeedbackComponent implements OnInit {
   clinics: BranchModel[];
   doctors: DoctorModel[];
 
-  constructor(private feedbackService: FeedbackService, private formBuilder: FormBuilder, private http: HttpService, private router: Router, private route: ActivatedRoute, private swal: SwalService) {
+  constructor(
+    private feedbackService: FeedbackService,
+    private formBuilder: FormBuilder,
+    private http: HttpService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private swal: SwalService
+  )
+  {
     this.setForm()
   }
 

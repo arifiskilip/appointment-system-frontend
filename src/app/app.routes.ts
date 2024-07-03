@@ -22,6 +22,8 @@ import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { PatientProfileComponent } from './components/patient/patient-profile/patient-profile.component';
 import { AdminFeedbackComponent } from './components/admin/admin-feedback/admin-feedback.component';
+import { AppointmentDetailsComponent } from './components/patient/patient-appointment/appointment-details/appointment-details.component';
+import { AdminPatientDetailsComponent } from './components/admin/admin-patient-details/admin-patient-details.component';
 import { PatientDashboardComponent } from './components/patient/patient-dashboard/patient-dashboard.component';
 import { PatientReportsComponent } from './components/patient/patient-reports/patient-reports.component';
 import { UnauthorizedComponent } from './components/home/unauthorized/unauthorized.component';
@@ -95,13 +97,17 @@ export const routes: Routes = [
         path: 'feedback',
         component: AdminFeedbackComponent,
       },
+      {
+        path: 'patient-details/:id',
+        component: AdminPatientDetailsComponent,
+      },
     ],
   },
   {
     path: 'doctor',
     component: DoctorLayoutComponent,
     canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified(),RoleGuard],
-    data: { roles: ['Doctor'] },
+    data: { roles: ['Doctor','Admin'] },
     children: [
       {
         path: '',
@@ -137,28 +143,28 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientLayoutComponent,
     canActivate: [()=>inject(AuthService).isAuthenticated(),()=>inject(AuthService).isUserVerified(),RoleGuard],
-    data: { roles: ['Patient'] },
+    data: { roles: ['Patient', 'Admin'] },
     children: [
       {
         path: '',
         component: PatientDashboardComponent
       },
-      {
-        path: 'appointment',
-        component: PatientAppointmentComponent
-      },
-      {
-        path: 'profile',
-        component: PatientProfileComponent
-      },
-      {
-        path: 'appointment-list',
-        component: PatientAppointmentListComponent
-      },
-      {
-        path: 'reports',
-        component: PatientReportsComponent
-      }
+     {
+      path:'appointment',
+      component:PatientAppointmentComponent
+     },
+     {
+      path:'profile',
+      component:PatientProfileComponent
+     },
+     {
+      path:'appointment-list',
+      component:PatientAppointmentListComponent
+     },
+     {
+      path:'reports',
+      component:PatientReportsComponent
+     }
     ],
   },
   {
