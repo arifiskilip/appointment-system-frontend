@@ -20,11 +20,11 @@ declare var $: any;
 
 
 @Component({
-    selector: 'app-admin-patient',
-    standalone: true,
-    templateUrl: './admin-patient.component.html',
-    styleUrl: './admin-patient.component.scss',
-    imports: [BlankComponent, SharedModule, ValidDirective, PaginationComponent]
+  selector: 'app-admin-patient',
+  standalone: true,
+  templateUrl: './admin-patient.component.html',
+  styleUrl: './admin-patient.component.scss',
+  imports: [BlankComponent, SharedModule, ValidDirective, PaginationComponent]
 })
 export class AdminPatientComponent implements OnInit{
 
@@ -120,11 +120,11 @@ export class AdminPatientComponent implements OnInit{
       return valid
         ? null
         : {
-            phoneNumber: {
-              valid: false,
-              message: "'Telefon Numarası' geçerli bir numara olmalıdır.",
-            },
-          };
+          phoneNumber: {
+            valid: false,
+            message: "'Telefon Numarası' geçerli bir numara olmalıdır.",
+          },
+        };
     };
   }
 
@@ -189,16 +189,22 @@ export class AdminPatientComponent implements OnInit{
   }
 
 
-  getPatients(){
+  searchPatient(){
+    var query =  `Patient/GetSearchPatients?Index=${this.pageIndex}&Size=${this.pageSize}`;
+    if(this.searchText.length>1){
+      query += `&SearchTerm=${this.searchText}`;
+
+    }
     this.http
-      .get<any>(
-        `Patient/GetPatientsPaginated?Index=${this.pageIndex}&Size=${this.pageSize}`
-      )
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.patients = res.patients;
-        this.totalPages = this.patients.pagination.totalPages;
-      });
+    .get<any>(query)
+    .pipe(take(1))
+    .subscribe((res) => {
+      this.patients = res;
+      if(this.patients.pagination.totalPages < this.pageIndex){
+        this.pageIndex = 1
+        this.searchPatient();
+      }
+      this.totalPages = this.patients.pagination.totalPages;});
   }
 
 
@@ -226,11 +232,11 @@ export class AdminPatientComponent implements OnInit{
   }
 
   confirmActivate(patient: PatientModel): void {
-    this.swal.callSwal('Hasta Aktif Edilecektir',`${patient.firstName} ${patient.lastName} isimli hastayı aktif etmek istediğinize emin misiniz?`,
+    this.swal.callSwal('Hasta Aktif Edilecektir', `${patient.firstName} ${patient.lastName} isimli hastayı aktif etmek istediğinize emin misiniz?`,
       ()=>{
         this.changeIsDeletedPatient(patient.id);
       }
-    ,'Aktif Et')
+      ,'Aktif Et')
   }
 
   changeIsDeletedPatient(patientId: number) {
@@ -244,26 +250,10 @@ export class AdminPatientComponent implements OnInit{
         () => {
           this.swal.callToast('Değişiklik gerçekleşti!');
           this.searchPatient(); // Listeyi yenile
-      });
+        });
   }
 
-  searchPatient(){
-    var query =  `Patient/GetSearchPatients?Index=${this.pageIndex}&Size=${this.pageSize}`;
-    if(this.searchText.length>1){
-      query += `&SearchTerm=${this.searchText}`;
 
-    }
-    this.http
-    .get<any>(query)
-    .pipe(take(1))
-    .subscribe((res) => {
-      this.patients = res;
-      if(this.patients.pagination.totalPages < this.pageIndex){
-        this.pageIndex = 1
-        this.searchPatient();
-      }
-      this.totalPages = this.patients.pagination.totalPages;});
-  }
 
   createRegisterForm() {
     this.registerForm = this.formBuilder.group(
@@ -313,7 +303,7 @@ export class AdminPatientComponent implements OnInit{
           ],
         ],
         genderId: ['', [Validators.required]],
-        birthDate:['',Validators.required],
+        birthDate:['', Validators.required],
         bloodTypeId: ['', [Validators.required]],
       }
     );
@@ -321,13 +311,13 @@ export class AdminPatientComponent implements OnInit{
 
   patientRegister() {
     if (this.registerForm.valid) {
-     this.http.post<any>('Auth/PatientRegister',this.registerForm.value)
-     .pipe(take(1))
-     .subscribe(res=>{
-      this.swal.callToast("Ekleme işlemi başarılı.");
-      this.searchPatient();
-      this.registerForm.reset();
-     })
+      this.http.post<any>('Auth/PatientRegister', this.registerForm.value)
+        .pipe(take(1))
+        .subscribe(res=>{
+          this.swal.callToast("Ekleme işlemi başarılı.");
+          this.searchPatient();
+          this.registerForm.reset();
+        })
     }
   }
 
@@ -369,13 +359,15 @@ export class AdminPatientComponent implements OnInit{
 
 
   //Pagination
-  pageSize: number = 1;
+  pageSize: number = 10;
 
   // Mevcut sayfa numarası
   pageIndex: number = 1;
 
   // Toplam sayfa sayısı
   totalPages: number;
+
+  totalItems: number;
   // Sayfaya git
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
@@ -404,8 +396,8 @@ export class AdminPatientComponent implements OnInit{
   // İlk sayfaya git
   goToFirstPage() {
 
-      this.pageIndex = 1;
-      this.searchPatient();
+    this.pageIndex = 1;
+    this.searchPatient();
 
     console.log(this.pageIndex);
   }
@@ -413,8 +405,8 @@ export class AdminPatientComponent implements OnInit{
   // Son sayfaya git
   goToLastPage() {
 
-      this.pageIndex = this.totalPages;
-      this.searchPatient();
+    this.pageIndex = this.totalPages;
+    this.searchPatient();
 
   }
 
