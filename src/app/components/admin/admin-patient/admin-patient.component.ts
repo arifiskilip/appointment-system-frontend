@@ -55,7 +55,7 @@ export class AdminPatientComponent implements OnInit{
   ngOnInit(): void {
     this.createPatientEditForm();
     this.createRegisterForm();
-    this.getPatients();
+    this.searchPatient();
   }
 
   getPatientDetail(userId: number): void {
@@ -136,7 +136,7 @@ export class AdminPatientComponent implements OnInit{
           this.swal.callToast('Güncelleme işlemi başarılı!');
           this.getPatientDetail(this.patientEditForm.value.id);
           // $('#updateModalLabel').modal('hide'); // Modal'ı kapat
-          this.getPatients(); // Hastalar listesini güncelle
+          this.searchPatient(); // Hastalar listesini güncelle
         });
     }
   }
@@ -243,25 +243,26 @@ export class AdminPatientComponent implements OnInit{
       .subscribe(
         () => {
           this.swal.callToast('Değişiklik gerçekleşti!');
-          this.getPatients(); // Listeyi yenile
+          this.searchPatient(); // Listeyi yenile
       });
   }
 
   searchPatient(){
+    var query =  `Patient/GetSearchPatients?Index=${this.pageIndex}&Size=${this.pageSize}`;
     if(this.searchText.length>1){
-      this.http
-      .get<any>(
-        `Patient/GetSearchPatients?SearchTerm=${this.searchText}&Index=${this.pageIndex}&Size=${this.pageSize}`
-      )
-      .pipe(take(1))
-      .subscribe((res) => {
-        this.patients = res;
-        this.totalItems = this.patients.pagination.totalItems;
-      });
+      query += `&SearchTerm=${this.searchText}`;
+
     }
-    else{
-      this.getPatients();
-    }
+    this.http
+    .get<any>(query)
+    .pipe(take(1))
+    .subscribe((res) => {
+      this.patients = res;
+      if(this.patients.pagination.totalPages < this.pageIndex){
+        this.pageIndex = 1
+        this.searchPatient();
+      }
+      this.totalPages = this.patients.pagination.totalPages;});
   }
 
   createRegisterForm() {
@@ -324,7 +325,7 @@ export class AdminPatientComponent implements OnInit{
      .pipe(take(1))
      .subscribe(res=>{
       this.swal.callToast("Ekleme işlemi başarılı.");
-      this.getPatients();
+      this.searchPatient();
       this.registerForm.reset();
      })
     }
@@ -368,20 +369,18 @@ export class AdminPatientComponent implements OnInit{
 
 
   //Pagination
-  pageSize: number = 10;
+  pageSize: number = 1;
 
   // Mevcut sayfa numarası
   pageIndex: number = 1;
 
   // Toplam sayfa sayısı
   totalPages: number;
-
-  totalItems: number;
   // Sayfaya git
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.pageIndex = page;
-      this.getPatients();
+      this.searchPatient();
     }
   }
 
@@ -389,7 +388,7 @@ export class AdminPatientComponent implements OnInit{
   prevPage() {
     if (this.pageIndex > 1) {
       this.pageIndex--;
-      this.getPatients();
+      this.searchPatient();
     }
   }
 
@@ -397,7 +396,7 @@ export class AdminPatientComponent implements OnInit{
   nextPage() {
     if (this.pageIndex < this.totalPages) {
       this.pageIndex++;
-      this.getPatients();
+      this.searchPatient();
     }
     console.log(this.pageIndex);
   }
@@ -406,7 +405,7 @@ export class AdminPatientComponent implements OnInit{
   goToFirstPage() {
 
       this.pageIndex = 1;
-      this.getPatients();
+      this.searchPatient();
 
     console.log(this.pageIndex);
   }
@@ -415,7 +414,7 @@ export class AdminPatientComponent implements OnInit{
   goToLastPage() {
 
       this.pageIndex = this.totalPages;
-      this.getPatients();
+      this.searchPatient();
 
   }
 
@@ -437,7 +436,7 @@ export class AdminPatientComponent implements OnInit{
 
   // Kaç adet listeleneceğini beliritir
   goToChangeSelectedCount() {
-    this.getPatients();
+    this.searchPatient();
   }
 
   // Başlangıç indisini hesaplar

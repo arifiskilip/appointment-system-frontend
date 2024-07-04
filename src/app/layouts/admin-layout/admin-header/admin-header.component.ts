@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -9,20 +10,12 @@ import { Component } from '@angular/core';
 })
 export class AdminHeaderComponent {
 
-  confirmLogout() {
-    const confirmed = window.confirm("Çıkış yapmak istiyor musunuz?");
-    if (confirmed) {
-      this.logout();
-    }
-  }
-
-  logout() {
-    // Çıkış işlemlerini burada gerçekleştirin
-    // Örneğin, token'ı temizleyip login sayfasına yönlendirme yapabilirsiniz.
-    localStorage.removeItem('token'); // Token'ı temizleme örneği
-    // Yönlendirme örneği, router kullanarak:
-    // this.router.navigate(['/login']);
-    console.log('User logged out');
-  }
+  /**
+   *
+   */
+  constructor(public authService:AuthService) {
+    
+    
+  }  
 
 }

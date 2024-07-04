@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../common/shared/shared.module';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home-page',
@@ -12,6 +15,10 @@ export class HomePageComponent {
 toggleMobileNav() {
 throw new Error('Method not implemented.');
 }
+
+constructor(public auth:AuthService, private router:Router) {
+  
+}
   activeSection: string = 'hero';
 
   isActive(sectionName: string): boolean {
@@ -20,5 +27,8 @@ throw new Error('Method not implemented.');
 
   setActive(sectionName: string): void {
     this.activeSection = sectionName;
+  }
+  getPanel(){
+    this.router.navigateByUrl('/'+this.auth.getUserRole().toLowerCase());
   }
 }

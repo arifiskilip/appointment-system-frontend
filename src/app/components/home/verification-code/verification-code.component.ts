@@ -4,6 +4,7 @@ import { SharedModule } from '../../../common/shared/shared.module';
 import { HttpService } from '../../../services/http.service';
 import { Router } from '@angular/router';
 import { SwalService } from '../../../services/swal.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-verification-code',
@@ -18,7 +19,7 @@ isSend: boolean = false;
   /**
    *
    */
-  constructor(private http:HttpService, private router:Router, private swal:SwalService) {
+  constructor(private http:HttpService, private router:Router, private swal:SwalService, private authService:AuthService) {
 
     
   }
@@ -51,7 +52,7 @@ isSend: boolean = false;
 
   emailVerified(){
     this.http.post("Auth/EmailVerified",{code:this.code}).subscribe(res=>{
-      this.router.navigateByUrl("");
+      this.router.navigateByUrl("/"+this.authService.getUserRole().toLowerCase());
     })
   }
 }

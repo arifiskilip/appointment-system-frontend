@@ -19,9 +19,12 @@
                 <li><a class="nav-link scrollto" href="#team" [class.active]="isActive('team')" (click)="setActive('team')">Ekip</a></li>
                 <li><a class="nav-link scrollto" href="#clients" [class.active]="isActive('clients')" (click)="setActive('clients')">Müşterilerimiz</a></li>
                 <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')" (click)="setActive('contact')">İletişim</a></li>
-                <li>
+                <li *ngIf="!auth.isAuthenticated()">
                     <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
                   </li>
+                <li *ngIf="auth.isAuthenticated()">
+                  <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
+                </li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           </nav><!-- .navbar -->
