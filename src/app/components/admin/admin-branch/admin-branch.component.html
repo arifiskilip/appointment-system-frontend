@@ -24,20 +24,20 @@
                   <tr *ngFor="let branch of items">
                     <td>{{ branch.id }}</td>
                     <td>{{ branch.name }}</td>
-                    <td>{{ branch.createdDate }}</td>
-                    <td>{{ branch.updatedDate }}</td>
+                    <td>{{ branch.createdDate | date: 'dd-MM-yyyy HH:mm' }}</td>
+                    <td>{{ branch.updatedDate | date: 'dd-MM-yyyy HH:mm'}}</td>
                     <td>
                       <span
                         [ngClass]="[
                           'badge',
-                          !branch.isDeleted ? 'badge-success' : 'badge-danger'
+                          branch.isDeleted ? 'badge-danger' : 'badge-success'
                         ]"
                       >
                         {{ branch.isDeleted ? "Pasif" : "Aktif" }}
                       </span>
                     </td>
                     <td class="project-actions text-right">
-                      <a class="btn btn-info btn-sm" (click)="onSelect(branch)" data-toggle="modal" data-target="#addBranchModal">
+                      <a class="btn btn-info btn-sm mr-2" (click)="onSelect(branch)" data-toggle="modal" data-target="#addBranchModal">
                         <i class="fas fa-pencil-alt"></i> Güncelle
                       </a>
                       <a class="btn btn-danger btn-sm" (click)="deleteItem(branch.id)">
