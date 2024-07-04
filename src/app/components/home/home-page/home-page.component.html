@@ -51,6 +51,26 @@
           <a href="#about" class="btn-get-started scrollto">Hakkımızda</a>
           <a href="#services" class="btn-services scrollto">Hizmetlerimiz</a>
         </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto" href="#hero" [class.active]="isActive('hero')" (click)="setActive('hero')">Ana Sayfa</a></li>
+                <li><a class="nav-link scrollto" href="#about" [class.active]="isActive('about')" (click)="setActive('about')">Hakkımızda</a></li>
+                <li><a class="nav-link scrollto" href="#services" [class.active]="isActive('services')" (click)="setActive('services')">Hizmetler</a></li>
+                <li><a class="nav-link scrollto" href="#why-us" [class.active]="isActive('why-us')" (click)="setActive('why-us')">Neden Biz</a></li>
+                <li><a class="nav-link scrollto" href="#team" [class.active]="isActive('team')" (click)="setActive('team')">Ekip</a></li>
+                <li><a class="nav-link scrollto" href="#clients" [class.active]="isActive('clients')" (click)="setActive('clients')">Müşterilerimiz</a></li>
+                <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')" (click)="setActive('contact')">İletişim</a></li>
+                <li *ngIf="!auth.isAuthenticated()">
+                    <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
+                  </li>
+                <li *ngIf="auth.isAuthenticated()">
+                  <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
+                </li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav><!-- .navbar -->
+  
       </div>
 
     </div>
