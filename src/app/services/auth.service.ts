@@ -46,7 +46,7 @@ export class AuthService {
       const decodedToken: any = this.jwtHelper.decodeToken(token);
       console.log(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'])
       return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];  // JWT içindeki role claim'i kontrol edin
-     
+
     }
     return null;
   }

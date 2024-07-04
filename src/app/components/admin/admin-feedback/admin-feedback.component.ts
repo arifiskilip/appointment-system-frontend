@@ -36,7 +36,15 @@ export class AdminFeedbackComponent implements OnInit {
   clinics: BranchModel[];
   doctors: DoctorModel[];
 
-  constructor(private feedbackService: FeedbackService, private formBuilder: FormBuilder, private http: HttpService, private router: Router, private route: ActivatedRoute, private swal: SwalService) {
+  constructor(
+    private feedbackService: FeedbackService,
+    private formBuilder: FormBuilder,
+    private http: HttpService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private swal: SwalService
+  )
+  {
     this.setForm()
   }
 
@@ -100,7 +108,9 @@ export class AdminFeedbackComponent implements OnInit {
       $('#feedbackDetail').modal('show');
     })
   }
-
+  modalHide(){
+    $('#feedbackDetail').modal('hide');
+  }
   getBranches() {
     let newPath = "Branch/GetAll"
     this.http.get<BranchListModel>(newPath).subscribe(res => {

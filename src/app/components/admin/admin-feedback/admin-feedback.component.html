@@ -107,14 +107,14 @@
               <td class="project-actions text-right">
                 <button
                   class="btn btn-info btn-sm mr-2"
-                  (click)="onSelect(feedback.feedbackId)"
+                  (click)="onSelect(feedback.id)"
                 >
                   <i class="fas fa-circle-info"> </i>
                   Detay
                 </button>
                 <button
                   class="btn btn-danger btn-sm"
-                  (click)="delete(feedback.feedbackId)"
+                  (click)="delete(feedback.id)"
                 >
                   <i class="fas fa-trash"> </i>
                   Sil
@@ -174,6 +174,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              (click)="modalHide()"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -230,6 +231,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              (click)="modalHide()"
             >
               Kapat
             </button>

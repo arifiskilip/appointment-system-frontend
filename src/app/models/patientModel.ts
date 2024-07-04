@@ -15,4 +15,5 @@ export interface PatientModel {
     birthDate: Date;
     createdDate: Date;
     updatedDate?: Date | null;
+    isDeleted: boolean;
   }

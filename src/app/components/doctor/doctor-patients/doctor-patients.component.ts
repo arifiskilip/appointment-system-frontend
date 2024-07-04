@@ -30,7 +30,7 @@ export class DoctorPatientsComponent implements OnInit{
   getPatients(){
     this.http
       .get<any>(
-        `Patient/GetPatientsPaginated?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`
+        `Patient/GetPatientsPaginated?Index=${this.pageIndex}&Size=${this.pageSize}`
       )
       .pipe(take(1))
       .subscribe((res) => {

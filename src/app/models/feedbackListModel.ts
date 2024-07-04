@@ -1,6 +1,6 @@
 export interface FeedbackListModel{
     patientId?:number;
-    feedbackId?:number;
+    id?:number;
     patientName:string;
     identityNumber:string;
     gender:string;

@@ -45,7 +45,7 @@ export class DoctorReportHistoryComponent implements OnInit{
   }
 
   getFilter(){
-    let query=this.doctorReportsQuery;
+    let query=`Report/GetPaginatedFilteredReportsByPatientId?PageIndex=${this.pageIndex}&PageSize=${this.pageSize}`;;
     query+=`&OrderBy=${this.orderby}`;
     if(this.date != null){
         query+=`&Date=${this.date}`;

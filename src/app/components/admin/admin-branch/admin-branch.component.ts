@@ -49,17 +49,17 @@ export class AdminBranchComponent{
         this.totalPages = response.branches.pagination.totalPages
         this.dataLoaded = true
      });
-  } 
-  
+  }
+
    //Pagination
    pageSize: number = 10;
 
    // Mevcut sayfa numarası
    pageIndex: number = 1;
- 
+
    // Toplam sayfa sayısı
    totalPages: number;
-  
+
   // Sayfaya git
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
@@ -136,7 +136,7 @@ export class AdminBranchComponent{
     }
     return name;
   }
-  
+
 
   branchForm = new FormGroup({
     name: new FormControl('', [
@@ -147,7 +147,7 @@ export class AdminBranchComponent{
     isDeleted: new FormControl(false),
     id: new FormControl('')
   });
-  
+
   updateBranchForm = new FormGroup({
     name: new FormControl('', [
       Validators.minLength(3),
@@ -157,7 +157,7 @@ export class AdminBranchComponent{
     isDeleted: new FormControl(false),
     id: new FormControl('')
   });
-  
+
 
   add() {
     this.isUpdateForm = false;
@@ -242,7 +242,7 @@ export class AdminBranchComponent{
       this.getBranchs()
     })
   }
-  
+
   deleteItem(id: number): void {
     this.swal.callSwal("Branş Silme", "Silmek istediğinizden emin misiniz?", () => {
     this.branchService.delete(id).subscribe((response) => {

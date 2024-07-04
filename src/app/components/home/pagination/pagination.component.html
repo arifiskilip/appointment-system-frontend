@@ -1,0 +1,56 @@
+<nav aria-label="...">
+  <ul class="pagination">
+    <!-- Prev Button -->
+    <li
+      class="page-item"
+      [ngClass]="{
+        disabled: !hasPrevPage
+      }"
+    >
+      <button
+        type="button"
+        class="page-link"
+        [disabled]="!hasPrevPage"
+        (click)="onPageChange(pageIndex - 1)"
+      >
+        Previous
+      </button>
+    </li>
+
+    <!-- Current Page -->
+    @for (pageNumber of pageNumbers; track $index) {
+    <li
+      class="page-item"
+      [ngClass]="{
+        active: pageNumber === pageIndex
+      }"
+    >
+      <button
+        type="button"
+        class="page-link"
+        (click)="onPageChange(pageNumber)"
+        [disabled]="pageNumber === pageIndex"
+      >
+        {{ pageNumber }}
+      </button>
+    </li>
+    }
+
+    <!-- Next Button -->
+    <li
+      class="page-item"
+      [ngClass]="{
+        disabled: !hasNextPage
+      }"
+    >
+      <button
+        type="button"
+        class="page-link"
+        [disabled]="!hasNextPage"
+        (click)="onPageChange(pageIndex + 1)"
+      >
+        Next
+      </button>
+    </li>
+  </ul>
+</nav>
