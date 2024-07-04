@@ -2,66 +2,160 @@
     <a routerLink="/" class="brand-link">
       <span class="brand-text font-weight-light">TOBETO</span>
     </a>
-
-    <div class="sidebar">
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png" class="img-circle elevation-2" alt="User Image" style="background-color: white;">
-        </div>
-        <div class="info">
-          <a routerLink="/admin/profile" class="d-block">FirstName</a>
-        </div>
+  <a routerLink="/" class="brand-link">
+    <img src="/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      style="opacity: .8">
+    <span class="brand-text font-weight-light">Angular App</span>
+  </a>
+  <div class="sidebar">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img class="image" data-toggle="modal" data-target="#passwordResetModal"
+          src="https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png"
+          class="img-circle elevation-2" alt="User Image" style="background-color: white;">
       </div>
-
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group">
-          <input class="form-control form-control-sidebar" [(ngModel)]="search" type="search" placeholder="Ara">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
+      <div class="info">
+        <a class="d-block" data-toggle="modal" data-target="#passwordResetModal">
+          Admin
+        </a>
       </div>
-
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">   
-          @for(menu of menus |menu:search; track menu){
-            @if(menu.isTitle){
-              <li class="nav-header">{{menu.name}}</li>
-            }@else if(menu.subMenus.length > 0){
-              <li class="nav-item">
-                <a class="nav-link">
-                  <i class="nav-icon {{menu.icon}}"></i>
-                  <p>
-                    {{menu.name}}
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  @for(subMenu of menu.subMenus; track subMenu){
-                    <li class="nav-item">
-                      <a [routerLink]="subMenu.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">
-                        <i class="{{subMenu.icon}} me-2"></i>
-                        <p>{{subMenu.name}}</p>
-                      </a>
-                    </li>  
-                  }                                 
-                </ul>
-              </li>
-            }@else {
-              <li class="nav-item">
-                <a [routerLink]="menu.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">
-                  <i class="nav-icon {{menu.icon}}"></i>
-                  <p>
-                    {{menu.name}}
-                  </p>
-                </a>
-              </li>    
-            }
-          }     
-        </ul>
-      </nav>
     </div>
-  </aside>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+      <div class="input-group">
+        <input class="form-control form-control-sidebar" [(ngModel)]="search" type="search" placeholder="Ara">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        @for(menu of menus |menu:search; track menu){
+        @if(menu.isTitle){
+        <li class="nav-header">{{menu.name}}</li>
+        }@else if(menu.subMenus.length > 0){
+        <li class="nav-item">
+          <a class="nav-link">
+            <i class="nav-icon {{menu.icon}}"></i>
+            <p>
+              {{menu.name}}
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            @for(subMenu of menu.subMenus; track subMenu){
+            <li class="nav-item">
+              <a [routerLink]="subMenu.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+                class="nav-link">
+                <i class="{{subMenu.icon}} me-2"></i>
+                <p>{{subMenu.name}}</p>
+              </a>
+            </li>
+            }
+          </ul>
+        </li>
+        }@else {
+        <li class="nav-item">
+          <a [routerLink]="menu.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+            class="nav-link">
+            <i class="nav-icon {{menu.icon}}"></i>
+            <p>
+              {{menu.name}}
+            </p>
+          </a>
+        </li>
+        }
+        }
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+<!-- Password Reset Modal -->
+
+<div class="modal fade" id="passwordResetModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Şifre Yenile</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form [formGroup]="patientPasswordUpdateForm">
+          <div class="form-group input-container">
+            <i class="fas fa-lock icon"></i>
+            <input type="password" class="form-control" placeholder="Eski Şifre" formControlName="oldPassword" required
+              [appValid]="oldPassword.valid" />
+            <div *ngIf="
+                  oldPassword.invalid &&
+                  (oldPassword.dirty || oldPassword.touched)
+                " class="invalid-feedback">
+              <div *ngIf="oldPassword.errors?.required">
+                {{ validationMessages.register.password.required }}
+              </div>
+              <div *ngIf="oldPassword.errors?.minlength">
+                {{ validationMessages.register.password.minlength }}
+              </div>
+              <div *ngIf="oldPassword.errors?.maxlength">
+                {{ validationMessages.register.password.maxlength }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group input-container">
+            <i class="fas fa-key icon"></i>
+            <input type="password" class="form-control" placeholder="Yeni Şifre" [appValid]="password.valid"
+              formControlName="password" required />
+            <div *ngIf="
+                  password.invalid && (password.dirty || password.touched)
+                " class="invalid-feedback">
+              <div *ngIf="password.errors?.required">
+                {{ validationMessages.register.password.required }}
+              </div>
+              <div *ngIf="password.errors?.minlength">
+                {{ validationMessages.register.password.minlength }}
+              </div>
+              <div *ngIf="password.errors?.maxlength">
+                {{ validationMessages.register.password.maxlength }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group input-container">
+            <i class="fas fa-key icon"></i>
+            <input type="password" class="form-control" [appValid]="confirmPassword.valid"
+              formControlName="confirmPassword" placeholder="Yeni Şifre Tekrar" required />
+            <div *ngIf="
+                  confirmPassword.invalid &&
+                  (confirmPassword.dirty || confirmPassword.touched)
+                " class="invalid-feedback">
+              <div *ngIf="confirmPassword.errors?.required">
+                {{ validationMessages.register.confirmPassword.required }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.minlength">
+                {{ validationMessages.register.confirmPassword.minlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.maxlength">
+                {{ validationMessages.register.confirmPassword.maxlength }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.match">
+                {{ validationMessages.register.confirmPassword.match }}
+              </div>
+            </div>
+          </div>
+          <button (click)="updatePassword()" type="submit" class="btn btn-primary btn-block">
+            Şifreyi Yenile
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
