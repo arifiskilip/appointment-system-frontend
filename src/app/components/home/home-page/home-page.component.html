@@ -1,15 +1,60 @@
 <body data-aos-easing="ease-in-out" data-aos-duration="1000" data-aos-delay="0">
-  
-    <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top d-flex align-items-center">
-      <div class="container d-flex justify-content-between">
-  
-        <div class="logo">
-          <!-- Uncomment below if you prefer to use an text logo -->
-          <!-- <h1><a href="index.html">NewBiz</a></h1> -->
-          <a routerLink=""><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+
+      <div class="logo">
+        <!-- Uncomment below if you prefer to use an text logo -->
+        <!-- <h1><a href="index.html">NewBiz</a></h1> -->
+        <a routerLink=""><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="#hero" [class.active]="isActive('hero')"
+              (click)="setActive('hero')">Ana Sayfa</a></li>
+          <li><a class="nav-link scrollto" href="#about" [class.active]="isActive('about')"
+              (click)="setActive('about')">Hakkımızda</a></li>
+          <li><a class="nav-link scrollto" href="#services" [class.active]="isActive('services')"
+              (click)="setActive('services')">Hizmetler</a></li>
+          <li><a class="nav-link scrollto" href="#why-us" [class.active]="isActive('why-us')"
+              (click)="setActive('why-us')">Neden Biz</a></li>
+          <li><a class="nav-link scrollto" href="#team" [class.active]="isActive('team')"
+              (click)="setActive('team')">Ekip</a></li>
+          <li><a class="nav-link scrollto" href="#clients" [class.active]="isActive('clients')"
+              (click)="setActive('clients')">Müşterilerimiz</a></li>
+          <li><a class="nav-link scrollto" data-toggle="modal" data-target="#SSS">S.S.S.</a></li>
+          <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')"
+              (click)="setActive('contact')">İletişim</a></li>
+              <li *ngIf="!auth.isAuthenticated()">
+                <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
+              </li>
+            <li *ngIf="auth.isAuthenticated()">
+              <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
+            </li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- #header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="clearfix">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+
+      <div class="hero-img aos-init aos-animate" data-aos="zoom-out" data-aos-delay="200">
+        <img src="assets/img/hero-img.svg" alt="" class="img-fluid">
+      </div>
+
+      <div class="hero-info aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
+        <h2>Sağlığınız<br><span>Bizimle</span><br>Güvende!</h2>
+        <div>
+          <a href="#about" class="btn-get-started scrollto">Hakkımızda</a>
+          <a href="#services" class="btn-services scrollto">Hizmetlerimiz</a>
         </div>
-  
+
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a class="nav-link scrollto" href="#hero" [class.active]="isActive('hero')" (click)="setActive('hero')">Ana Sayfa</a></li>
@@ -19,14 +64,18 @@
                 <li><a class="nav-link scrollto" href="#team" [class.active]="isActive('team')" (click)="setActive('team')">Ekip</a></li>
                 <li><a class="nav-link scrollto" href="#clients" [class.active]="isActive('clients')" (click)="setActive('clients')">Müşterilerimiz</a></li>
                 <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')" (click)="setActive('contact')">İletişim</a></li>
-                <li>
+                <li *ngIf="!auth.isAuthenticated()">
                     <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
                   </li>
+                <li *ngIf="auth.isAuthenticated()">
+                  <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
+                </li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           </nav><!-- .navbar -->
   
       </div>
+
     </header><!-- #header -->
   
     <!-- ======= Hero Section ======= -->
@@ -35,17 +84,95 @@
   
         <div class="hero-img aos-init aos-animate" data-aos="zoom-out" data-aos-delay="200">
           <img src="assets/img/hero-img.png" style="width: 300; height: 200;" alt="" class="img-fluid">
+
+
+    </div>
+  </section><!-- End Hero Section -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about">
+      <div class="container aos-init" data-aos="fade-up">
+
+        <header class="section-header">
+          <h3>Hakkımızda</h3>
+          <p>Sağlığınıza verdiğimiz önem ve profesyonellik ile sizlere en iyi hizmeti sunmak için buradayız.</p>
+        </header>
+
+        <div class="row about-container">
+
+          <div class="col-lg-6 content order-lg-1 order-2">
+            <p>
+              Hastanemiz, alanında uzman doktor kadrosu ve güler yüzlü personeli ile sağlığınız için en iyi tedavi ve
+              bakım hizmetini sunmaktadır. Modern teknolojiler ve yenilikçi yaklaşımlar ile sağlık yolculuğunuzda
+              yanınızdayız.
+            </p>
+
+            <div class="icon-box aos-init" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon"><i class="bi bi-card-checklist"></i></div>
+              <h4 class="title"><a href="#">Uzman Kadro</a></h4>
+              <p class="description">Her biri alanında uzman doktor ve sağlık personelimiz ile en iyi tedavi hizmetini
+                sunuyoruz.</p>
+            </div>
+
+            <div class="icon-box aos-init" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon"><i class="bi bi-brightness-high"></i></div>
+              <h4 class="title"><a href="#">Modern Teknoloji</a></h4>
+              <p class="description">Son teknoloji cihazlar ve yenilikçi tedavi yöntemleri ile sağlığınızı güvence
+                altına alıyoruz.</p>
+            </div>
+
+            <div class="icon-box aos-init" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon"><i class="bi bi-calendar4-week"></i></div>
+              <h4 class="title"><a href="#">24/7 Hizmet</a></h4>
+              <p class="description">7 gün 24 saat acil servis hizmetimiz ile her an yanınızdayız.</p>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6 background order-lg-2 aos-init" data-aos="zoom-in">
+            <img src="assets/img/about-img.svg" class="img-fluid" alt="">
+          </div>
+
         </div>
-  
-        <div class="hero-info aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
-          <h2>Sağlığınız<br><span>Bizimle</span><br>Güvende!</h2>
-          <div>
-            <a href="#about" class="btn-get-started scrollto">Hakkımızda</a>
-            <a href="#services" class="btn-services scrollto">Hizmetlerimiz</a>
+
+        <div class="row about-extra">
+          <div class="col-lg-6 aos-init" data-aos="fade-right">
+            <img src="assets/img/about-extra-1.svg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-5 pt-lg-0 aos-init" data-aos="fade-left">
+            <h4>Hasta Memnuniyeti Odaklı Yaklaşım</h4>
+            <p>
+              Hastalarımızın memnuniyeti ve sağlığı bizim önceliğimizdir. Her hastamız için kişiselleştirilmiş tedavi
+              planları oluşturuyoruz.
+            </p>
+            <p>
+              Güvenli ve konforlu bir ortamda, en iyi sağlık hizmetini almanızı sağlıyoruz.
+            </p>
           </div>
         </div>
-  
+
+        <div class="row about-extra">
+          <div class="col-lg-6 order-1 order-lg-2 aos-init" data-aos="fade-left">
+            <img src="assets/img/about-extra-2.svg" class="img-fluid" alt="">
+          </div>
+
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 aos-init" data-aos="fade-right">
+            <h4>Yenilikçi ve Gelişmiş Hizmetler</h4>
+            <p>
+              Hastanemizde, yenilikçi sağlık hizmetleri ve ileri teknoloji ile donatılmış laboratuvarlar ve tedavi
+              odaları bulunmaktadır.
+            </p>
+            <p>
+              En güncel ve etkili tedavi yöntemlerini uygulayarak, sağlığınıza hızlı bir şekilde kavuşmanızı
+              hedefliyoruz.
+            </p>
+          </div>
+        </div>
+
       </div>
+
     </section><!-- End Hero Section -->
   
     <main id="main">
@@ -157,33 +284,73 @@
                 <h4 class="title"><a href="#">Diyet ve Beslenme</a></h4>
                 <p class="description">Uzman diyetisyenlerimiz tarafından hazırlanan sağlıklı beslenme planları.</p>
               </div>
+
+    </section>
+
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="section-bg">
+      <div class="container aos-init" data-aos="fade-up">
+
+        <header class="section-header">
+          <h3>Hizmetlerimiz</h3>
+          <p>Sağlığınızı ön planda tutarak, geniş kapsamlı ve yenilikçi sağlık hizmetleri sunuyoruz.</p>
+        </header>
+
+        <div class="row justify-content-center">
+
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="100">
+            <div class="box">
+              <div class="icon"><i class="bi bi-briefcase" style="color: #ff689b;"></i></div>
+              <h4 class="title"><a href="#">Uzman Tedavi</a></h4>
+              <p class="description">Alanında uzman doktorlarımız tarafından uygulanan, ileri teknoloji ve modern tedavi
+                yöntemleri.</p>
             </div>
-            <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="200">
-              <div class="box">
-                <div class="icon"><i class="bi bi-binoculars" style="color:#41cf2e;"></i></div>
-                <h4 class="title"><a href="#">Göz Sağlığı</a></h4>
-                <p class="description">Göz sağlığınızı korumak ve tedavi etmek için en son teknoloji ile donatılmış birimlerimiz.</p>
-              </div>
-            </div>
-      
-            <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="100">
-              <div class="box">
-                <div class="icon"><i class="bi bi-brightness-high" style="color: #d6ff22;"></i></div>
-                <h4 class="title"><a href="#">Estetik ve Plastik Cerrahi</a></h4>
-                <p class="description">Güvenli ve estetik operasyonlar ile kendinizi daha iyi hissetmenizi sağlıyoruz.</p>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="200">
-              <div class="box">
-                <div class="icon"><i class="bi bi-calendar4-week" style="color: #4680ff;"></i></div>
-                <h4 class="title"><a href="#">Fizik Tedavi ve Rehabilitasyon</a></h4>
-                <p class="description">Yaralanmalar ve kronik ağrılar için profesyonel fizik tedavi ve rehabilitasyon hizmetleri.</p>
-              </div>
-            </div>
-      
           </div>
-      
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="200">
+            <div class="box">
+              <div class="icon"><i class="bi bi-card-checklist" style="color: #e9bf06;"></i></div>
+              <h4 class="title"><a href="#">Check-Up Programları</a></h4>
+              <p class="description">Kapsamlı sağlık taramaları ile sağlığınızı kontrol altında tutmanızı sağlıyoruz.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="100">
+            <div class="box">
+              <div class="icon"><i class="bi bi-bar-chart" style="color: #3fcdc7;"></i></div>
+              <h4 class="title"><a href="#">Diyet ve Beslenme</a></h4>
+              <p class="description">Uzman diyetisyenlerimiz tarafından hazırlanan sağlıklı beslenme planları.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="200">
+            <div class="box">
+              <div class="icon"><i class="bi bi-binoculars" style="color:#41cf2e;"></i></div>
+              <h4 class="title"><a href="#">Göz Sağlığı</a></h4>
+              <p class="description">Göz sağlığınızı korumak ve tedavi etmek için en son teknoloji ile donatılmış
+                birimlerimiz.</p>
+
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="100">
+            <div class="box">
+              <div class="icon"><i class="bi bi-brightness-high" style="color: #d6ff22;"></i></div>
+              <h4 class="title"><a href="#">Estetik ve Plastik Cerrahi</a></h4>
+              <p class="description">Güvenli ve estetik operasyonlar ile kendinizi daha iyi hissetmenizi sağlıyoruz.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-5 aos-init" data-aos="zoom-in" data-aos-delay="200">
+            <div class="box">
+              <div class="icon"><i class="bi bi-calendar4-week" style="color: #4680ff;"></i></div>
+              <h4 class="title"><a href="#">Fizik Tedavi ve Rehabilitasyon</a></h4>
+              <p class="description">Yaralanmalar ve kronik ağrılar için profesyonel fizik tedavi ve rehabilitasyon
+                hizmetleri.</p>
+            </div>
+          </div>
+
         </div>
+
       </section>
       
       <!-- ======= Why Us Section ======= -->
@@ -203,56 +370,58 @@
                   <h5 class="card-title">Uzman Kadro</h5>
                   <p class="card-text">Her biri alanında uzman ve deneyimli doktor kadromuz ile en kaliteli sağlık hizmetini sunuyoruz.</p>
                 </div>
+
+
+      </div>
+    </section>
+
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us">
+      <div class="container aos-init" data-aos="fade-up">
+        <header class="section-header">
+          <h3>Neden Biz?</h3>
+          <p>Sağlığınızı güvenle emanet edebileceğiniz, alanında lider bir sağlık merkezi.</p>
+        </header>
+
+        <div class="row row-eq-height justify-content-center">
+
+          <div class="col-lg-4 mb-4">
+            <div class="card aos-init" data-aos="zoom-in" data-aos-delay="100">
+              <i class="bi bi-calendar4-week"></i>
+              <div class="card-body">
+                <h5 class="card-title">Uzman Kadro</h5>
+                <p class="card-text">Her biri alanında uzman ve deneyimli doktor kadromuz ile en kaliteli sağlık
+                  hizmetini sunuyoruz.</p>
+
               </div>
             </div>
-      
-            <div class="col-lg-4 mb-4">
-              <div class="card aos-init" data-aos="zoom-in" data-aos-delay="200">
-                <i class="bi bi-camera-reels"></i>
-                <div class="card-body">
-                  <h5 class="card-title">Modern Teknoloji</h5>
-                  <p class="card-text">En yeni ve ileri teknolojiye sahip ekipmanlar ile doğru ve hızlı teşhisler koyuyoruz.</p>
-                </div>
-              </div>
-            </div>
-      
-            <div class="col-lg-4 mb-4">
-              <div class="card aos-init" data-aos="zoom-in" data-aos-delay="300">
-                <i class="bi bi-chat-square-text"></i>
-                <div class="card-body">
-                  <h5 class="card-title">Hasta Memnuniyeti</h5>
-                  <p class="card-text">Hastalarımızın memnuniyeti bizim için önceliklidir. Kişisel ve özenli bir yaklaşım ile hizmet veriyoruz.</p>
-                </div>
-              </div>
-            </div>
-      
           </div>
-      
-          <div class="row counters aos-init" data-aos="fade-up" data-aos-delay="100">
-      
-            <div class="col-lg-3 col-6 text-center">
-              <span data-purecounter-start="0" data-purecounter-end="5000" data-purecounter-duration="1" class="purecounter">1000+</span>
-              <p>Mutlu Hastalar</p>
+
+          <div class="col-lg-4 mb-4">
+            <div class="card aos-init" data-aos="zoom-in" data-aos-delay="200">
+              <i class="bi bi-camera-reels"></i>
+              <div class="card-body">
+                <h5 class="card-title">Modern Teknoloji</h5>
+                <p class="card-text">En yeni ve ileri teknolojiye sahip ekipmanlar ile doğru ve hızlı teşhisler
+                  koyuyoruz.</p>
+              </div>
             </div>
-      
-            <div class="col-lg-3 col-6 text-center">
-              <span data-purecounter-start="0" data-purecounter-end="1200" data-purecounter-duration="1" class="purecounter">500+</span>
-              <p>Başarılı Ameliyatlar</p>
-            </div>
-      
-            <div class="col-lg-3 col-6 text-center">
-              <span data-purecounter-start="0" data-purecounter-end="15000" data-purecounter-duration="1" class="purecounter">500+</span>
-              <p>Destek Saatleri</p>
-            </div>
-      
-            <div class="col-lg-3 col-6 text-center">
-              <span data-purecounter-start="0" data-purecounter-end="300" data-purecounter-duration="1" class="purecounter">150+</span>
-              <p>Çalışan Sayısı</p>
-            </div>
-      
           </div>
-      
+
+          <div class="col-lg-4 mb-4">
+            <div class="card aos-init" data-aos="zoom-in" data-aos-delay="300">
+              <i class="bi bi-chat-square-text"></i>
+              <div class="card-body">
+                <h5 class="card-title">Hasta Memnuniyeti</h5>
+                <p class="card-text">Hastalarımızın memnuniyeti bizim için önceliklidir. Kişisel ve özenli bir yaklaşım
+                  ile hizmet veriyoruz.</p>
+              </div>
+            </div>
+          </div>
+
         </div>
+e
       </section>
 
      <!-- ======= Team Section ======= -->
@@ -342,8 +511,119 @@
                             </div>
                         </div>
                     </div>
+
+
+        <div class="row counters aos-init" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="5000" data-purecounter-duration="1"
+              class="purecounter">1000+</span>
+            <p>Mutlu Hastalar</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="1200" data-purecounter-duration="1"
+              class="purecounter">500+</span>
+            <p>Başarılı Ameliyatlar</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="15000" data-purecounter-duration="1"
+              class="purecounter">500+</span>
+            <p>Destek Saatleri</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="300" data-purecounter-duration="1"
+              class="purecounter">150+</span>
+            <p>Çalışan Sayısı</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+    <!-- ======= Team Section ======= -->
+    <section id="team">
+      <div class="container aos-init" data-aos="fade-up">
+        <div class="section-header">
+          <h3>Team</h3>
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 aos-init" data-aos="zoom-out" data-aos-delay="100">
+            <div class="member">
+              <img src="assets/img/team-1.jpg" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Walter White</h4>
+                  <span>Chief Executive Officer</span>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 aos-init" data-aos="zoom-out" data-aos-delay="200">
+            <div class="member">
+              <img src="assets/img/team-2.jpg" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Sarah Jhonson</h4>
+                  <span>Product Manager</span>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 aos-init" data-aos="zoom-out" data-aos-delay="300">
+            <div class="member">
+              <img src="assets/img/team-3.jpg" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>William Anderson</h4>
+                  <span>CTO</span>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 aos-init" data-aos="zoom-out" data-aos-delay="400">
+            <div class="member">
+              <img src="assets/img/team-4.jpg" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Amanda Jepson</h4>
+                  <span>Accountant</span>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+
                 </div>
             </div>
+
         </div>
       </section><!-- End Team Section -->
 
@@ -398,19 +678,246 @@
           
           </div>
           
-        </div>
-  
-      </section><!-- End Clients Section -->
-  
-      <!-- ======= Contact Section ======= -->
-      <section id="contact">
-        <div class="container-fluid aos-init" data-aos="fade-up">
-      
-          <div class="section-header">
-            <h3>Bize Ulaşın</h3>
+
           </div>
-      
+
+        </div>
+
+      </div>
+    </section><!-- End Team Section -->
+
+    <!-- ======= Clients Section ======= -->
+    <section id="clients" class="section-bg">
+
+      <div class="container aos-init" data-aos="fade-up">
+
+        <div class="section-header">
+          <h3>Müşterilerimiz</h3>
+          <p>Hizmetlerimize güvenen ve bizi tercih eden değerli iş ortaklarımız.</p>
+        </div>
+
+        <div class="row g-0 clients-wrap clearfix aos-init" data-aos="zoom-in" data-aos-delay="100">
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-7.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-xs-6">
+            <div class="client-logo">
+              <img src="assets/img/clients/client-8.png" class="img-fluid" alt="">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Clients Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact">
+      <div class="container-fluid aos-init" data-aos="fade-up">
+
+        <div class="section-header">
+          <h3>Bize Ulaşın</h3>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="map mb-4 mb-lg-0">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1str!2str!4v1539943755621"
+                frameborder="0" style="border:0; width: 100%; height: 340px;" allowfullscreen=""></iframe>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-md-5 info">
+                <i class="bi bi-geo-alt"></i>
+                <p>A108 Adam Street, NY 535022</p>
+              </div>
+              <div class="col-md-4 info">
+                <i class="bi bi-envelope"></i>
+                <p>infoexample.com</p>
+              </div>
+              <div class="col-md-3 info">
+                <i class="bi bi-phone"></i>
+                <p>+1 5589 55488 55</p>
+              </div>
+            </div>
+
+            <div class="form">
+              <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                <div class="row">
+                  <div class="form-group col-lg-6">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Adınız" required>
+                  </div>
+                  <div class="form-group col-lg-6 mt-3 mt-lg-0">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="E-posta Adresiniz"
+                      required>
+                  </div>
+                </div>
+                <div class="form-group mt-3">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Konu" required>
+                </div>
+                <div class="form-group mt-3">
+                  <textarea class="form-control" name="message" rows="5" placeholder="Mesajınız" required></textarea>
+                </div>
+                <div class="my-3">
+                  <div class="loading">Yükleniyor</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Mesajınız gönderildi. Teşekkürler!</div>
+                </div>
+                <div class="text-center"><button type="submit" title="Mesaj Gönder">Mesaj Gönder</button></div>
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-info">
+            <h3>YeniHastane</h3>
+            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies
+              darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo.
+              Amet volutpat consequat mauris nunc congue.</p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Faydalı Bağlantılar</h4>
+            <ul>
+              <li><a href="#">Ana Sayfa</a></li>
+              <li><a href="#">Hakkımızda</a></li>
+              <li><a href="#">Hizmetler</a></li>
+              <li><a href="#">Kullanım Şartları</a></li>
+              <li><a href="#">Gizlilik Politikası</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h4>İletişim</h4>
+            <p>
+              A108 Adam Caddesi <br>
+              New York, NY 535022<br>
+              Amerika Birleşik Devletleri <br>
+              <strong>Telefon:</strong> +1 5589 55488 55<br>
+              <strong>E-posta:</strong> infoexample.com<br>
+            </p>
+
+            <div class="social-links">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-newsletter">
+            <h4>Bültenimiz</h4>
+            <p>Güncel haberler ve duyurular için bültenimize abone olun.</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Abone Ol">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        © Telif Hakkı <strong>YeniHastane</strong>. Tüm Hakları Saklıdır
+      </div>
+      <div class="credits">
+        <!--
+            Footer'daki tüm bağlantılar korunmalıdır.
+            Bağlantıları yalnızca pro sürümü satın aldıysanız silebilirsiniz.
+            Lisans bilgileri: https://bootstrapmade.com/license/
+            Çalışan PHP/AJAX iletişim formu ile pro sürümü satın alın: https://bootstrapmade.com/buy/?theme=NewBiz
+          -->
+        Tasarım <a href="https://bootstrapmade.com/">BootstrapMade</a> tarafından yapılmıştır.
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+
+
+
+
+</body>
+
+<!-- The Modal -->
+<div class="modal fade" id="SSS">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <section class="content-header">
+          <div class="col-sm-12">
+            <h2>Sık Sorulan Sorular</h2>
+          </div>
+        </section>
+
+        <section class="content">
           <div class="row">
+
       
             <div class="col-lg-6">
               <div class="map mb-4 mb-lg-0">
@@ -431,30 +938,91 @@
                 <div class="col-md-3 info">
                   <i class="bi bi-phone"></i>
                   <p>0216 331 4800</p>
+
+            <div class="col-12" id="accordion">
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseOne">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      1. Nasıl randevu alırım?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                  <div class="card-body">
+                    Ana sayfanın sağ üst köşesinde bulunan "Giriş Yap" butonuna tıklayarak, kullanıcı adı ve şifrenizle giriş yapabilirsiniz. Giriş yaptıktan sonra, "Randevu Ara" butonuna tıklayarak, randevu almak istediğiniz kliniği, doktoru ve tarihi seçebilir, randevunuzu oluşturabilirsiniz.<br><br>Eğer daha önceden kayıt olmadıysanız, "Giriş yap" butonuna tıkladıktan sonra aşağıda bulunan "Kayıt Ol" butonuna tıklayarak bilgileri doldurabilir ve kayıt olabilirsiniz.
+                  </div>
                 </div>
               </div>
-      
-              <div class="form">
-                <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                  <div class="row">
-                    <div class="form-group col-lg-6">
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Adınız" required>
-                    </div>
-                    <div class="form-group col-lg-6 mt-3 mt-lg-0">
-                      <input type="email" class="form-control" name="email" id="email" placeholder="E-posta Adresiniz" required>
-                    </div>
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseTwo">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      2. Muayene olmak için gereken evraklar nelerdir?
+                    </h4>
                   </div>
-                  <div class="form-group mt-3">
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Konu" required>
+                </a>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    T.C. Kimlik Kartı, Pasaport, Ehliyet gibi kimlik belgeleriniz ve varsa sağlık sigortanızın bilgileri ile muayene olabilirsiniz. Ayrıca, daha önceden yapılmış tetkikleriniz, reçeteleriniz ve sağlık geçmişiniz de muayene sırasında doktorunuza sunmanız gereken evraklar arasındadır.
                   </div>
-                  <div class="form-group mt-3">
-                    <textarea class="form-control" name="message" rows="5" placeholder="Mesajınız" required></textarea>
+                </div>
+              </div>
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      3. Tahlil sonuçlarımı ve raporlarımı nasıl alabilirim?
+                    </h4>
                   </div>
-                  <div class="my-3">
-                    <div class="loading">Yükleniyor</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Mesajınız gönderildi. Teşekkürler!</div>
+                </a>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Hasta sistemine giriş yaptıktan sonra "Raporlarım" kısmından tahlillerinize ve raporlarınıza ulaşabilirsiniz. Giriş yaptıysanız <a href="http://localhost:4200/patient/reports">"Raporlarım"</a> kısmına tıklayarak tahlil ve raporlarınıza ulaşabilirsiniz.
                   </div>
+                </div>
+              </div>
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseFour">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      4. Muayene olduktan sonra, doktorun istediği tetkiklerin sonuçlarını göstermek ya da kontrole gelmek için tekrar randevu almaya gerek var mı?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseFour" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Bu konudaki uygulamamız polikliniklerimizin yoğunluğuna göre değişmektedir. Bu nedenle, eğer doktorunuz tetkik istemiş veya kontrole çağırmış ise muayeneden çıktığınızda sonuçlarınızı göstermek veya kontrole gelmek için randevu almanız gerekip gerekmediğini poliklinik sekreterinden öğreniniz.                  </div>
+
+                </div>
+              </div>
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseFive">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      5. Hastanenizde sigorta şirketleriyle anlaşmalı mısınız?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseFive" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Evet, hastanemiz birçok özel sigorta şirketi ile anlaşmalıdır. Sigorta kapsamınız hakkında bilgi almak için danışma birimimize başvurabilirsiniz.
+                  </div>
+                </div>
+              </div>
+              <div class="card card-primary card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseSix">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      6. Hastanenizde acil servis hizmeti veriliyor mu?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseSix" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Evet, hastanemizde 24 saat hizmet veren bir acil servis bulunmaktadır.
+                  </div>
+
                   <div class="text-center"><button type="submit" title="Mesaj Gönder">Mesaj Gönder</button></div>
                 </form>
               </div>
@@ -476,18 +1044,25 @@
               <div class="col-lg-4 col-md-6 footer-info">
                 <h3>YeniHastane</h3>
                 <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+
+                </div>
+
               </div>
-      
-              <div class="col-lg-2 col-md-6 footer-links">
-                <h4>Faydalı Bağlantılar</h4>
-                <ul>
-                  <li><a href="#">Ana Sayfa</a></li>
-                  <li><a href="#">Hakkımızda</a></li>
-                  <li><a href="#">Hizmetler</a></li>
-                  <li><a href="#">Kullanım Şartları</a></li>
-                  <li><a href="#">Gizlilik Politikası</a></li>
-                </ul>
+              <div class="card card-warning card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseSeven">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      7. Hastanenizin adres bilgisine nasıl erişebiliriz ?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseSeven" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Hastanemizin detaylı adres ve iletişim bilgilerine web sitemizin <a href="http://localhost:4200/#contact">"İletişim"</a> sayfasından erişebilirsiniz.
+                  </div>
+                </div>
               </div>
+
       
               <div class="col-lg-3 col-md-6 footer-contact">
                 <h4>İletişim</h4>
@@ -504,38 +1079,57 @@
                   <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
                   <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
                   <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+
+              <div class="card card-warning card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseEight">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      8. Hastanenizde bulunan otopark hizmeti ücretli mi?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseEight" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Evet, hastanemizde bulunan otopark hizmeti ücretlidir. Detaylı bilgi için otopark görevlilerimizle iletişime geçebilirsiniz.
+                  </div>
+
                 </div>
-      
               </div>
-      
-              <div class="col-lg-3 col-md-6 footer-newsletter">
-                <h4>Bültenimiz</h4>
-                <p>Güncel haberler ve duyurular için bültenimize abone olun.</p>
-                <form action="" method="post">
-                  <input type="email" name="email"><input type="submit" value="Abone Ol">
-                </form>
+              <div class="card card-danger card-outline">
+                <a class="d-block w-100" data-toggle="collapse" href="#collapseNine">
+                  <div class="card-header">
+                    <h4 class="card-title w-100">
+                      9. Hastanenizde yatan hasta ziyaret saatleri nelerdir?
+                    </h4>
+                  </div>
+                </a>
+                <div id="collapseNine" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Yatan hasta ziyaret saatlerimiz hafta içi 14:00-16:00 ve hafta sonu 10:00-12:00 arasındadır.
+                  </div>
+                </div>
               </div>
-      
             </div>
           </div>
-        </div>
-      
-        <div class="container">
-          <div class="copyright">
-            © Telif Hakkı <strong>YeniHastane</strong>. Tüm Hakları Saklıdır
+          <div class="row">
+            <div class="col-12 mt-3 text-center">
+              <p class="lead">
+                <a href="http://localhost:4200/#contact">İletişim formu aracılığıyla</a>,
+                öğrenmek istediğiniz diğer konularla ilgili bizimle iletişime geçebilirsiniz.<br />
+              </p>
+            </div>
           </div>
-          <div class="credits">
-            <!--
-            Footer'daki tüm bağlantılar korunmalıdır.
-            Bağlantıları yalnızca pro sürümü satın aldıysanız silebilirsiniz.
-            Lisans bilgileri: https://bootstrapmade.com/license/
-            Çalışan PHP/AJAX iletişim formu ile pro sürümü satın alın: https://bootstrapmade.com/buy/?theme=NewBiz
-          -->
-            Tasarım <a href="https://bootstrapmade.com/">BootstrapMade</a> tarafından yapılmıştır.
-          </div>
+
         </div>
     </footer><!-- End Footer --> 
   
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   
   </body>
+
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+

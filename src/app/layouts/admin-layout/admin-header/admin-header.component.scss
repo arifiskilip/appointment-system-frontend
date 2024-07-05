@@ -1,4 +1,9 @@
 a:hover i{
   color: white !important;
 }
-  
+
+@media (max-width: 768px) {
+  .navbar-nav .nav-item .nav-link {
+      display: inline-block !important;
+  }
+}
