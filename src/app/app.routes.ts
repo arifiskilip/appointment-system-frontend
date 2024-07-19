@@ -38,6 +38,10 @@ import { DoctorReportHistoryComponent } from './components/admin/admin-doctor/do
 
 export const routes: Routes = [
   {
+    path: '',
+    component: HomePageComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -50,10 +54,6 @@ export const routes: Routes = [
     component: VerificationCodeComponent,
     canActivate: [()=> inject(AuthService).isAuthenticated()],
     data: { roles: 'Patient' }
-  },
-  {
-    path: '',
-    component: HomePageComponent
   },
   {
     path: 'admin',

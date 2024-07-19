@@ -12,10 +12,6 @@ import { Router } from '@angular/router';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent {
-toggleMobileNav() {
-throw new Error('Method not implemented.');
-}
-
 constructor(public auth:AuthService, private router:Router) {
   
 }

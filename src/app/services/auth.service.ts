@@ -93,4 +93,20 @@ export class AuthService {
   get isAuthenticatedByUserId(): number {
     return parseInt(this.localStorage.getItem('userId') || '0');
   }
+  get _isAuthenticatedByUser(): boolean {
+    const token: string | null = this.localStorage.getItem('token');
+
+    if (!token) {
+      this.router.navigateByUrl('/login');
+      return false;
+    }
+
+    const expired: boolean = this.isTokenExpired(token);
+
+    if (expired) {
+      this.router.navigateByUrl('/login');
+      return false;
+    }
+    return true;
+  }
 }

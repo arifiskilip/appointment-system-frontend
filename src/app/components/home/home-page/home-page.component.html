@@ -27,10 +27,10 @@
           <li><a class="nav-link scrollto" data-toggle="modal" data-target="#SSS">S.S.S.</a></li>
           <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')"
               (click)="setActive('contact')">İletişim</a></li>
-              <li *ngIf="!auth.isAuthenticated()">
+              <li *ngIf="!auth._isAuthenticatedByUser">
                 <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
               </li>
-            <li *ngIf="auth.isAuthenticated()">
+            <li *ngIf="auth._isAuthenticatedByUser">
               <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
             </li>
         </ul>
@@ -64,10 +64,10 @@
                 <li><a class="nav-link scrollto" href="#team" [class.active]="isActive('team')" (click)="setActive('team')">Ekip</a></li>
                 <li><a class="nav-link scrollto" href="#clients" [class.active]="isActive('clients')" (click)="setActive('clients')">Müşterilerimiz</a></li>
                 <li><a class="nav-link scrollto" href="#contact" [class.active]="isActive('contact')" (click)="setActive('contact')">İletişim</a></li>
-                <li *ngIf="!auth.isAuthenticated()">
+                <li *ngIf="!auth._isAuthenticatedByUser">
                     <a routerLink="/login" routerLinkActive="active" class="nav-link scrollto">Giriş Yap</a>
                   </li>
-                <li *ngIf="auth.isAuthenticated()">
+                <li *ngIf="auth._isAuthenticatedByUser">
                   <a (click)="getPanel()" routerLinkActive="active" class="nav-link scrollto">Panel</a>
                 </li>
             </ul>
