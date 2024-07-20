@@ -24,7 +24,7 @@ export class ErrorService {
         });
       }
       else{
-        this.swal.callToast(err.error.detail,"error")
+        this.swal.callToast(err.error.Detail,"error")
       }
       textMessage.length>0 ? this.swal.callToast(textMessage,"error") : "";
 
