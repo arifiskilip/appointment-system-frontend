@@ -15,8 +15,8 @@ export class ErrorService {
   errorHandler(err:HttpErrorResponse){
     let textMessage:string = "";
     console.log(err)
-    if(err.error.Errors){
-      err.error.Errors.forEach((x:any) => {
+    if(err.error.errors){
+      err.error.errors.forEach((x:any) => {
           x.Errors.forEach((y:any) => {
             textMessage+=y+'\n';
             this.swal.callToast(y,"error");
@@ -24,7 +24,7 @@ export class ErrorService {
         });
       }
       else{
-        this.swal.callToast(err.error.Detail,"error")
+        this.swal.callToast(err.error.detail,"error")
       }
       textMessage.length>0 ? this.swal.callToast(textMessage,"error") : "";
 

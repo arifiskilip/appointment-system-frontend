@@ -200,10 +200,6 @@ export class AdminPatientComponent implements OnInit{
     .pipe(take(1))
     .subscribe((res) => {
       this.patients = res;
-      if(this.patients.pagination.totalPages < this.pageIndex){
-        this.pageIndex = 1
-        this.searchPatient();
-      }
       this.totalPages = this.patients.pagination.totalPages;});
   }
 
