@@ -166,10 +166,6 @@ Projenizi yerel ortamda çalıştırmak için aşağıdaki yazılımlara ihtiyac
 
 3. Frontend'i başlatmak için:
    ```bash
-   npm start
-
-4. Daha sonra:
-   ```bash
    ng serve
 
 #### Backend'i Başlatma
