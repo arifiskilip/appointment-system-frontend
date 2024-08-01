@@ -146,9 +146,12 @@ Projenizi yerel ortamda çalıştırmak için aşağıdaki yazılımlara ihtiyac
    git clone https://github.com/arifiskilip/Pair6_AppointmentSystem.git
 
 2. Visual Studio'yu açın ve 'Open Project/Solution' ile projeyi açın.
-3. Database Migration için 'Persistence' katmanındaki 'AppointmentSystemContext.cs' dosyasını açın.
-4. Web API Swagger ekranından herhangi bir katman için 'getList' yaparak database oluşturun.
-5. 'Set as Startup Project' seçeneği ile 'WebAPI' klasörünü başlatın.
+3. 'Solution Explorer' penceresinde 'WebAPI' projesini sağ tıklayın ve 'Set as Startup Project' seçeneğini belirleyin.
+4. Visual Studio'da 'Package Manager Console' penceresini açın.
+5. 'Persistence' projesini seçin ve aşağıdaki komutu çalıştırarak veritabanı güncellemelerini gerçekleştirin:
+6. ```bash
+   update-database
+7. 'Start' düğmesine basarak uygulamanızı başlatın ve çalıştığından emin olun.
 
 ### Çalıştırma
 
@@ -170,10 +173,7 @@ Projenizi yerel ortamda çalıştırmak için aşağıdaki yazılımlara ihtiyac
    ng serve
 
 #### Backend'i Başlatma
-1. Visual Studio'yu açın ve projeyi başlatın.
-3. Database Migration için 'Persistence' katmanındaki 'AppointmentSystemContext.cs' dosyasını açın. 'Database.EnsureCreated()' satırını yorumdan kaldırın.
-4. Web API Swagger ekranından herhangi bir katman için 'getList' yaparak database oluşturun.
-5. 'Set as Startup Project' seçeneği ile 'WebAPI' klasörünü başlatın.
+1. 'Start' düğmesine basarak uygulamanızı başlatın ve çalıştığından emin olun.
 
 ## Kullanım
 
