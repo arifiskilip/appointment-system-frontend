@@ -233,6 +233,7 @@ Kullanıcılar sistemle ilgili geri bildirim ve önerilerde bulunabilir. Geri bi
 - Mobil uygulama geliştirilmesi
 - Daha detaylı raporlama ve analiz araçları vb.
 
+
 ## Katkıda Bulunma
 
 Katkıda bulunmak istiyorsanız, lütfen bir pull request açmadan önce bir issue açarak neyi değiştirmek veya eklemek istediğinizi tartışın. Her türlü geri bildiriminiz için teşekkür ederiz! Projeye katkıda bulunmak isterseniz aşağıdaki adımları izleyebilirsiniz:
